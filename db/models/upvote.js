@@ -4,11 +4,11 @@ module.exports = (sequelize, DataTypes) => {
     "Upvote",
     {
       isPositive: {
-        type: Sequelize.BOOLEAN,
+        type: DataTypes.BOOLEAN,
         allowNull: false,
       },
       userId: {
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER,
         allowNull: false,
         references: {
           model: "Users",
