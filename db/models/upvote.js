@@ -15,14 +15,14 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       questionId: {
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER,
         allowNull: true,
         references: {
           model: "Questions",
         },
       },
       answerId: {
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER,
         allowNull: true,
         references: {
           model: "Answers",
