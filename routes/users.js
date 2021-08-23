@@ -30,5 +30,24 @@ router.post("/signup", csrfProtection, asyncHandler(async(req,res,next)=>{
   res.redirect("/")
 }));
 
+router.get("/signin", csrfProtection, asyncHandler(async(req, res, next) => {
+  res.render("sign-in", {
+    csrfToken: req.csrfToken(),
+  });
+}));
+
+router.post("/signin", csrfProtection, asyncHandler(async(req, res, next) => {
+  let {username,password,email,confirmPassword} = req.body
+  if(password!==confirmPassword){
+    return res.render("sign-up", {
+      csrfToken: req.csrfToken(),
+    });
+  }
+  let hashedPassword = await bcrypt.hash(password,10)
+  let user = await User.create({username,hashedPassword,email})
+  loginUser(req,res,user)
+  res.redirect("/")
+}));
+
 
 module.exports = router;
