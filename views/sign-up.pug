@@ -1,6 +1,9 @@
+h2 Sign Up
 form(action="/users/signup" method="post")
-    input(type="text" name="username")
-    input(type="password" name="password")
-    input(type = "password" name="confirmPassword")
-    input(type="email" name="email")
-    input(type="submit" value="submit")
+    input(type="hidden", name="_csrf" value=csrfToken)
+    input(type='text' name='username' placeholder="Username")
+    input(type="password" name="password" placeholder="Password")
+    input(type="password" name="confirmPassword" placeholder="Confirm Password")
+    input(type="email" name="email" placeholder="Email")
+    button(type="submit" value="submit") Sign Up
+a(href='/log-in') Already have an account? Log in here.
