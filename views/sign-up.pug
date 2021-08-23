@@ -1,6 +1,6 @@
 h2 Sign Up
 form(action="/users/signup" method="post")
-    hidden(name="csrf_token", value=csrf_token)
+    input(type="hidden", name="_csrf" value=csrfToken)
     input(type='text' name='username' placeholder="Username")
     input(type="password" name="password" placeholder="Password")
     input(type="password" name="confirmPassword" placeholder="Confirm Password")
