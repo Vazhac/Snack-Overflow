@@ -1,23 +1,42 @@
-'use strict';
+"use strict";
 module.exports = (sequelize, DataTypes) => {
-  const Answer = sequelize.define('Answer', {
-    message: DataTypes.STRING,
-    userId: DataTypes.INTEGER,
-    questionId: DataTypes.INTEGER
-  }, {});
+  const Answer = sequelize.define(
+    "Answer",
+    {
+      message: {
+        type: Sequelize.TEXT,
+        allowNull: false,
+      },
+      userId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: "Users",
+        },
+      },
+      questionId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: "Questions",
+        },
+      },
+    },
+    {}
+  );
   Answer.associate = function (models) {
     // associations can be defined here
     Answer.belongsTo(models.User, {
-      foreignKey: 'userId',
+      foreignKey: "userId",
     });
     Answer.belongsTo(models.Question, {
-      foreignKey: 'questionId',
+      foreignKey: "questionId",
     });
     Answer.hasMany(models.Comment, {
-      foreignKey: 'answerId',
+      foreignKey: "answerId",
     });
     Answer.hasMany(models.Upvote, {
-      foreignKey: 'answerId',
+      foreignKey: "answerId",
     });
   };
   return Answer;
