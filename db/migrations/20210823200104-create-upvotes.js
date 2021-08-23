@@ -21,14 +21,14 @@ module.exports = {
       },
       questionId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
           model: 'Questions'
         }
       },
       answerId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
           model: 'Answers'
         }
