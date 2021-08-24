@@ -54,8 +54,10 @@ const signInValidators = [
   .withMessage('Please provide a value for Username'),
   check('password')
   .exists({ checkFalsy: true })
-  .withMessage('Please provide a value for Password'),
+  .withMessage('Please provide a value for Password')
 ]
+
+
 
 module.exports = {
   signUpValidators,

@@ -13,10 +13,9 @@ router.get('/', function(req, res) {
 });
 
 router.get("/signup", csrfProtection, (req, res)=>{
-  const errors = [];
   res.render("sign-up", {
     csrfToken: req.csrfToken(),
-    errors,
+    errors: []
   });
 });
 
@@ -50,28 +49,39 @@ router.post("/signup", csrfProtection, signUpValidators, asyncHandler(async(req,
 router.get("/signin", csrfProtection, asyncHandler(async(req, res, next) => {
   res.render("sign-in", {
     csrfToken: req.csrfToken(),
+    errors: []
   });
 }));
 
-router.post("/signin", csrfProtection, asyncHandler(async(req, res, next) => {
+router.post("/signin", csrfProtection, signInValidators, asyncHandler(async(req, res, next) => {
   let {username, password} = req.body;
-  const user = User.findOne({
+  const user = await User.findOne({
     where: {
       username
     }
   });
+  const validatorErrors = validationResult(req);
+  let passwordMatch;
 
-  const hashedPassword = await bcrypt.hash(password, 10);
-
-  if (!user || hashedPassword !== user.hashedPassword) {
-    //TODO : Update error handling for this if condition
-    return res.render("sign-in", {
+  if (validatorErrors.isEmpty() && user) {
+    console.log(user);
+    passwordMatch = await bcrypt.compare(password, user.hashedPassword.toString());
+    if (passwordMatch) {
+      loginUser(req, res, user);
+      return res.redirect('/');
+    }
+  } else {
+    const errors = validatorErrors.array().map((err) => err.msg);
+    if (!user || !passwordMatch) {
+      errors.push('User name or password is incorrect');
+    }
+    res.render('sign-in', {
+      title: 'Sign-in',
+      user,
+      errors,
       csrfToken: req.csrfToken(),
     });
   }
-
-  loginUser(req, res, user)
-  res.redirect("/")
 }));
 
 
