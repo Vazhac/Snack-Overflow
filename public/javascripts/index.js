@@ -29,7 +29,9 @@ window.addEventListener("load", (event) => {
       method: "PUT",
       body: JSON.stringify({ title: title.value, message: message.value }),
     });
-
+    res = await res.json()
+    document.getElementById("title").innerText = res.title
+    document.getElementById("message").innerText = res.message
     editForm.style.display = "none";
   });
 });
