@@ -23,9 +23,7 @@ router.put("/:id", asyncHandler(async (req, res) => {
     question.title = title;
     question.message = message;
     question.save();
-    console.log(question);
-    res.render('question-page', { question })
-
+    res.send(question)
 }));
 
 router.delete("/:id", asyncHandler(async (req, res) => {
