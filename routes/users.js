@@ -2,8 +2,8 @@ var express = require('express');
 var router = express.Router();
 let bcrypt = require("bcryptjs")
 let { User } = require("../db/models")
-let {loginUser, logoutUser} = require("../auth.js")
-const {validationResult } = require("express-validator")
+let { loginUser, logoutUser } = require("../auth.js")
+const { validationResult } = require("express-validator")
 const { csrfProtection, asyncHandler } = require('./utils')
 const { signInValidators, signUpValidators } = require('../validators'); //Possibly add more comple validations for checking password complexity and confirm password complexictyu
 
@@ -19,8 +19,8 @@ router.get("/signup", csrfProtection, (req, res) => {
   });
 });
 
-router.post("/signup", csrfProtection, signUpValidators, asyncHandler(async(req, res)=>{
-  let {username, password, email} = req.body
+router.post("/signup", csrfProtection, signUpValidators, asyncHandler(async (req, res) => {
+  let { username, password, email } = req.body
   const validatorErrors = validationResult(req);
 
   const user = await User.build({
@@ -31,7 +31,7 @@ router.post("/signup", csrfProtection, signUpValidators, asyncHandler(async(req,
   if (validatorErrors.isEmpty()) {
     let hashedPassword = await bcrypt.hash(password, 10)
     user.hashedPassword = hashedPassword;
-    user.save();
+    await user.save();
     loginUser(req, res, user);
     res.redirect("/")
   } else {
@@ -46,7 +46,7 @@ router.post("/signup", csrfProtection, signUpValidators, asyncHandler(async(req,
 
 }));
 
-router.get("/signin", csrfProtection, asyncHandler(async(req, res, next) => {
+router.get("/signin", csrfProtection, asyncHandler(async (req, res, next) => {
   if (req.session.auth) {
     return res.redirect('/');
   }
@@ -56,8 +56,8 @@ router.get("/signin", csrfProtection, asyncHandler(async(req, res, next) => {
   });
 }));
 
-router.post("/signin", csrfProtection, signInValidators, asyncHandler(async(req, res, next) => {
-  let {username, password} = req.body;
+router.post("/signin", csrfProtection, signInValidators, asyncHandler(async (req, res, next) => {
+  let { username, password } = req.body;
   const user = await User.findOne({
     where: {
       username
@@ -88,7 +88,7 @@ router.post("/signin", csrfProtection, signInValidators, asyncHandler(async(req,
 }));
 
 
-router.post('/signout', asyncHandler(async(req, res) => {
+router.post('/signout', asyncHandler(async (req, res) => {
   if (req.session.auth) {
     logoutUser(req, res);
   }

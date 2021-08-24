@@ -1,7 +1,11 @@
 h2 Ask a public question
-    form(action="/questions/new" method="post")
-        label(for='title') Title
-        input(type='text' name='title' placeholder="What is the perfect chocolate chip to cookie ratio?")
-        label(for='body') Body
-        input(type='text' name='body' placeholder="Enter your question here")
-        button(type="submit" value="submit") Post your question
+if errors.length
+    each error in errors
+        li #{error}
+form(action="/questions/new" method="post")
+    input(type="hidden", name="_csrf" value=csrfToken)
+    label(for='title') Title
+    input(type='text' name='title' placeholder="What is the perfect chocolate chip to cookie ratio?")
+    label(for='message') Body
+    input(type='text' name='message' placeholder="Enter your question here")
+    button(type="submit" value="submit") Post your question
