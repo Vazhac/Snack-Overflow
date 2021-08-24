@@ -1,7 +1,11 @@
-let loginUser = (req,res,user) => {
+let loginUser = (req, res, user) => {
     req.session.auth = {
         userId: user.id
     }
+}
+
+const logoutUser = (req, res) => {
+    delete req.session.auth;
 }
 
 const restoreUser = async (req, res, next) => {
@@ -26,5 +30,6 @@ const restoreUser = async (req, res, next) => {
 
 module.exports = {
     loginUser,
+    logoutUser,
     restoreUser
 }
