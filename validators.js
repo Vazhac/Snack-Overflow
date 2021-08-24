@@ -4,7 +4,7 @@ const signUpValidators = [
     .withMessage('Please provide a value for Username')
     .isLength({ max: 50 })
     .withMessage('Username must not be more than 50 characters long'),
-  check('emailAddress')
+  check('email')
     .exists({ checkFalsy: true })
     .withMessage('Please provide a value for Email Address')
     .isLength({ max: 255 })
