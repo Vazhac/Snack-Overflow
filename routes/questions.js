@@ -9,7 +9,7 @@ const question = require('../db/models/question');
 
 /* GET questions listing. */
 
-router.get("/:id", asyncHandler(async( req, res) => {
+router.get("/:id(\\d+)", asyncHandler(async( req, res) => {
  let question = await Question.findByPk(req.params.id)
 //  let question = await Question.findByPk(req.params.id, { include: Answer })
  console.log(question)
@@ -20,10 +20,10 @@ router.put("/:id", asyncHandler(async (req, res) => {
     console.log("hitting put route")
     let question = await Question.findByPk(req.params.id);
     let { title, message } = req.body;
-    console.log(title, message)
     question.title = title;
     question.message = message;
     question.save();
+    console.log(question);
     res.render('question-page', { question })
 
 }));
@@ -54,7 +54,7 @@ router.post('/new', csrfProtection, questionValidators, asyncHandler(async (req,
     const question = await Question.build({
         title,
         message,
-        userId: req.session.auth.id
+        userId: req.session.auth.userId
     });
 
     if (validatorErrors.isEmpty()) {
