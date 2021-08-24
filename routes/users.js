@@ -18,7 +18,7 @@ router.get("/signup", csrfProtection, (req, res)=>{
 });
 
 router.post("/signup", csrfProtection, asyncHandler(async(req,res,next)=>{
-  let {username,password,email,confirmPassword} = req.body
+  let {username, password, email, confirmPassword} = req.body
   if(password!==confirmPassword){
     return res.render("sign-up", {
       csrfToken: req.csrfToken(),
@@ -27,6 +27,33 @@ router.post("/signup", csrfProtection, asyncHandler(async(req,res,next)=>{
   let hashedPassword = await bcrypt.hash(password,10)
   let user = await User.create({username,hashedPassword,email})
   loginUser(req,res,user)
+  res.redirect("/")
+}));
+
+router.get("/signin", csrfProtection, asyncHandler(async(req, res, next) => {
+  res.render("sign-in", {
+    csrfToken: req.csrfToken(),
+  });
+}));
+
+router.post("/signin", csrfProtection, asyncHandler(async(req, res, next) => {
+  let {username, password} = req.body;
+  const user = User.findOne({
+    where: {
+      username
+    }
+  });
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  if (!user || hashedPassword !== user.hashedPassword) {
+    //TODO : Update error handling for this if condition
+    return res.render("sign-in", {
+      csrfToken: req.csrfToken(),
+    });
+  }
+
+  loginUser(req, res, user)
   res.redirect("/")
 }));
 

@@ -1,0 +1,7 @@
+h2 Sign In
+form(action="/users/signin" method="post")
+    input(type="hidden", name="_csrf" value=csrfToken)
+    input(type='text' name='username' placeholder="Username")
+    input(type="password" name="password" placeholder="Password")
+    button(type="submit" value="submit") Sign in
+a(href='/users/signup') Don't have an account? Sign up
