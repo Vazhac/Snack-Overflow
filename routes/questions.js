@@ -9,15 +9,18 @@ const question = require('../db/models/question');
 
 /* GET questions listing. */
 
-router.get("/questions/:id", asyncHandler(async (req, res) => {
-    let question = await Question.findByPk(req.params.id, { include: Answer })
-
-    res.render('question-page', { question })
+router.get("/:id", asyncHandler(async( req, res) => {
+ let question = await Question.findByPk(req.params.id)
+//  let question = await Question.findByPk(req.params.id, { include: Answer })
+ console.log(question)
+ res.render('question-page', { question, session: req.session } )
 }));
 
-router.put("/questions/:id", asyncHandler(async (req, res) => {
+router.put("/:id", asyncHandler(async (req, res) => {
+    console.log("hitting put route")
     let question = await Question.findByPk(req.params.id);
     let { title, message } = req.body;
+    console.log(title, message)
     question.title = title;
     question.message = message;
     question.save();
@@ -25,7 +28,7 @@ router.put("/questions/:id", asyncHandler(async (req, res) => {
 
 }));
 
-router.delete("/questions/:id", asyncHandler(async (req, res) => {
+router.delete("/:id", asyncHandler(async (req, res) => {
     let question = await Question.findByPk(req.params.id);
     await question.destroy();
     res.redirect('/');
