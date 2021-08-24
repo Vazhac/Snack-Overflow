@@ -8,11 +8,11 @@ const { csrfProtection, asyncHandler } = require('./utils')
 const { signInValidators, signUpValidators } = require('../validators'); //Possibly add more comple validations for checking password complexity and confirm password complexictyu
 
 /* GET users listing. */
-router.get('/', function(req, res) {
-  res.send('respond with a resource');
-});
 
-router.get("/signup", csrfProtection, (req, res)=>{
+router.get("/signup", csrfProtection, (req, res) => {
+  if (req.session.auth) {
+    return res.redirect('/');
+  }
   res.render("sign-up", {
     csrfToken: req.csrfToken(),
     errors: []
@@ -47,6 +47,9 @@ router.post("/signup", csrfProtection, signUpValidators, asyncHandler(async(req,
 }));
 
 router.get("/signin", csrfProtection, asyncHandler(async(req, res, next) => {
+  if (req.session.auth) {
+    return res.redirect('/');
+  }
   res.render("sign-in", {
     csrfToken: req.csrfToken(),
     errors: []
