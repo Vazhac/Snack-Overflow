@@ -15,12 +15,6 @@ router.get("/questions/:id", asyncHandler(async( req, res) => {
  res.render('question-page', { question } )
 }));
 
-router.post("/questions/:id", csrfProtection, questionsValidators, asyncHandler(async (req, res) => {
-    let { title, message } = req.body;
-    Question.create( {title, message});
-    res.render('question-page', { question } )
-}));
-
 router.put("/questions/:id", asyncHandler(async (req, res) => {
     let question = await Question.findByPk(req.params.id);
     let { title, message } = req.body;
