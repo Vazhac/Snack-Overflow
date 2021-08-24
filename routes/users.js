@@ -88,4 +88,10 @@ router.post("/signin", csrfProtection, signInValidators, asyncHandler(async(req,
 }));
 
 
+router.post('/signout', asyncHandler(async(req, res) => {
+  if (req.session.auth) {
+    logoutUser(req, res);
+  }
+}));
+
 module.exports = router;
