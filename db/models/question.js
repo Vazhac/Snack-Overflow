@@ -28,12 +28,18 @@ module.exports = (sequelize, DataTypes) => {
     });
     Question.hasMany(models.Answer, {
       foreignKey: "questionId",
+      onDelete: "CASCADE",
+      hooks: true
     });
     Question.hasMany(models.Comment, {
       foreignKey: "questionId",
+      onDelete: "CASCADE",
+      hooks: true
     });
     Question.hasMany(models.Upvote, {
       foreignKey: "questionId",
+      onDelete: "CASCADE",
+      hooks: true
     });
   };
   return Question;

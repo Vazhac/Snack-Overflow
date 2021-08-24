@@ -1,13 +1,14 @@
 div#title=question.title
 div#message=question.message
+ul#errors
 form#editForm(action="/" method="post" style="display:none")
     input#title(type="text" name="title" placeholder="title")
     input#message(type="text" name="message" placeholder="message")
     input#submit(type="submit" value="submit")
 
-//- ul.answers
-//-     each Answer in question.Answer
-//-         li=Answer
+ul.answers
+    each Answer in question.Answers
+        li=Answer.message
 if session.auth.userId === question.userId
     div
         button.delete(id=question.id) Delete
