@@ -1,18 +1,16 @@
 var express = require('express');
 var router = express.Router();
-let { User, Question, Answer } = require("../db/models")
+let { User, Question, Answer, Comment } = require("../db/models")
 
 const { validationResult } = require("express-validator")
 const { csrfProtection, asyncHandler } = require('./utils')
-const { questionValidators } = require('../validators'); //Possibly add more comple validations for checking password complexity and confirm password complexictyu
-const question = require('../db/models/question');
-const answer = require('../db/models/answer');
+const { questionValidators, replyValidators} = require('../validators'); //Possibly add more comple validations for checking password complexity and confirm password complexictyu
 
 /* GET questions listing. */
 
 router.get("/:id(\\d+)", asyncHandler(async( req, res) => {
 //  let question = await Question.findByPk(req.params.id)
- let question = await Question.findByPk(req.params.id, { include: Answer })
+ let question = await Question.findByPk(req.params.id, { include: [Answer,Comment] })
  console.log(question)
  res.render('question-page', { question, session: req.session } )
 }));
@@ -40,6 +38,31 @@ router.delete("/:id", asyncHandler(async (req, res) => {
     await question.destroy();
     res.redirect('/');
 
+}));
+
+router.post("/:id(\\d+)/answers", replyValidators, asyncHandler(async (req, res) => {
+    let {message,questionId} = req.body
+    const validatorErrors = validationResult(req);
+    if (validatorErrors.isEmpty()) {
+        let answer = await Answer.create({message,questionId,userId:req.session.auth.userId})
+        res.send(answer)
+    } else {
+        const errors = validatorErrors.array().map((err) => err.msg);
+        res.send(errors)
+    }
+}));
+
+router.post("/:id(\\d+)/comments", replyValidators, asyncHandler(async (req, res) => {
+    console.log("hitting route?????")
+    let {message,questionId} = req.body
+    const validatorErrors = validationResult(req);
+    if (validatorErrors.isEmpty()) {
+        let comment = await Comment.create({message,questionId,userId:req.session.auth.userId})
+        res.send(comment)
+    } else {
+        const errors = validatorErrors.array().map((err) => err.msg);
+        res.send(errors)
+    }
 }));
 
 /* end section*/
