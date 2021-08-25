@@ -92,16 +92,18 @@ router.post("/signin", csrfProtection, signInValidators, asyncHandler(async (req
     const errors = ['Your log in credentials don\'t match an account in our system'];
     res.render('sign-in', {
       title: 'Sign-in',
-      user,
+
       errors,
       csrfToken: req.csrfToken(),
     });
   }
 }));
 
-router.post('/signout', asyncHandler(async (req, res) => {
+
+router.get('/signout', asyncHandler(async (req, res) => {
   if (req.session.auth) {
     logoutUser(req, res);
+    res.redirect('/');
   }
 }));
 

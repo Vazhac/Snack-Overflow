@@ -1,32 +1,42 @@
-div#title=question.title
-div#message=question.message
-ul#errors
-form#editForm(action="/" method="post" style="display:none")
-    input#title(type="text" name="title" placeholder="title")
-    input#message(type="text" name="message" placeholder="message")
-    input#edit-submit(type="submit" value="submit")
-form#commentForm(action="/" method="post" style="display:none")
-    input(type="text" name="message" placeholder="message")
-    input#comment-submit(type="submit" value="submit")
-form#answerForm(action="/" method="post" style="display:none")
-    input(type="text" name="message" placeholder="message")
-    input#answer-submit(type="submit" value="submit")
+extends layout
+block content
+    div#title=question.title
+    div#message=question.message
+    ul#errors
+    form#editForm(action="/" method="post" style="display:none")
+        input#title(type="text" name="title" placeholder="title")
+        input#message(type="text" name="message" placeholder="message")
+        input#edit-submit(type="submit" value="submit")
+    form#commentForm(action="/" method="post" style="display:none")
+        input(type="text" name="message" placeholder="message")
+        input#comment-submit(type="submit" value="submit")
+    form#answerForm(action="/" method="post" style="display:none")
+        input(type="text" name="message" placeholder="message")
+        input#answer-submit(type="submit" value="submit")
 
 ul.answers
     each Answer in question.Answers
-        li=Answer.message
+        li(id=Answer.id)=Answer.message
+        if session.auth.userId === Answer.userId
+            button.deleteAnswer(id=Answer.id) Delete
+            button.editAnswer(id=Answer.id) Edit
+
 
 ul.comments
     each Comment in question.Comments
-        li=Comment.message
+        li(id=Comment.id)=Comment.message
+        if session.auth.userId === Comment.userId
+            button.deleteComment(id=Comment.id) Delete
+            button.editComment(id=Comment.id) Edit
+
 
 if session.auth
     div
-        button.answer(id=question.id) Answer
-        button.comment(id=question.id) Comment
+        button.answerQuestion(id=question.id) Answer
+        button.commentQuestion(id=question.id) Comment
     if session.auth.userId === question.userId
-        button.delete(id=question.id) Delete
-        button.edit(id=question.id) Edit
+        button.deleteQuestion(id=question.id) Delete
+        button.editQuestion(id=question.id) Edit
 
-script(src='../javascripts/index.js' type='module')
-//- each answer in questions.
+    script(src='../javascripts/index.js' type='module')
+    //- each answer in questions.

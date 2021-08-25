@@ -2,10 +2,19 @@ doctype html
 html
   head
       block head
-        title="Express Starter App"
+        title="Snack-Overflow"
         link(rel='stylesheet' href='/stylesheets/reset.css')
+        link(rel='stylesheet' href='/stylesheets/form.css')
   body
-    a(href='/') Home
-    a(href='/users/signup') Sign Up
-    a(href='/users/signin') Sign In
+    div.nav_links
+      div.home_link
+        a(href='/') Home
+        a(href='/questions') All Questions
+      div.sign_links
+        if user
+          a(href='/users/signout') Sign Out
+        else
+          a(href='/users/signup') Sign Up
+          a(href='/users/signin') Sign In
+        end
     block content

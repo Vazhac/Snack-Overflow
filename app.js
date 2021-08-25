@@ -9,9 +9,11 @@ const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const questionsRouter = require('./routes/questions');
+const answersRouter = require('./routes/answers');
+const commentsRouter = require('./routes/comments');
 const { restoreUser } = require('./auth');
-const {db} = require("./config")
-const {session_secret} = db
+const { db } = require("./config")
+const { session_secret } = db
 
 const app = express();
 
@@ -21,7 +23,7 @@ app.set('view engine', 'pug');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(cookieParser(session_secret));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // set up session middleware
@@ -44,6 +46,8 @@ app.use(restoreUser);
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/questions', questionsRouter);
+app.use('/answers', answersRouter);
+app.use('/comments', commentsRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
