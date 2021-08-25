@@ -1,23 +1,24 @@
 window.addEventListener("load", (event) => {
   console.log("hello from javascript!");
-  let deleteButton = document.getElementsByClassName("deleteQuestion")[0];
-  let editButton = document.getElementsByClassName("editQuestion")[0];
-  let answerButton = document.getElementsByClassName("answerQuestion")[0];
-  let commentButton = document.getElementsByClassName("commentQuestion")[0];
+  let deleteButton = document.getElementsByClassName("delete-question")[0];
+  let editButton = document.getElementsByClassName("edit-question")[0];
+  let answerButton = document.getElementsByClassName("answer-question")[0];
+  let commentButton = document.getElementsByClassName("comment-question")[0];
   let editForm = document.getElementById("editForm");
   let answerForm = document.getElementById("answerForm");
   let commentForm = document.getElementById("commentForm");
   let editSubmitButton = document.getElementById("edit-submit");
   let answerSubmitButton = document.getElementById("answer-submit");
   let commentSubmitButton = document.getElementById("comment-submit");
-  let answerEditButton = document.getElementsByClassName("editAnswer");
-  let answerDeleteButton = document.getElementsByClassName("deleteAnswer");
-  let commentEditButton = document.getElementsByClassName("editComment");
-  let commentDeleteButton = document.getElementsByClassName("deleteComment");
+  let answerEditButton = document.getElementsByClassName("edit-answer");
+  let answerDeleteButton = document.getElementsByClassName("delete-answer");
+  let commentEditButton = document.getElementsByClassName("edit-comment");
+  let commentDeleteButton = document.getElementsByClassName("delete-comment");
 
   deleteButton.addEventListener("click", async (event) => {
+    let id = Number(deleteButton.id.slice(15))
     let res = await fetch(
-      `http://localhost:8080/questions/${deleteButton.id}`,
+      `http://localhost:8080/questions/${id}`,
       {
         method: "delete",
       }
@@ -35,11 +36,12 @@ window.addEventListener("load", (event) => {
   if (answerDeleteButton.length) {
     for (deleteButton of answerDeleteButton) {
       deleteButton.addEventListener("click", async (event) => {
-        let res = await fetch(`http://localhost:8080/answers/${deleteButton.id}`, {
+        let id = Number(deleteButton.id.slice(14));
+        let res = await fetch(`http://localhost:8080/answers/${id}`, {
           method: "delete",
         });
 
-        let answer = document.querySelector(`ul.answers>li#${deleteButton.id}`);
+        let answer = document.querySelector(`li#answer-id${id}`);
         answer.remove();
       });
     }
@@ -54,11 +56,13 @@ window.addEventListener("load", (event) => {
   if (commentDeleteButton.length) {
     for (deleteButton of commentDeleteButton) {
       deleteButton.addEventListener("click", async (event) => {
-        let res = await fetch(`http://localhost:8080/comments/${deleteButton.id}`, {
+        let id = Number(deleteButton.id.slice(14));
+        let res = await fetch(`http://localhost:8080/comments/${id}`, {
           method: "delete",
         });
 
-        let comment = document.querySelector(`ul.comments>li#${deleteButton.id}`);
+        let comment = document.querySelector(`#comment-id${id}`)
+        console.log(comment)
         comment.remove();
       });
     }
@@ -81,15 +85,16 @@ window.addEventListener("load", (event) => {
     if (errors.innerHTML) {
       errors.innerHTML = "";
     }
+    let id = Number(commentButton.id.slice(16));
     let res = await fetch(
-      `http://localhost:8080/questions/${commentButton.id}/comments`,
+      `http://localhost:8080/questions/${id}/comments`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          questionId: commentButton.id,
+          questionId: id,
           message: message.value,
         }),
       }
@@ -97,14 +102,14 @@ window.addEventListener("load", (event) => {
     res = await res.json();
     if (res.message) {
       let li = document.createElement("li");
-      li.id = res.id;
+      li.id = `comment-id${res.id}`;
       li.innerText = commentForm.children[0].value;
       let deleteButton = document.createElement("button");
       let editButton = document.createElement("button");
-      deleteButton.classList.add("deleteAnswer");
-      editButton.classList.add("editAnswer");
-      deleteButton.id = res.id;
-      editButton.id = res.id;
+      deleteButton.classList.add("delete-answer");
+      editButton.classList.add("edit-answer");
+      deleteButton.id = `delete-comment${res.id}`;
+      editButton.id = `edit-comment${res.id}`;
       deleteButton.innerText = "Delete";
       editButton.innerText = "Edit";
       li.append(deleteButton);
@@ -113,11 +118,13 @@ window.addEventListener("load", (event) => {
       commentForm.style.display = "none";
 
       deleteButton.addEventListener("click", async (event) => {
-        let res = await fetch(`http://localhost:8080/comments/${deleteButton.id}`, {
+        await fetch(`http://localhost:8080/comments/${res.id}`, {
           method: "delete",
         });
 
-        let comment = document.querySelector(`ul.comments>li#${deleteButton.id}`);
+        // li.remove();
+        let comment = document.querySelector(`#comment-id${res.id}`)
+        console.log(comment)
         comment.remove();
       })
     } else {
@@ -140,15 +147,16 @@ window.addEventListener("load", (event) => {
     if (errors.innerHTML) {
       errors.innerHTML = "";
     }
+    let id = Number(answerButton.id.slice(15));
     let res = await fetch(
-      `http://localhost:8080/questions/${answerButton.id}/answers`,
+      `http://localhost:8080/questions/${id}/answers`,
       {
         method: "post",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          questionId: answerButton.id,
+          questionId: id,
           message: message.value,
         }),
       }
@@ -156,14 +164,14 @@ window.addEventListener("load", (event) => {
     res = await res.json();
     if (res.message) {
       let li = document.createElement("li");
-      li.id = res.id;
+      li.id = `answer-id${res.id}`;
       li.innerText = answerForm.children[0].value;
       let deleteButton = document.createElement("button");
       let editButton = document.createElement("button");
-      deleteButton.classList.add("deleteAnswer");
-      editButton.classList.add("editAnswer");
-      deleteButton.id = res.id;
-      editButton.id = res.id;
+      deleteButton.classList.add("delete-answer");
+      editButton.classList.add("edit-answer");
+      deleteButton.id = `delete-answer${res.id}`;
+      editButton.id = `edit-answer${res.id}`;
       deleteButton.innerText = "Delete";
       editButton.innerText = "Edit";
       li.append(deleteButton);
@@ -172,14 +180,15 @@ window.addEventListener("load", (event) => {
       answerForm.style.display = "none";
 
       deleteButton.addEventListener("click", async (event) => {
-        let res = await fetch(`http://localhost:8080/answers/${deleteButton.id}`, {
+        // console.log(res);
+        await fetch(`http://localhost:8080/answers/${res.id}`, {
           method: "delete",
         });
-
-        let answer = document.querySelector(`ul.answers>li#${deleteButton.id}`);
+        // li.remove();
+        let answer = document.querySelector(`#answer-id${res.id}`)
+        console.log(answer)
         answer.remove();
       })
-
     } else {
       for (let error of res) {
         let li = document.createElement("li");
@@ -196,7 +205,8 @@ window.addEventListener("load", (event) => {
     if (errors.innerHTML) {
       errors.innerHTML = "";
     }
-    let res = await fetch(`http://localhost:8080/questions/${editButton.id}`, {
+    let id = Number(editButton.id.slice(13));
+    let res = await fetch(`http://localhost:8080/questions/${id}`, {
       headers: {
         "Content-Type": "application/json",
       },
