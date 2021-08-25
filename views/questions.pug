@@ -10,3 +10,11 @@ block content
                     a(href=`/questions/${question.id}`) #{question.title}
         else
             p No questions yet.
+        - var i = 0;
+        if i < prevPage
+            a(href=`/questions?page=${prevPage}`) Prev
+        while i < (amountOfQuestions / 10)
+            - ++i
+            a(href=`/questions?page=${i}`) Page #{i}
+        if i >= nextPage
+            a(href=`/questions?page=${nextPage}`) Next
