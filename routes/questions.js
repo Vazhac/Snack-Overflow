@@ -36,7 +36,7 @@ router.put("/:id", questionValidators, asyncHandler(async (req, res) => {
 router.delete("/:id", asyncHandler(async (req, res) => {
     let question = await Question.findByPk(req.params.id);
     await question.destroy();
-    res.redirect('/');
+    res.send();
 
 }));
 
