@@ -14,7 +14,6 @@ block content
         input(type="text" name="message" placeholder="message")
         input#answer-submit(type="submit" value="submit")
 
-
     ul.answers
         each Answer in question.Answers
             li(id=Answer.id)=Answer.message
@@ -29,6 +28,7 @@ block content
             if session.auth.userId === Comment.userId
                 button.deleteComment(id=Comment.id) Delete
                 button.editComment(id=Comment.id) Edit
+
 
     if session.auth
         div
