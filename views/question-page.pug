@@ -14,27 +14,27 @@ form#answerForm(action="/" method="post" style="display:none")
 
 ul.answers
     each Answer in question.Answers
-        li(id=Answer.id)=Answer.message
-        if session.auth.userId === Answer.userId
-            button.deleteAnswer(id=Answer.id) Delete
-            button.editAnswer(id=Answer.id) Edit
-            
+        li(id=`answer-id${Answer.id}`)=Answer.message
+            if session.auth.userId === Answer.userId
+                button(id=`delete-answer${Answer.id}` class="delete-answer") Delete
+                button(id=`edit-answer${Answer.id}` class="edit-answer") Edit
+
 
 ul.comments
     each Comment in question.Comments
-        li(id=Comment.id)=Comment.message
-        if session.auth.userId === Comment.userId
-            button.deleteComment(id=Comment.id) Delete
-            button.editComment(id=Comment.id) Edit
+        li(id=`comment-id${Comment.id}`)=Comment.message
+            if session.auth.userId === Comment.userId
+                button(id=`delete-comment${Comment.id}` class="delete-comment") Delete
+                button(id=`edit-comment${Comment.id}` class="edit-comment") Edit
             
 
 if session.auth
     div
-        button.answerQuestion(id=question.id) Answer
-        button.commentQuestion(id=question.id) Comment
+        button(id=`answer-question${question.id}` class="answer-question") Answer
+        button(id=`comment-question${question.id}` class="comment-question") Comment
     if session.auth.userId === question.userId
-        button.deleteQuestion(id=question.id) Delete
-        button.editQuestion(id=question.id) Edit
+        button(id=`delete-question${question.id}` class="delete-question") Delete
+        button(id=`edit-question${question.id}` class="edit-question") Edit
 
 script(src='../javascripts/index.js' type='module')
 //- each answer in questions.
