@@ -102,5 +102,10 @@ router.post('/new', csrfProtection, questionValidators, asyncHandler(async (req,
 
 }));
 
+router.get('/', asyncHandler(async (req, res, next) => {
+    let questions = await Question.findAll({ include: [Answer, Comment] })
+    res.render('questions', { questions, session: req.session })
+}));
+
 
 module.exports = router;

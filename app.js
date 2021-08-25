@@ -10,8 +10,8 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const questionsRouter = require('./routes/questions');
 const { restoreUser } = require('./auth');
-const {db} = require("./config")
-const {session_secret} = db
+const { db } = require("./config")
+const { session_secret } = db
 
 const app = express();
 
@@ -21,7 +21,7 @@ app.set('view engine', 'pug');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(cookieParser(session_secret));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // set up session middleware
