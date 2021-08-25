@@ -9,11 +9,11 @@ const question = require('../db/models/question');
 
 /* GET questions listing. */
 
-router.get("/:id(\\d+)", asyncHandler(async( req, res) => {
- let question = await Question.findByPk(req.params.id)
-//  let question = await Question.findByPk(req.params.id, { include: Answer })
- console.log(question)
- res.render('question-page', { question, session: req.session } )
+router.get("/:id(\\d+)", asyncHandler(async (req, res) => {
+    let question = await Question.findByPk(req.params.id)
+    //  let question = await Question.findByPk(req.params.id, { include: Answer })
+    console.log(question)
+    res.render('question-page', { question, session: req.session })
 }));
 
 router.put("/:id", asyncHandler(async (req, res) => {
