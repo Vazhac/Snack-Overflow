@@ -11,10 +11,34 @@ block content
         else
             p No questions yet.
         - var i = 0;
-        if i < prevPage
+        - var amountOfPages = amountOfQuestions / 3;
+
+        if pageNumber < 5
+            if 0 < prevPage
+                a(href=`/questions?page=${prevPage}`) Prev
+            while i < 5
+                - ++i
+                a(href=`/questions?page=${i}`) Page #{i}
+            p ...
+            a(href=`/questions?page=${i}`) Last Page
+            if i >= nextPage
+                a(href=`/questions?page=${nextPage}`) Next
+        else
             a(href=`/questions?page=${prevPage}`) Prev
-        while i < (amountOfQuestions / 10)
-            - ++i
-            a(href=`/questions?page=${i}`) Page #{i}
-        if i >= nextPage
-            a(href=`/questions?page=${nextPage}`) Next
+            a(href=`/questions?page=${1}`) First page
+            p ...
+            if pageNumber >= 5
+                a(href=`/questions?page=${pageNumber - 2}`) Page #{pageNumber - 2}
+                a(href=`/questions?page=${pageNumber - 1}`) Page #{pageNumber - 1}
+                a(href=`/questions?page=${pageNumber}`) Page #{pageNumber}
+                a(href=`/questions?page=${pageNumber + 1}`) Page #{pageNumber + 1}
+                a(href=`/questions?page=${pageNumber + 2}`) Page #{pageNumber + 2}
+                p ...
+                a(href=`/questions?page=${i}`) Last Page
+                a(href=`/questions?page=${nextPage}`) Next
+            else
+                a(href=`/questions?page=${pageNumber - 4}`) Page #{pageNumber - 4}
+                a(href=`/questions?page=${pageNumber - 3}`) Page #{pageNumber - 3}
+                a(href=`/questions?page=${pageNumber - 2}`) Page #{pageNumber - 2}
+                a(href=`/questions?page=${pageNumber - 1}`) Page #{pageNumber - 1}
+                a(href=`/questions?page=${pageNumber}`) Page #{pageNumber}

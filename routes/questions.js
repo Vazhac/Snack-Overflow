@@ -103,15 +103,15 @@ router.post('/new', csrfProtection, questionValidators, asyncHandler(async (req,
 }));
 
 router.get('/', asyncHandler(async (req, res, next) => {
-    const numberOfLinks = 10;
+    const numberOfLinks = 3;
     const amountOfQuestions = await Question.count();
 
     let pageNumber = 1;
     if (req.query.page) {
-        pageNumber = req.query.page; //pageNumber will be a string if this statement is ran
+        pageNumber = Number(req.query.page); //pageNumber will be a string if this statement is ran
     }
-    const nextPage = Number(pageNumber) + 1;
-    const prevPage = Number(pageNumber) - 1;
+    const nextPage = pageNumber + 1;
+    const prevPage = pageNumber - 1;
     const questions = await Question.findAll({
         include: [Answer, Comment],
         offset: (pageNumber - 1) * numberOfLinks,
@@ -125,6 +125,7 @@ router.get('/', asyncHandler(async (req, res, next) => {
         amountOfQuestions,
         nextPage,
         prevPage,
+        pageNumber
     })
 }));
 
