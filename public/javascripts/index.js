@@ -2,28 +2,101 @@ window.addEventListener("load", (event) => {
   console.log("hello from javascript!");
   let deleteButton = document.getElementsByClassName("delete")[0];
   let editButton = document.getElementsByClassName("edit")[0];
+  let answerButton = document.getElementsByClassName("answer")[0]
+  let commentButton = document.getElementsByClassName("comment")[0]
   let editForm = document.getElementById("editForm");
-  let submitButton = document.getElementById("submit");
+  let answerForm = document.getElementById("answerForm")
+  let commentForm = document.getElementById("commentForm")
+  let editSubmitButton = document.getElementById("edit-submit");
+  let answerSubmitButton = document.getElementById("answer-submit");
+  let commentSubmitButton = document.getElementById("comment-submit");
 
   deleteButton.addEventListener("click", async (event) => {
     let res = await fetch(`http://localhost:8080/questions/${deleteButton.id}`, {
       method: "delete",
     });
-    window.location = 'http://localhost:8080';
+    
+    window.location = `http://localhost:8080`
   });
 
   editButton.addEventListener("click", async (event) => {
-    console.log("edit button event listener is working");
     editForm.style.display = "block";
   });
 
-  submitButton.addEventListener("click", async (event) => {
+  commentButton.addEventListener("click", async(event)=>{
+    commentForm.style.display="block"
+  })
+
+  commentSubmitButton.addEventListener("click",async event => {
+    event.preventDefault();
+    let message = commentForm.children[0]
+    let errors = document.getElementById("errors");
+    if (errors.innerHTML) {
+        errors.innerHTML= "";
+    }
+    let res = await fetch(`http://localhost:8080/questions/${commentButton.id}/comments`,{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({questionId:commentButton.id,message:message.value})
+    })
+    res = await res.json()
+    if (res.message){
+      let li = document.createElement("li")
+      li.innerText = commentForm.children[0].value
+      document.querySelector("ul.comments").append(li)
+      commentForm.style.display = "none";
+    } else {
+       for (let error of res){
+           let li = document.createElement("li")
+           li.innerText = error;
+           errors.append(li);
+       }
+    }
+  })
+
+  answerButton.addEventListener("click", async(event)=>{
+    answerForm.style.display = "block"
+
+  })
+
+  answerSubmitButton.addEventListener("click",async event => {
+    event.preventDefault();
+    let message = answerForm.children[0]
+    let errors = document.getElementById("errors");
+    if (errors.innerHTML) {
+        errors.innerHTML= "";
+    }
+    let res = await fetch(`http://localhost:8080/questions/${answerButton.id}/answers`,{
+      method:"post",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({questionId:answerButton.id,message:message.value})
+    })
+    res = await res.json()
+    if (res.message){
+      let li = document.createElement("li")
+      li.innerText = answerForm.children[0].value
+      document.querySelector("ul.answers").append(li)
+      answerForm.style.display = "none";
+    } else {
+
+       for (let error of res){
+           let li = document.createElement("li")
+           li.innerText = error;
+           errors.append(li);
+       }
+    }
+  })
+  editSubmitButton.addEventListener("click", async (event) => {
     event.preventDefault();
     let title = editForm.children[0];
     let message = editForm.children[1];
     let errors = document.getElementById("errors");
-    if (errors.innerText) {
-        errors.innerText= "";
+    if (errors.innerHTML) {
+        errors.innerHTML= "";
     }
     let res = await fetch(`http://localhost:8080/questions/${editButton.id}`, {
       headers: {

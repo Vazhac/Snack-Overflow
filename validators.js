@@ -67,12 +67,20 @@ const questionValidators = [
     .exists({ checkFalsy: true })
     .withMessage('Please provide a value for Message')
     .isLength({ max: 30000 }) //Following StackOverflow's recommendation of 30000 characters
-    .withMessage('Message must not be more than 255 characters long')
+    .withMessage('Message must not be more than 30000 characters long')
 ]
 
+const replyValidators = [
+  check('message')
+    .exists({ checkFalsy: true })
+    .withMessage('Please provide a value for Message')
+    .isLength({ max: 30000 }) //Following StackOverflow's recommendation of 30000 characters
+    .withMessage('Message must not be more than 30000 characters long')
+]
 
 module.exports = {
   signUpValidators,
   signInValidators,
-  questionValidators
+  questionValidators,
+  replyValidators
 }
