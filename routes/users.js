@@ -63,7 +63,6 @@ router.post("/signin", csrfProtection, signInValidators, asyncHandler(async (req
     const errors = validatorErrors.array().map((err) => err.msg);
     res.render('sign-in', {
       title: 'Sign-in',
-      user,
       errors,
       csrfToken: req.csrfToken(),
     });
@@ -76,7 +75,7 @@ router.post("/signin", csrfProtection, signInValidators, asyncHandler(async (req
   });
   if (user) {
     const passwordMatch = await bcrypt.compare(password, user.hashedPassword.toString());
-    if (passwordMatch){
+    if (passwordMatch) {
       loginUser(req, res, user);
       return res.redirect('/');
     } else {
