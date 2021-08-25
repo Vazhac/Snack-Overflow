@@ -60,8 +60,7 @@ const signInValidators = [
 const questionValidators = [
   check('title')
     .exists({ checkFalsy: true })
-    .withMessage('Please provide a value for Title'),
-  check('title')
+    .withMessage('Please provide a value for Title')
     .isLength({ max: 255 })
     .withMessage('Title must not be more than 255 characters long'),
   check('message')

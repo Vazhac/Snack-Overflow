@@ -6,7 +6,7 @@ window.addEventListener("load", (event) => {
   let submitButton = document.getElementById("submit");
 
   deleteButton.addEventListener("click", async (event) => {
-    let res = await fetch(`localhost:8080/questions/${deleteButton.id}`, {
+    let res = await fetch(`http://localhost:8080/questions/${deleteButton.id}`, {
       method: "delete",
     });
   });
@@ -20,8 +20,10 @@ window.addEventListener("load", (event) => {
     event.preventDefault();
     let title = editForm.children[0];
     let message = editForm.children[1];
-    console.log(editButton.id);
-    console.log('MESSAGE', message.value, 'TITLE', title.value);
+    let errors = document.getElementById("errors");
+    if (errors.innerText) {
+        errors.innerText= "";
+    }
     let res = await fetch(`http://localhost:8080/questions/${editButton.id}`, {
       headers: {
         'Content-Type': 'application/json',
@@ -30,8 +32,18 @@ window.addEventListener("load", (event) => {
       body: JSON.stringify({ title: title.value, message: message.value }),
     });
     res = await res.json()
-    document.getElementById("title").innerText = res.title
-    document.getElementById("message").innerText = res.message
-    editForm.style.display = "none";
+    if (res.title){
+        document.getElementById("title").innerText = res.title
+        document.getElementById("message").innerText = res.message
+        editForm.style.display = "none";
+    } else {
+     
+       for (let error of res){
+           let li = document.createElement("li")
+           li.innerText = error;
+           errors.append(li);
+       }
+    }
+
   });
 });
