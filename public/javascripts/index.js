@@ -9,6 +9,7 @@ window.addEventListener("load", (event) => {
     let res = await fetch(`http://localhost:8080/questions/${deleteButton.id}`, {
       method: "delete",
     });
+    window.location = 'http://localhost:8080';
   });
 
   editButton.addEventListener("click", async (event) => {
@@ -37,7 +38,7 @@ window.addEventListener("load", (event) => {
         document.getElementById("message").innerText = res.message
         editForm.style.display = "none";
     } else {
-     
+
        for (let error of res){
            let li = document.createElement("li")
            li.innerText = error;
