@@ -57,30 +57,41 @@ router.get("/signin", csrfProtection, asyncHandler(async (req, res, next) => {
 }));
 
 router.post("/signin", csrfProtection, signInValidators, asyncHandler(async (req, res, next) => {
+
+  const validatorErrors = validationResult(req);
+  if (!validatorErrors.isEmpty()) {
+    const errors = validatorErrors.array().map((err) => err.msg);
+    res.render('sign-in', {
+      title: 'Sign-in',
+      errors,
+      csrfToken: req.csrfToken(),
+    });
+  }
   let { username, password } = req.body;
   const user = await User.findOne({
     where: {
       username
     }
   });
-  const validatorErrors = validationResult(req);
-  let passwordMatch;
-
-  if (validatorErrors.isEmpty() && user) {
-    console.log(user);
-    passwordMatch = await bcrypt.compare(password, user.hashedPassword.toString());
+  if (user) {
+    const passwordMatch = await bcrypt.compare(password, user.hashedPassword.toString());
     if (passwordMatch) {
       loginUser(req, res, user);
       return res.redirect('/');
+    } else {
+      const errors = ['Password is incorrect'];
+      res.render('sign-in', {
+        title: 'Sign-in',
+        user,
+        errors,
+        csrfToken: req.csrfToken(),
+      });
     }
   } else {
-    const errors = validatorErrors.array().map((err) => err.msg);
-    if (!user || !passwordMatch) {
-      errors.push('User name or password is incorrect');
-    }
+    const errors = ['Your log in credentials don\'t match an account in our system'];
     res.render('sign-in', {
       title: 'Sign-in',
-      user,
+
       errors,
       csrfToken: req.csrfToken(),
     });
@@ -88,9 +99,10 @@ router.post("/signin", csrfProtection, signInValidators, asyncHandler(async (req
 }));
 
 
-router.post('/signout', asyncHandler(async (req, res) => {
+router.get('/signout', asyncHandler(async (req, res) => {
   if (req.session.auth) {
     logoutUser(req, res);
+    res.redirect('/');
   }
 }));
 

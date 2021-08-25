@@ -2,16 +2,18 @@ extend layout
 block content
     link(rel="stylesheet" href="/stylesheets/form.css")
 
-    h2 Ask a public question
-    if errors.length
-        each error in errors
-            li #{error}
-    div.form
-        form(action="/questions/new" method="post")
+    h2.ask_title Ask a public question
+
+    div.form_container
+        form.form(action="/questions/new" method="post")
             input(type="hidden", name="_csrf" value=csrfToken)
             label(for='title') Title
+            if errors.length
+                each error in errors
+                    li #{error}
             input(type='text' name='title' placeholder="Title")
             label(for='message') Body
             textarea(type='text' name='message' placeholder="e.g. What is the perfect chocolate chip to cookie ratio?")
             button(type="submit" value="submit") Post your question
-            a(href="/") Cancel
+            div.cancel_button
+                a(href="/") Cancel
