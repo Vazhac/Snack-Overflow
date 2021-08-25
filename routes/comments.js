@@ -10,6 +10,7 @@ const { questionValidators, replyValidators} = require('../validators');
 router.delete("/:id", asyncHandler(async (req, res) => {
     let comment = await Comment.findByPk(req.params.id);
     await comment.destroy();
+    res.send()
 }));
 
 
