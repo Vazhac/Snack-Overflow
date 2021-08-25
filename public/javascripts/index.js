@@ -14,7 +14,7 @@ window.addEventListener("load", (event) => {
   deleteButton.addEventListener("click", async (event) => {
     let res = await fetch(`http://localhost:8080/questions/${deleteButton.id}`, {
       method: "delete",
-    });
+    });         
     window.location = `http://localhost:8080`
   });
 
