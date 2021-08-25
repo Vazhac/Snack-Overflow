@@ -34,9 +34,13 @@ module.exports = (sequelize, DataTypes) => {
     });
     Answer.hasMany(models.Comment, {
       foreignKey: "answerId",
+      onDelete: "CASCADE",
+      hooks: true
     });
     Answer.hasMany(models.Upvote, {
       foreignKey: "answerId",
+      onDelete: "CASCADE",
+      hooks: true
     });
   };
   return Answer;
