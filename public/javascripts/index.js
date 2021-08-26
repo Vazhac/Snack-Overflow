@@ -22,46 +22,57 @@ window.addEventListener("load", (event) => {
   let answerUpvoteButtons = document.getElementsByClassName("upvote-answer")
   let answerDownvoteButtons = document.getElementsByClassName("downvote-answer")
 
-  let addEventListenerToDownvotes = async (voteButton, type) => {
-    voteButton.addEventListener("click", async (event) => {
-      if (type === "answer") {
+  let addEventListenerToDownvotes = async (voteButton,type) => {
+    if(voteButton){
+    voteButton.addEventListener("click",async (event)=> {
+      if(type === "answer"){
         let answerId = Number(voteButton.id.split("-")[2])
-        let res = await fetch(`/answers/${answerId}/downvotes`, {
-          method: "POST"
+        await fetch(`/answers/${answerId}/downvotes`,{
+          method:"POST"
         })
-        let voteCount = document.getElementById("answer-vote-count")
-        voteCount.innerText = Number(voteCount.innerText) - 1
-      } else if (type === "question") {
+        let voteCount = document.getElementById(`answer-vote-count-${answerId}`)
+        voteCount.innerText = Number(voteCount.innerText)-1
+        document.getElementById(`upvote-answer-${answerId}`).style.display="none"
+        document.getElementById(`downvote-answer-${answerId}`).style.display="none"
+      } else if (type === "question"){
         let questionId = Number(questionDownvoteButton.id.split("-")[2])
-        let res = await fetch(`/questions/${questionId}/downvotes`, {
-          method: "POST"
+        await fetch(`/questions/${questionId}/downvotes`,{
+          method:"POST"
         })
         let voteCount = document.getElementById("question-vote-count")
-        voteCount.innerText = Number(voteCount.innerText) - 1
+        voteCount.innerText = Number(voteCount.innerText)-1
+        questionUpvoteButton.style.display = "none"
+        questionDownvoteButton.style.display = "none"
       }
 
     })
   }
+  }
 
-  let addEventListenerToUpvotes = async (voteButton, type) => {
-    voteButton.addEventListener("click", async (event) => {
-      if (type === "answer") {
+  let addEventListenerToUpvotes = async (voteButton,type) => {
+    if(voteButton){
+    voteButton.addEventListener("click",async (event)=> {
+      if(type === "answer"){
         let answerId = Number(voteButton.id.split("-")[2])
-        let res = await fetch(`/answers/${answerId}/upvotes`, {
-          method: "POST"
+        await fetch(`/answers/${answerId}/upvotes`,{
+          method:"POST"
         })
-        let voteCount = document.getElementById("answer-vote-count")
-        voteCount.innerText = Number(voteCount.innerText) + 1
-
-      } else if (type === "question") {
+        let voteCount = document.getElementById(`answer-vote-count-${answerId}`)
+        voteCount.innerText = Number(voteCount.innerText)+1
+        document.getElementById(`upvote-answer-${answerId}`).style.display="none"
+        document.getElementById(`downvote-answer-${answerId}`).style.display="none"
+      } else if (type === "question"){
         let questionId = Number(voteButton.id.split("-")[2])
-        let res = await fetch(`/questions/${questionId}/upvotes`, {
-          method: "POST"
+        await fetch(`/questions/${questionId}/upvotes`,{
+          method:"POST"
         })
         let voteCount = document.getElementById("question-vote-count")
-        voteCount.innerText = Number(voteCount.innerText) + 1
+        voteCount.innerText = Number(voteCount.innerText)+1
+        questionUpvoteButton.style.display = "none"
+        questionDownvoteButton.style.display = "none"
       }
     })
+  }
   }
 
   editButton.addEventListener("click", async (event) => {
@@ -81,7 +92,6 @@ window.addEventListener("load", (event) => {
       if (type === "question") window.location = `/`
       else {
         let reply = document.querySelector(`#${type}-${id}`)
-        console.log("reply: ", reply)
         reply.remove();
       }
     })
@@ -188,6 +198,34 @@ window.addEventListener("load", (event) => {
       else {
         form = answerForm
       }
+      if(questionId){
+        res = await fetch(`/questions/${questionId}`, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          method: "PUT",
+          body: JSON.stringify({title,message}),
+      });
+      }
+      else{
+        res = await fetch(`/${type}s/${form.getAttribute(`${type}Id`)}`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "put",
+        body:JSON.stringify({message})
+      });
+    }
+      res = await res.json()
+      if(res.message){
+        if(type === "question"){
+          document.getElementById("title").innerText = res.title;
+          document.getElementById("message").innerText = res.message;
+          form.style.display = "none";
+        } else {
+          document.getElementById(`${type}-message-${res.id}`).innerText = res.message;
+          form.style.display = "none";
+        }
       message = form.children[0].value
       let res = await fetch(
         `/questions/${questionId}/${type}s`,
@@ -230,9 +268,87 @@ window.addEventListener("load", (event) => {
     })
   }
 
-  if (commentDeleteButton.length) {
-    for (let deleteButton of commentDeleteButton) {
-      addEventListenerToDelete(deleteButton, "comment")
+  commentButton.addEventListener("click", async (event) => {
+    commentForm.style.display = "block";
+  });
+
+  let addEventListenerToReplySubmit = async (submitButton,type) => {
+  submitButton.addEventListener("click", async (event) => {
+    event.preventDefault();
+    let form
+    let message
+    let questionId = Number(answerButton.id.split("-")[2])
+    let errors = document.getElementById("errors");
+    if (errors.innerHTML) {
+      errors.innerHTML = "";
+    }
+    if(type==="comment"){
+      form = commentForm
+    }
+    else{
+      form = answerForm
+    }
+    message = form.children[0].value
+    let res = await fetch(
+      `/questions/${questionId}/${type}s`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message
+        }),
+      });
+    res = await res.json();
+    if (res.message) {
+      let li = document.createElement("li");
+      li.id = `${type}-${res.id}`;
+      let message = document.createElement("div")
+      message.id = `${type}-message-${res.id}`
+      message.innerText = res.message
+      li.append(message)
+      if(type === "answer"){
+        let answerVoteCount = document.createElement("div")
+        answerVoteCount.id = `answer-vote-count-${res.id}`
+        answerVoteCount.innerText = 0
+        answerVoteCount.classList.add("answer-vote-count")
+        let upvoteButton = document.createElement("button")
+        upvoteButton.classList.add(`upvote-answer`)
+        upvoteButton.id = `upvote-answer-${res.id}`
+        upvoteButton.innerText = "Upvote"
+        let downvoteButton = document.createElement("button")
+        downvoteButton.classList.add(`downvote-answer`)
+        downvoteButton.id = `downvote-answer-${res.id}`
+        downvoteButton.innerText = "Downvote"
+        li.append(answerVoteCount)
+        li.append(upvoteButton)
+        li.append(downvoteButton)
+        addEventListenerToUpvotes(upvoteButton,"answer")
+        addEventListenerToDownvotes(downvoteButton,"answer")
+      }
+      let deleteButton = document.createElement("button");
+      deleteButton.classList.add(`delete-${type}`);
+      deleteButton.id = `delete-${type}-${res.id}`;
+      deleteButton.innerText = "Delete";
+      let editButton = document.createElement("button");
+      editButton.classList.add(`edit-${type}`);
+      editButton.id = `edit-${type}-${res.id}`;
+      editButton.innerText = "Edit";
+      li.append(deleteButton);
+      li.append(editButton);
+
+      document.querySelector(`ul.${type}s`).append(li);
+      form.style.display = "none";
+      addEventListenerToEditButton(editButton,type)
+      addEventListenerToEditSubmit(form.children[1],type)
+      addEventListenerToDelete(deleteButton,type)
+    } else {
+      for (let error of res) {
+        let li = document.createElement("li");
+        li.innerText = error;
+        errors.append(li);
+      }
     }
   }
 
