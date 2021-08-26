@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-let { User, Question, Answer, Comment } = require("../db/models")
+let { User, Question, Answer, Comment, Upvote} = require("../db/models")
 
 const { validationResult } = require("express-validator")
 const { csrfProtection, asyncHandler } = require('./utils')
@@ -31,7 +31,8 @@ router.post("/:id(\\d+)/upvotes", asyncHandler(async (req, res) => {
     let answerId = req.params.id
     let userId = req.session.auth.userId
     let isPositive = true
-    await Upvote.create({answerId,userId,isPositive})
+    let upvote = await Upvote.create({answerId,userId,isPositive})
+    console.log(upvote)
     res.send()
 
 }));
