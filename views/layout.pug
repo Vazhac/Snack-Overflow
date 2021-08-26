@@ -4,17 +4,20 @@ html
       block head
         title="Snack-Overflow"
         link(rel='stylesheet' href='/stylesheets/reset.css')
-        link(rel='stylesheet' href='/stylesheets/form.css')
+        link(rel='stylesheet' href='/stylesheets/layout.css')
   body
     div.nav_links
-      div.home_link
+      div.home_links
         a(href='/') Home
         a(href='/questions') All Questions
       div.sign_links
         if user
+          a(href="/questions/new") Ask a public question
           a(href='/users/signout') Sign Out
         else
+          a(href="/questions/new") Ask a public question
           a(href='/users/signup') Sign Up
           a(href='/users/signin') Sign In
         end
+
     block content

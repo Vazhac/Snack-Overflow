@@ -24,123 +24,123 @@ window.addEventListener("load", (event) => {
     editForm.style.display = "block";
   });
 
-  let addEventListenerToDelete = async (deleteButton,type)=> {
+  let addEventListenerToDelete = async (deleteButton, type) => {
     deleteButton.addEventListener("click", async (event) => {
       let id
-      if(type === "question"){
+      if (type === "question") {
         id = Number(deleteButton.id.slice(15))
-      } else if (type === "answer"){
+      } else if (type === "answer") {
         id = Number(deleteButton.id.slice(13))
-      } else if (type === "comment"){
+      } else if (type === "comment") {
         id = Number(deleteButton.id.slice(14))
       }
       let id = deleteButton.id.slice()
       await fetch(`http://localhost:8080/${type}s/${id}`, {
         method: "delete",
       });
-      if(type === "question") window.location = `http://localhost:8080`
+      if (type === "question") window.location = `http://localhost:8080`
       else {
         let reply = document.querySelector(`#${type}-id${id}`)
-        console.log("reply: ",reply)
+        console.log("reply: ", reply)
         reply.remove();
       }
     })
   }
 
-  let addEventListenerToEditButton = async (editButton,type) => {
+  let addEventListenerToEditButton = async (editButton, type) => {
     editButton.addEventListener("click", async (event) => {
       let form
       let id
-      if(type === "comment"){
+      if (type === "comment") {
         form = editCommentForm
         id = Number(editButton.id.slice(12))
-      } else if (type === "answer"){
+      } else if (type === "answer") {
         form = editAnswerForm
         id = Number(editButton.id.slice(11))
       }
-     form.style.display = "block"
-     form.setAttribute(`${type}Id`,id)
+      form.style.display = "block"
+      form.setAttribute(`${type}Id`, id)
     });
   }
 
-  let addEventListenerToEditSubmit = async (editSubmit,type) => {
-  if(editSubmit){
-    editSubmit.addEventListener("click",async (event) => {
-      event.preventDefault()
-      let errors = document.getElementById("errors");
-      if (errors.innerHTML) {
-        errors.innerHTML = "";
-      }
-      let questionId
-      let form
-      let message
-      let title
-      let res
-      if(type === "answer"){
-        form = editAnswerForm
-        message = form.children[0].value
-      } else if (type === "comment"){
-        form = editCommentForm
-        message = form.children[0].value
-      } else if (type === "question"){
-        form = editForm
-        message = form.children[1].value
-        title = form.children[0].value
-        questionId = Number(editButton.id.slice(13));
-      }
-      if(questionId){
-        res = await fetch(`http://localhost:8080/questions/${questionId}`, {
+  let addEventListenerToEditSubmit = async (editSubmit, type) => {
+    if (editSubmit) {
+      editSubmit.addEventListener("click", async (event) => {
+        event.preventDefault()
+        let errors = document.getElementById("errors");
+        if (errors.innerHTML) {
+          errors.innerHTML = "";
+        }
+        let questionId
+        let form
+        let message
+        let title
+        let res
+        if (type === "answer") {
+          form = editAnswerForm
+          message = form.children[0].value
+        } else if (type === "comment") {
+          form = editCommentForm
+          message = form.children[0].value
+        } else if (type === "question") {
+          form = editForm
+          message = form.children[1].value
+          title = form.children[0].value
+          questionId = Number(editButton.id.slice(13));
+        }
+        if (questionId) {
+          res = await fetch(`http://localhost:8080/questions/${questionId}`, {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            method: "PUT",
+            body: JSON.stringify({ title, message }),
+          });
+        }
+        let res = await fetch(`http://localhost:8080/${type}s/${form.getAttribute(`${type}Id`)}`, {
           headers: {
             "Content-Type": "application/json",
           },
-          method: "PUT",
-          body: JSON.stringify({title,message}),
-      });
-      }
-      let res = await fetch(`http://localhost:8080/${type}s/${form.getAttribute(`${type}Id`)}`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "put",
-        body:JSON.stringify({message})
-      });
-      res = await res.json()
-      if(res.message){
-        if(type === "question"){
-          document.getElementById("title").innerText = res.title;
-          document.getElementById("message").innerText = res.message;
-          form.style.display = "none";
+          method: "put",
+          body: JSON.stringify({ message })
+        });
+        res = await res.json()
+        if (res.message) {
+          if (type === "question") {
+            document.getElementById("title").innerText = res.title;
+            document.getElementById("message").innerText = res.message;
+            form.style.display = "none";
+          } else {
+            document.getElementById(`${type}-id${res.id}`).innerText = res.message;
+            form.style.display = "none";
+          }
         } else {
-          document.getElementById(`${type}-id${res.id}`).innerText = res.message;
-          form.style.display = "none";
+          for (let error of res) {
+            let li = document.createElement("li");
+            li.innerText = error;
+            errors.append(li);
+          }
         }
-      } else {
-        for (let error of res) {
-          let li = document.createElement("li");
-          li.innerText = error;
-          errors.append(li);
-        }
-      }
-    })
+      })
+    }
   }
-}
 
   if (answerEditButton.length) {
     for (editButton of answerEditButton) {
-      addEventListenerToEditButton(editButton,"answer")
+      addEventListenerToEditButton(editButton, "answer")
     }
   }
 
   if (commentEditButton.length) {
     for (editButton of commentEditButton) {
-      addEventListenerToEditButton(editButton,"comment")
+      addEventListenerToEditButton(editButton, "comment")
     }
   }
 
   if (answerDeleteButton.length) {
     for (deleteButton of answerDeleteButton) {
       deleteButton.addEventListener("click", async (event) => {
-        console.log("THIS SHOULD BE DIFFERENT ANSWER DELETE ID's: ",`${Number(deleteButton.id.slice(13))}`)
+        console.log("THIS SHOULD BE DIFFERENT ANSWER DELETE ID's: ", `${Number(deleteButton.id.slice(13))}`)
         let id = Number(deleteButton.id.slice(13));
         console.log("HERE: ", deleteButton.id)
         let res = await fetch(`http://localhost:8080/answers/${id}`, {
@@ -175,7 +175,7 @@ window.addEventListener("load", (event) => {
     commentForm.style.display = "block";
   });
 
-  let addEventListenerToReplySubmit = (submitButton,type) => {}
+  let addEventListenerToReplySubmit = (submitButton, type) => { }
   submitButton.addEventListener("click", async (event) => {
     event.preventDefault();
     let form
@@ -185,12 +185,12 @@ window.addEventListener("load", (event) => {
     if (errors.innerHTML) {
       errors.innerHTML = "";
     }
-    if(type==="comment")
+    if (type === "comment") {
       form = commentForm
       questionId = Number(commentButton.id.slice(16));
-    else{
+    } else {
       form = answerForm
-      questionId = Number(answerButton.id.slice(15)
+      questionId = Number(answerButton.id.slice(15));
     }
     messge = form.children[0].value
     let res = await fetch(
@@ -223,7 +223,7 @@ window.addEventListener("load", (event) => {
       li.append(editButton);
       document.querySelector(`ul.${type}s`).append(li);
       form.style.display = "none";
-      addEventListenerToEditSubmit(editCommentForm.children[1],type)
+      addEventListenerToEditSubmit(editCommentForm.children[1], type)
     } else {
       for (let error of res) {
         let li = document.createElement("li");
@@ -238,11 +238,11 @@ window.addEventListener("load", (event) => {
   });
 
 
-  addEventListenerToEditSubmit(editAnswerSubmit,"answer")
-  addEventListenerToEditSubmit(editCommentSubmit,"comment")
-  addEventListenerToEditSubmit(editSubmitButton,"question")
-  addEventListenerToReplySubmit(answerSubmitButton,"answer")
-  addEventListenerToReplySubmit(commentSubmitButton,"comment")
+  addEventListenerToEditSubmit(editAnswerSubmit, "answer")
+  addEventListenerToEditSubmit(editCommentSubmit, "comment")
+  addEventListenerToEditSubmit(editSubmitButton, "question")
+  addEventListenerToReplySubmit(answerSubmitButton, "answer")
+  addEventListenerToReplySubmit(commentSubmitButton, "comment")
 });
 
 

@@ -1,20 +1,65 @@
-.questions_title {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 80%;
-    margin: auto;
+:root{
+    --default-border-radius: 4px;
+    --default-font-family: Arial, Helvetica, sans-serif;
 }
 
-/* .questions {
+.questions_title {
+    background-color: blanchedalmond;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 80%;
+    font-size: 32px;
     margin: auto;
-} */
+    font-family: var(--default-font-family);
+    font-weight: 900;
+    color: darkgoldenrod;
+    padding: 20px 0;
+}
+
+.questions_container {
+    display: flex;
+    background-color: white;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    height: 100%;
+    margin: auto;
+    border: 1px solid black;
+    border-radius: var(--default-border-radius);
+    box-shadow: 0 0 2px black;
+}
+
+.questions {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 80%;
+    background-color: white;
+}
+
+/* fit link to question container */
+.questions a {
+    font-family: var(--default-font-family);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: left;
+    border: 1px solid black;
+    border-radius: var(--default-border-radius);
+    width: 100%;
+    height: 100px;
+    text-decoration: none;
+    font-weight: 700;
+    box-shadow: 0px 0px 1px black;
+}
+
+/* keep html color as white */
+.questions a:hover {
+    background-color: #eee;
+    color: black;
+}
 
 .page_links {
     display: flex;
@@ -33,4 +78,6 @@
 
 .page_links > a:hover {
     background-color: #eee;
+    color: black;
+    box-shadow: 0px 0px 5px black;
 }

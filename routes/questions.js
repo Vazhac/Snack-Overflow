@@ -103,7 +103,7 @@ router.post('/new', csrfProtection, questionValidators, asyncHandler(async (req,
 }));
 
 router.get('/', asyncHandler(async (req, res, next) => {
-    const numberOfLinks = 2;
+    const numberOfLinks = 8;
     const amountOfQuestions = await Question.count();
     const amountOfPages = Math.ceil(amountOfQuestions / numberOfLinks)
     let pageNumber = 1;

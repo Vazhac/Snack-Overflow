@@ -4,7 +4,7 @@
     width: 50%;
     height: 500px;
     padding: 20px;
-    border-radius: 5px;
+    border-radius: 4px;
     box-shadow: 0 0 2px black;
     margin: auto;
 }
@@ -28,42 +28,10 @@ textarea{
     margin: 5px 0 5px 0;
     font-weight: 700;
 }
-.nav_links {
-    display: flex;
-    justify-content: space-between;
-    margin: 5px 0 5px 0;
-}
-.sign_links {
-    display: flex;
-    justify-content: space-between;
-    margin: 5px 0 5px 0;
-}
-
-.sign_links > a {
-    color: darkgoldenrod;
-    margin: 0px 5px 0px 5px;
-    font-weight: 700;
-}
-
-.home_link > a {
-    color: darkgoldenrod;
-    margin: 0px 5px 0px 5px;
-    font-weight: 700;
-}
 
 button {
     box-shadow: 0 0 2px black;
     background-color: #eeeeee;
-}
-
-body {
-    background-color: blanchedalmond;
-    width: 80%;
-    margin: auto;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-attachment: fixed;
 }
 
 label {
