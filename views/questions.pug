@@ -15,7 +15,7 @@ block content
         if pageNumber < 5
             if 0 < prevPage
                 a(href=`/questions?page=${prevPage}`) Prev
-            while i < 5
+            while i < 5 && i < amountOfPages
                 - ++i
                 a(href=`/questions?page=${i}`) Page #{i}
             p ...

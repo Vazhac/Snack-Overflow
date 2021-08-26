@@ -175,7 +175,9 @@ window.addEventListener("load", (event) => {
     commentForm.style.display = "block";
   });
 
-  let addEventListenerToReplySubmit = (submitButton,type) => {}
+  let addEventListenerToReplySubmit = (submitButton,type) => {
+
+  }
   submitButton.addEventListener("click", async (event) => {
     event.preventDefault();
     let form
@@ -185,12 +187,13 @@ window.addEventListener("load", (event) => {
     if (errors.innerHTML) {
       errors.innerHTML = "";
     }
-    if(type==="comment")
+    if(type==="comment") {
       form = commentForm
       questionId = Number(commentButton.id.slice(16));
-    else{
+    }
+    else {
       form = answerForm
-      questionId = Number(answerButton.id.slice(15)
+      questionId = Number(answerButton.id.slice(15));
     }
     messge = form.children[0].value
     let res = await fetch(
