@@ -1,6 +1,7 @@
 extends layout
-block content
+    div#title=question.title
     div#message=question.message
+    div#question-vote-count=questionVoteCount
     ul#errors
     form#edit-form(action="/" method="post" style="display:none")
         input#title(type="text" name="title" placeholder="title")
@@ -18,27 +19,31 @@ block content
         input#edit-answer-submit(type="submit" value="submit")
     ul.answers
         each Answer in question.Answers
-            li(id=`answer-id${Answer.id}`)=Answer.message
-                if session.auth && session.auth.userId === Answer.userId
-                    button(id=`delete-answer${Answer.id}` class="delete-answer") Delete
-                    button(id=`edit-answer${Answer.id}` class="edit-answer") Edit
-
+            li(id=`answer-${Answer.id}`)=Answer.message
+                div#answer-vote-count=
+                button(id=`upvote-answer-${Answer.id}` class = "upvote-answer") Upvote
+                button(id=`downvote-answer-${Answer.id}` class = "downvote-answer") Downvote
+                if session.auth.userId === Answer.userId
+                    button(id=`delete-answer-${Answer.id}` class="delete-answer") Delete
+                    button(id=`edit-answer-${Answer.id}` class="edit-answer") Edit
     form#edit-comment-form(action="/" method="post" style="display:none")
         input(type="text" name="message" placeholder="message")
         input#edit-comment-submit(type="submit" value="submit")
     ul.comments
         each Comment in question.Comments
-            li(id=`comment-id${Comment.id}`)=Comment.message
+            li(id=`comment-${Comment.id}`)=Comment.message
                 if session.auth.userId === Comment.userId
-                    button(id=`delete-comment${Comment.id}` class="delete-comment") Delete
-                    button(id=`edit-comment${Comment.id}` class="edit-comment") Edit
+                    button(id=`delete-comment-${Comment.id}` class="delete-comment") Delete
+                    button(id=`edit-comment-${Comment.id}` class="edit-comment") Edit
 
     if session.auth
         div
-            button(id=`answer-question${question.id}` class="answer-question") Answer
-            button(id=`comment-question${question.id}` class="comment-question") Comment
-        if session.auth.userId === question.userId
-            button(id=`delete-question${question.id}` class="delete-question") Delete
-            button(id=`edit-question${question.id}` class="edit-question-button") Edit
+            button(id=`answer-question-${question.id}` class="answer-question") Answer
+            button(id=`comment-question-${question.id}` class="comment-question") Comment
+            button(id=`upvote-question-${question.id}` class = "upvote-question") Upvote
+            button(id=`downvote-question-${question.id}` class = "downvote-question") Downvote
+            if session.auth.userId === question.userId
+                button(id=`delete-question-${question.id}` class="delete-question") Delete
+                button(id=`edit-question-${question.id}` class="edit-question-button") Edit
 
-    script(src='../javascripts/index.js' type='module')
+        script(src='../javascripts/index.js' type='module')
