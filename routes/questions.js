@@ -9,7 +9,6 @@ const { questionValidators, replyValidators } = require('../validators'); //Poss
 /* GET questions listing. */
 
 router.get("/:id(\\d+)", asyncHandler(async (req, res) => {
-
     let question = await Question.findByPk(req.params.id,{
         include:[Upvote,Comment,{
             model:Answer,
@@ -30,7 +29,15 @@ router.get("/:id(\\d+)", asyncHandler(async (req, res) => {
             },0)
         } else answer.voteCount = 0
     }
-    res.render('question-page', { question,session: req.session,questionVoteCount })
+    let votes = await Upvote.findAll({where:{userId:req.session.auth.userId}})
+    let votedOnQuestion = false
+    let votedAnswerIds = votes.map(vote=>vote.answerId).filter(vote=>vote!==null)
+    let votedAnswerIdsObject ={}
+    for(let answerId of votedAnswerIds){
+        votedAnswerIdsObject[answerId]=true
+    }
+    if(votes.filter(vote=>vote.questionId===question.id).length>0) votedOnQuestion = true
+    res.render('question-page', {votedAnswerIdsObject,votedOnQuestion,votes, question,session: req.session,questionVoteCount })
 }));
 
 router.put("/:id", questionValidators, asyncHandler(async (req, res) => {
