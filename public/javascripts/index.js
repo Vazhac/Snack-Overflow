@@ -22,27 +22,44 @@ window.addEventListener("load", (event) => {
   let answerUpvoteButtons = document.getElementsByClassName("upvote-answer")
   let answerDownvoteButtons = document.getElementsByClassName("downvote-answer")
 
-  let addEventListenerToDownvotes = async (voteButton,"type") => {
+  let addEventListenerToDownvotes = async (voteButton,type) => {
     voteButton.addEventListener("click",async (event)=> {
       if(type === "answer"){
         let answerId = Number(voteButton.id.split("-")[2])
-        let res = await fetch(`/answers/${answerId}/upvotes`)
+        let res = await fetch(`/answers/${answerId}/upvotes`,{
+          method:"POST"
+        })
+        let voteCount = document.getElementById("answer-vote-count")
+        voteCount.innerText = Number(voteCount.innerText)-1
       } else if (type === "question"){
         let questionId = Number(questionDownvoteButton.id.split("-")[2])
-        let res = await fetch(`/questions/${questionId}/downvotes`)
+        let res = await fetch(`/questions/${questionId}/downvotes`,{
+          method:"POST"
+        })
+        let voteCount = document.getElementById("question-vote-count")
+        voteCount.innerText = Number(voteCount.innerText)-1
       }
 
     })
   }
 
-  let addEventListenerToUpvotes = async (voteButton,"type") => {
+  let addEventListenerToUpvotes = async (voteButton,type) => {
     voteButton.addEventListener("click",async (event)=> {
       if(type === "answer"){
         let answerId = Number(voteButton.id.split("-")[2])
-        let res = await fetch(`/answers/${answerId}/upvotes`)
+        let res = await fetch(`/answers/${answerId}/upvotes`,{
+          method:"POST"
+        })
+        let voteCount = document.getElementById("answer-vote-count")
+        voteCount.innerText = Number(voteCount.innerText)+1
+
       } else if (type === "question"){
         let questionId = Number(voteButton.id.split("-")[2])
-        let res = await fetch(`/questions/${questionId}/upvotes`)
+        let res = await fetch(`/questions/${questionId}/upvotes`,{
+          method:"POST"
+        })
+        let voteCount = document.getElementById("question-vote-count")
+        voteCount.innerText = Number(voteCount.innerText)+1
       }
     })
   }

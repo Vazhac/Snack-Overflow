@@ -19,6 +19,7 @@ form#edit-answer-form(action="/" method="post" style="display:none")
 ul.answers
     each Answer in question.Answers
         li(id=`answer-${Answer.id}`)=Answer.message
+            div#answer-vote-count=
             button(id=`upvote-answer-${Answer.id}` class = "upvote-answer") Upvote
             button(id=`downvote-answer-${Answer.id}` class = "downvote-answer") Downvote
             if session.auth.userId === Answer.userId
