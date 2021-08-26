@@ -19,14 +19,14 @@ block content
         input(type="text" name="message" placeholder="message")
         input#edit-answer-submit(type="submit" value="submit")
     ul.answers
-        each Answer in question.Answers
-            li(id=`answer-${Answer.id}`)=Answer.message
-                div#answer-vote-count=1
-                button(id=`upvote-answer-${Answer.id}` class = "upvote-answer") Upvote
-                button(id=`downvote-answer-${Answer.id}` class = "downvote-answer") Downvote
-                if session.auth.userId === Answer.userId
-                    button(id=`delete-answer-${Answer.id}` class="delete-answer") Delete
-                    button(id=`edit-answer-${Answer.id}` class="edit-answer") Edit
+        each answer in question.Answers
+            li(id=`answer-${answer.id}`)=answer.message
+                div#answer-vote-count=answer.voteCount
+                button(id=`upvote-answer-${answer.id}` class = "upvote-answer") Upvote
+                button(id=`downvote-answer-${answer.id}` class = "downvote-answer") Downvote
+                if session.auth.userId === answer.userId
+                    button(id=`delete-answer-${answer.id}` class="delete-answer") Delete
+                    button(id=`edit-answer-${answer.id}` class="edit-answer") Edit
     form#edit-comment-form(action="/" method="post" style="display:none")
         input(type="text" name="message" placeholder="message")
         input#edit-comment-submit(type="submit" value="submit")
