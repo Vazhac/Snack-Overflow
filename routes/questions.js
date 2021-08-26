@@ -103,9 +103,9 @@ router.post('/new', csrfProtection, questionValidators, asyncHandler(async (req,
 }));
 
 router.get('/', asyncHandler(async (req, res, next) => {
-    const numberOfLinks = 3;
+    const numberOfLinks = 2;
     const amountOfQuestions = await Question.count();
-
+    const amountOfPages = Math.ceil(amountOfQuestions / numberOfLinks)
     let pageNumber = 1;
     if (req.query.page) {
         pageNumber = Number(req.query.page); //pageNumber will be a string if this statement is ran
@@ -122,7 +122,7 @@ router.get('/', asyncHandler(async (req, res, next) => {
     res.render('questions', {
         questions,
         session: req.session,
-        amountOfQuestions,
+        amountOfPages,
         nextPage,
         prevPage,
         pageNumber
