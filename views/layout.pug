@@ -13,11 +13,11 @@ html
       div.sign_links
         if user
           a(href="/questions/new") Ask a public question
+          div.logged-in= `Current User: ${user.username}`
           a(href='/users/signout') Sign Out
         else
           a(href="/questions/new") Ask a public question
           a(href='/users/signup') Sign Up
           a(href='/users/signin') Sign In
         end
-
     block content

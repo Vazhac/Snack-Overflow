@@ -1,6 +1,5 @@
 extends layout
 block content
-    div#title=question.title
     div#message=question.message
     ul#errors
     form#edit-form(action="/" method="post" style="display:none")
@@ -20,7 +19,7 @@ block content
     ul.answers
         each Answer in question.Answers
             li(id=`answer-id${Answer.id}`)=Answer.message
-                if session.auth.userId === Answer.userId
+                if session.auth && session.auth.userId === Answer.userId
                     button(id=`delete-answer${Answer.id}` class="delete-answer") Delete
                     button(id=`edit-answer${Answer.id}` class="edit-answer") Edit
 
