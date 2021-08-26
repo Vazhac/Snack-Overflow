@@ -9,10 +9,9 @@ const { questionValidators, replyValidators } = require('../validators'); //Poss
 /* GET questions listing. */
 
 router.get("/:id(\\d+)", asyncHandler(async (req, res) => {
-    let question = await Question.findByPk(req.params.id, { include: {all:true, nested:true}})
+    let question = await Question.findByPk(req.params.id, {include:[Answer,Upvote,Comment]})
     let questionVoteCount = 0
-    console.log("YEEE",question)
-    for(let upvote of question.upvotes){
+    for(let upvote of question.Upvotes){
         if(upvote.isPositive)questionVoteCount++
         else questionVoteCount--
     }
