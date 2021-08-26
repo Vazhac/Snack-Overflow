@@ -41,7 +41,9 @@ window.addEventListener("load", (event) => {
       await fetch(`http://localhost:8080/${type}s/${id}`, {
         method: "delete",
       });
-      if(type === "question") window.location = `http://localhost:8080`
+      if(type === "question") {
+        window.location = `http://localhost:8080`
+      }
       else {
         let reply = document.querySelector(`#${type}-id${id}`)
         console.log("reply: ",reply)
@@ -194,29 +196,29 @@ window.addEventListener("load", (event) => {
 }
 
 if (commentDeleteButton.length) {
-  for (deleteButton of commentDeleteButton) {
+  for (let deleteButton of commentDeleteButton) {
     addEventListenerToDelete(deleteButton,"comment")
   }
 }
 
 if (answerDeleteButton.length) {
-  for (deleteButton of answerDeleteButton) {
+  for (let deleteButton of answerDeleteButton) {
     addEventListenerToDelete(deleteButton,"answer")
   }
 }
 
   if (answerEditButton.length) {
-    for (editButton of answerEditButton) {
+    for (let editButton of answerEditButton) {
       addEventListenerToEditButton(editButton,"answer")
     }
   }
 
   if (commentEditButton.length) {
-    for (editButton of commentEditButton) {
+    for (let editButton of commentEditButton) {
       addEventListenerToEditButton(editButton,"comment")
     }
   }
-  
+
   addEventListenerToDelete(deleteButton,"question")
   addEventListenerToEditSubmit(editAnswerSubmit,"answer")
   addEventListenerToEditSubmit(editCommentSubmit,"comment")
