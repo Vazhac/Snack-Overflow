@@ -1,9 +1,8 @@
 window.addEventListener("load", (event) => {
-  console.log("hello from javascript!");
-  let deleteButton = document.getElementsByClassName("delete-question")[0];
-  let editButton = document.getElementsByClassName("edit-question-button")[0];
-  let answerButton = document.getElementsByClassName("answer-question")[0];
-  let commentButton = document.getElementsByClassName("comment-question")[0];
+  let deleteButton = document.querySelector(".delete-question");
+  let editButton = document.querySelector(".edit-question-button");
+  let answerButton = document.querySelector(".answer-question");
+  let commentButton = document.querySelector(".comment-question");
   let editForm = document.getElementById("edit-form");
   let answerForm = document.getElementById("answer-form");
   let commentForm = document.getElementById("comment-form");
@@ -18,7 +17,52 @@ window.addEventListener("load", (event) => {
   let editAnswerForm = document.querySelector("#edit-answer-form")
   let editAnswerSubmit = document.querySelector("#edit-answer-submit")
   let editCommentSubmit = document.querySelector("#edit-comment-submit")
+  let questionUpvoteButton = document.querySelector(".upvote-question")
+  let questionDownvoteButton = document.querySelector(".downvote-question")
+  let answerUpvoteButtons = document.getElementsByClassName("upvote-answer")
+  let answerDownvoteButtons = document.getElementsByClassName("downvote-answer")
 
+  let addEventListenerToDownvotes = async (voteButton,type) => {
+    voteButton.addEventListener("click",async (event)=> {
+      if(type === "answer"){
+        let answerId = Number(voteButton.id.split("-")[2])
+        let res = await fetch(`/answers/${answerId}/upvotes`,{
+          method:"POST"
+        })
+        let voteCount = document.getElementById("answer-vote-count")
+        voteCount.innerText = Number(voteCount.innerText)-1
+      } else if (type === "question"){
+        let questionId = Number(questionDownvoteButton.id.split("-")[2])
+        let res = await fetch(`/questions/${questionId}/downvotes`,{
+          method:"POST"
+        })
+        let voteCount = document.getElementById("question-vote-count")
+        voteCount.innerText = Number(voteCount.innerText)-1
+      }
+
+    })
+  }
+
+  let addEventListenerToUpvotes = async (voteButton,type) => {
+    voteButton.addEventListener("click",async (event)=> {
+      if(type === "answer"){
+        let answerId = Number(voteButton.id.split("-")[2])
+        let res = await fetch(`/answers/${answerId}/upvotes`,{
+          method:"POST"
+        })
+        let voteCount = document.getElementById("answer-vote-count")
+        voteCount.innerText = Number(voteCount.innerText)+1
+
+      } else if (type === "question"){
+        let questionId = Number(voteButton.id.split("-")[2])
+        let res = await fetch(`/questions/${questionId}/upvotes`,{
+          method:"POST"
+        })
+        let voteCount = document.getElementById("question-vote-count")
+        voteCount.innerText = Number(voteCount.innerText)+1
+      }
+    })
+  }
 
   editButton.addEventListener("click", async (event) => {
     editForm.style.display = "block";
@@ -30,20 +74,13 @@ window.addEventListener("load", (event) => {
 
   let addEventListenerToDelete = async (deleteButton,type)=> {
     deleteButton.addEventListener("click", async (event) => {
-      let id
-      if(type === "question"){
-        id = Number(deleteButton.id.slice(15))
-      } else if (type === "answer"){
-        id = Number(deleteButton.id.slice(13))
-      } else if (type === "comment"){
-        id = Number(deleteButton.id.slice(14))
-      }
-      await fetch(`http://localhost:8080/${type}s/${id}`, {
+      let id = Number(deleteButton.id.split("-")[2])
+      await fetch(`/${type}s/${id}`, {
         method: "delete",
       });
-      if(type === "question") window.location = `http://localhost:8080`
+      if(type === "question") window.location = `/`
       else {
-        let reply = document.querySelector(`#${type}-id${id}`)
+        let reply = document.querySelector(`#${type}-${id}`)
         console.log("reply: ",reply)
         reply.remove();
       }
@@ -53,13 +90,11 @@ window.addEventListener("load", (event) => {
   let addEventListenerToEditButton = async (editButton,type) => {
     editButton.addEventListener("click", async (event) => {
       let form
-      let id
+      let id = Number(editButton.id.split("-")[2])
       if(type === "comment"){
         form = editCommentForm
-        id = Number(editButton.id.slice(12))
       } else if (type === "answer"){
         form = editAnswerForm
-        id = Number(editButton.id.slice(11))
       }
      form.style.display = "block"
      form.setAttribute(`${type}Id`,id)
@@ -89,10 +124,10 @@ window.addEventListener("load", (event) => {
         form = editForm
         message = form.children[1].value
         title = form.children[0].value
-        questionId = Number(editButton.id.slice(13));
+        questionId = Number(editButton.id.split("-")[2]);
       }
       if(questionId){
-        res = await fetch(`http://localhost:8080/questions/${questionId}`, {
+        res = await fetch(`/${questionId}`, {
           headers: {
             "Content-Type": "application/json",
           },
@@ -100,7 +135,7 @@ window.addEventListener("load", (event) => {
           body: JSON.stringify({title,message}),
       });
       }
-        res = await fetch(`http://localhost:8080/${type}s/${form.getAttribute(`${type}Id`)}`, {
+        res = await fetch(`/${type}s/${form.getAttribute(`${type}Id`)}`, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -114,7 +149,7 @@ window.addEventListener("load", (event) => {
           document.getElementById("message").innerText = res.message;
           form.style.display = "none";
         } else {
-          document.getElementById(`${type}-id${res.id}`).innerText = res.message;
+          document.getElementById(`${type}-${res.id}`).innerText = res.message;
           form.style.display = "none";
         }
       } else {
@@ -128,41 +163,6 @@ window.addEventListener("load", (event) => {
   }
 }
 
-
-  if (answerDeleteButton.length) {
-    for (deleteButton of answerDeleteButton) {
-      deleteButton.addEventListener("click", async (event) => {
-        console.log("THIS SHOULD BE DIFFERENT ANSWER DELETE ID's: ",`${Number(deleteButton.id.slice(13))}`)
-        let id = Number(deleteButton.id.slice(13));
-        console.log("HERE: ", deleteButton.id)
-        let res = await fetch(`http://localhost:8080/answers/${id}`, {
-          method: "delete",
-        });
-
-        let answer = document.querySelector(`li#answer-id${id}`);
-        answer.remove();
-      });
-    }
-  }
-
-
-
-  if (commentDeleteButton.length) {
-    for (deleteButton of commentDeleteButton) {
-      deleteButton.addEventListener("click", async (event) => {
-        let id = Number(deleteButton.id.slice(14));
-        let res = await fetch(`http://localhost:8080/comments/${id}`, {
-          method: "delete",
-        });
-
-        let comment = document.querySelector(`#comment-id${id}`)
-        console.log(comment)
-        comment.remove();
-      });
-    }
-  }
-
-
   commentButton.addEventListener("click", async (event) => {
     commentForm.style.display = "block";
   });
@@ -172,43 +172,41 @@ window.addEventListener("load", (event) => {
     event.preventDefault();
     let form
     let message
-    let questionId
+    let questionId = Number(answerButton.id.split("-")[2])
     let errors = document.getElementById("errors");
     if (errors.innerHTML) {
       errors.innerHTML = "";
     }
     if(type==="comment"){
       form = commentForm
-      questionId = Number(commentButton.id.slice(16));
+
     }
     else{
       form = answerForm
-      questionId = Number(answerButton.id.slice(15))
     }
     message = form.children[0].value
     let res = await fetch(
-      `http://localhost:8080/questions/${questionId}/${type}s`,
+      `/${questionId}/${type}s`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          questionId,
           message
         }),
       });
     res = await res.json();
     if (res.message) {
       let li = document.createElement("li");
-      li.id = `${type}-id${res.id}`;
+      li.id = `${type}-${res.id}`;
       li.innerText = form.children[0].value;
       let deleteButton = document.createElement("button");
       let editButton = document.createElement("button");
       deleteButton.classList.add(`delete-${type}`);
       editButton.classList.add(`edit-${type}`);
-      deleteButton.id = `delete-${type}${res.id}`;
-      editButton.id = `edit-${type}${res.id}`;
+      deleteButton.id = `delete-${type}-${res.id}`;
+      editButton.id = `edit-${type}-${res.id}`;
       deleteButton.innerText = "Delete";
       editButton.innerText = "Edit";
       li.append(deleteButton);
@@ -228,17 +226,43 @@ window.addEventListener("load", (event) => {
   })
 }
 
+if (commentDeleteButton.length) {
+  for (let deleteButton of commentDeleteButton) {
+    addEventListenerToDelete(deleteButton,"comment")
+  }
+}
+
+if (answerDeleteButton.length) {
+  for (let deleteButton of answerDeleteButton) {
+    addEventListenerToDelete(deleteButton,"answer")
+  }
+}
+
   if (answerEditButton.length) {
-    for (editButton of answerEditButton) {
+    for (let editButton of answerEditButton) {
       addEventListenerToEditButton(editButton,"answer")
     }
   }
 
   if (commentEditButton.length) {
-    for (editButton of commentEditButton) {
+    for (let editButton of commentEditButton) {
       addEventListenerToEditButton(editButton,"comment")
     }
   }
+
+  if(answerUpvoteButtons.length){
+    for(let answerUpvoteButton of answerUpvoteButtons){
+      addEventListenerToUpvotes(answerUpvoteButton,"answer")
+    }
+  }
+
+  if(answerDownvoteButtons.length){
+    for(let answerDownvoteButton of answerDownvoteButtons){
+      addEventListenerToDownvotes(answerDownvoteButton,"answer")
+    }
+  }
+  addEventListenerToUpvotes(questionUpvoteButton,"question")
+  addEventListenerToDownvotes(questionDownvoteButton,"question")
   addEventListenerToDelete(deleteButton,"question")
   addEventListenerToEditSubmit(editAnswerSubmit,"answer")
   addEventListenerToEditSubmit(editCommentSubmit,"comment")
@@ -246,101 +270,3 @@ window.addEventListener("load", (event) => {
   addEventListenerToReplySubmit(answerSubmitButton,"answer")
   addEventListenerToReplySubmit(commentSubmitButton,"comment")
 });
-
-
-
-
-// editSubmitButton.addEventListener("click", async (event) => {
-  //   event.preventDefault();
-  //   let title = editForm.children[0];
-  //   let message = editForm.children[1];
-  //   let errors = document.getElementById("errors");
-  //   if (errors.innerHTML) {
-  //     errors.innerHTML = "";
-  //   }
-  //   let id = Number(editButton.id.slice(13));
-  //   let res = await fetch(`http://localhost:8080/questions/${id}`, {
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     method: "PUT",
-  //     body: JSON.stringify({ title: title.value, message: message.value }),
-  //   });
-  //   res = await res.json();
-  //   if (res.title) {
-  //     document.getElementById("title").innerText = res.title;
-  //     document.getElementById("message").innerText = res.message;
-  //     editForm.style.display = "none";
-  //   } else {
-  //     for (let error of res) {
-  //       let li = document.createElement("li");
-  //       li.innerText = error;
-  //       errors.append(li);
-  //     }
-  //   }
-  // });
-
-
-
-  // answerSubmitButton.addEventListener("click", async (event) => {
-  //   event.preventDefault();
-  //   let message = answerForm.children[0];
-  //   let errors = document.getElementById("errors");
-  //   if (errors.innerHTML) {
-  //     errors.innerHTML = "";
-  //   }
-  //   let id = Number(answerButton.id.slice(15));
-  //   let res = await fetch(
-  //     `http://localhost:8080/questions/${id}/answers`,
-  //     {
-  //       method: "post",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         questionId: id,
-  //         message: message.value,
-  //       }),
-  //     }
-  //   );
-  //   res = await res.json();
-  //   if (res.message) {
-  //     let li = document.createElement("li");
-  //     li.id = `answer-id${res.id}`;
-  //     li.innerText = answerForm.children[0].value;
-  //     let deleteButton = document.createElement("button");
-  //     let editButton = document.createElement("button");
-  //     deleteButton.classList.add("delete-answer");
-  //     editButton.classList.add("edit-answer");
-  //     deleteButton.id = `delete-answer${res.id}`;
-  //     editButton.id = `edit-answer${res.id}`;
-  //     deleteButton.innerText = "Delete";
-  //     editButton.innerText = "Edit";
-  //     li.append(deleteButton);
-  //     li.append(editButton);
-  //     document.querySelector("ul.answers").append(li);
-  //     answerForm.style.display = "none";
-
-  //     deleteButton.addEventListener("click", async (event) => {
-  //       await fetch(`http://localhost:8080/answers/${res.id}`, {
-  //         method: "delete",
-  //       });
-  //       let answer = document.querySelector(`#answer-id${res.id}`)
-  //       console.log(answer)
-  //       answer.remove();
-  //     })
-
-  //     editButton.addEventListener("click",async event => {
-  //       editAnswerForm.style.display = "block"
-  //       editAnswerForm.setAttribute('answerId',`${Number(editButton.id.slice(11))}`)
-  //       console.log("YEAHH: ",editButton.id,"   ", Number(editButton.id.slice(11)))
-  //     })
-  //     addEventListenerToEditAnswerForm(editAnswerForm.children[1])
-  //   } else {
-  //     for (let error of res) {
-  //       let li = document.createElement("li");
-  //       li.innerText = error;
-  //       errors.append(li);
-  //     }
-  //   }
-  // });

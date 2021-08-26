@@ -12,6 +12,7 @@ html
         a(href='/questions') All Questions
       div.sign_links
         if user
+          div.logged-in= `Current User: ${user.username}`
           a(href='/users/signout') Sign Out
         else
           a(href='/users/signup') Sign Up
