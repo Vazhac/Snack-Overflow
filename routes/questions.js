@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-let { User, Question, Answer, Comment } = require("../db/models")
+let { User, Question, Answer, Comment, Upvote } = require("../db/models")
 
 const { validationResult } = require("express-validator")
 const { csrfProtection, asyncHandler } = require('./utils')
@@ -10,9 +10,14 @@ const { questionValidators, replyValidators } = require('../validators'); //Poss
 
 router.get("/:id(\\d+)", asyncHandler(async (req, res) => {
     //  let question = await Question.findByPk(req.params.id)
-    let question = await Question.findByPk(req.params.id, { include: [Answer, Comment] })
-    console.log(question)
-    res.render('question-page', { question, session: req.session })
+    let question = await Question.findByPk(req.params.id, { include: [Comment, Upvote], include: {model:Answer} })
+    let questionVoteCount = 0
+    console.log(question.Answer)
+    for(let upvote in question.Upvotes){
+        if(upvote.isPositive)questionVoteCount++
+        else questionVoteCount--
+    }
+    res.render('question-page', { question, session: req.session,questionVoteCount })
 }));
 
 router.put("/:id", questionValidators, asyncHandler(async (req, res) => {
@@ -41,7 +46,8 @@ router.delete("/:id", asyncHandler(async (req, res) => {
 }));
 
 router.post("/:id(\\d+)/answers", replyValidators, asyncHandler(async (req, res) => {
-    let { message, questionId } = req.body
+    let {message} = req.body
+    let questionId = req.params.id
     const validatorErrors = validationResult(req);
     if (validatorErrors.isEmpty()) {
         let answer = await Answer.create({ message, questionId, userId: req.session.auth.userId })
@@ -53,8 +59,8 @@ router.post("/:id(\\d+)/answers", replyValidators, asyncHandler(async (req, res)
 }));
 
 router.post("/:id(\\d+)/comments", replyValidators, asyncHandler(async (req, res) => {
-    console.log("hitting route?????")
-    let { message, questionId } = req.body
+    let {message} = req.body
+    let questionId = req.params.id
     const validatorErrors = validationResult(req);
     if (validatorErrors.isEmpty()) {
         let comment = await Comment.create({ message, questionId, userId: req.session.auth.userId })
@@ -63,6 +69,23 @@ router.post("/:id(\\d+)/comments", replyValidators, asyncHandler(async (req, res
         const errors = validatorErrors.array().map((err) => err.msg);
         res.send(errors)
     }
+}));
+
+router.post("/:id(\\d+)/upvotes", asyncHandler(async (req, res) => {
+    let questionId = req.params.id
+    let userId = req.session.auth.userId
+    let isPositive = true
+    let upvote = await Upvote.create({questionId,userId,isPositive})
+    console.log(upvote)
+    res.send()
+}));
+
+router.post("/:id(\\d+)/downvotes", asyncHandler(async (req, res) => {
+    let questionId = req.params.id
+    let userId = req.session.auth.userId
+    let isPositive = false
+    await Upvote.create({questionId,userId,isPositive})
+    res.send()
 }));
 
 /* end section*/
