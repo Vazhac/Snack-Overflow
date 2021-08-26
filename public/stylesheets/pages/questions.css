@@ -1,6 +1,9 @@
-:root{
-    --default-border-radius: 4px;
-    --default-font-family: Arial, Helvetica, sans-serif;
+body {
+    width: 100%;
+    margin: auto;
+    background-image: url(../../images/Rustic-potatoes.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .questions_title {
@@ -26,8 +29,7 @@
     width: 80%;
     height: 100%;
     margin: auto;
-    border-radius: var(--default-border-radius);
-    box-shadow: 0 0 2px black;
+    box-shadow: 0 0 3px black;
 }
 
 .questions {
@@ -54,32 +56,16 @@
     height: 80px;
     text-decoration: none;
     font-weight: 700;
-    box-shadow: 0px 0px 1px black;
+}
+
+.question {
+    font-family: var(--default-font-family);
+    /* border-top: 1px solid black; */
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 /* keep html color as white */
 .questions a:hover {
     background-color: #eee;
     color: black;
-}
-
-.page_links {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.page_links > a {
-    padding: 3px;
-    text-decoration: none;
-    margin: 0px 5px;
-    border: 1px solid black;
-    border-radius: 4px;
-    background-color: white;
-}
-
-.page_links > a:hover {
-    background-color: #eee;
-    color: black;
-    box-shadow: 0px 0px 5px black;
 }

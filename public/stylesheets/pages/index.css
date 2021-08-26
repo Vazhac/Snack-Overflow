@@ -3,6 +3,9 @@
 h1 {
     color: #555555;
 }
+.nav_links {
+    border-bottom: none;
+}
 
 body {
     background-color: white;

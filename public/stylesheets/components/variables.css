@@ -1,0 +1,9 @@
+:root{
+    --default-border-radius: 4px;
+    --default-font-family: Arial, Helvetica, sans-serif;
+    --color-primary: #264653;
+    --color-secondary: #2a9d8f;
+    --color-tertiary: #e9c46a;
+    --color-quaternary: #f4a261;
+    --color-quinary: #e76f51;
+}

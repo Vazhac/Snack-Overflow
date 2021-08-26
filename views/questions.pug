@@ -19,7 +19,7 @@ block content
                         a(href=`/questions?page=${prevPage}`) Prev
                     while i < 5 && i < amountOfPages
                         - ++i
-                        a(href=`/questions?page=${i}`) Page #{i}
+                        a(href=`/questions?page=${i}`) #{i}
                     p ...
                     a(href=`/questions?page=${amountOfPages}`) Last Page
                     if i >= nextPage
@@ -30,7 +30,7 @@ block content
                     p ...
                     - var j = pageNumber - 2;
                     while j <= pageNumber + 2
-                        a(href=`/questions?page=${j}`) Page #{j}
+                        a(href=`/questions?page=${j}`) #{j}
                         - ++j
                     p ...
                     a(href=`/questions?page=${amountOfPages}`) Last Page
@@ -41,7 +41,7 @@ block content
                     p ...
                     - var k = amountOfPages - 4;
                     while k < amountOfPages
-                        a(href=`/questions?page=${k}`) Page #{k}
+                        a(href=`/questions?page=${k}`) #{k}
                         - ++k
                     a(href=`/questions?page=${amountOfPages}`) Page #{k}
                     if pageNumber !== amountOfPages
