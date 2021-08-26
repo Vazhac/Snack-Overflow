@@ -179,6 +179,7 @@ window.addEventListener("load", (event) => {
     }
     if(type==="comment"){
       form = commentForm
+
     }
     else{
       form = answerForm

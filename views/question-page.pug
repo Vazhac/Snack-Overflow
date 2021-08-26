@@ -25,7 +25,6 @@ ul.answers
             if session.auth.userId === Answer.userId
                 button(id=`delete-answer-${Answer.id}` class="delete-answer") Delete
                 button(id=`edit-answer-${Answer.id}` class="edit-answer") Edit
-
 form#edit-comment-form(action="/" method="post" style="display:none")
     input(type="text" name="message" placeholder="message")
     input#edit-comment-submit(type="submit" value="submit")

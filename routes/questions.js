@@ -124,8 +124,29 @@ router.post('/new', csrfProtection, questionValidators, asyncHandler(async (req,
 }));
 
 router.get('/', asyncHandler(async (req, res, next) => {
-    let questions = await Question.findAll({ include: [Answer, Comment] })
-    res.render('questions', { questions, session: req.session })
+    const numberOfLinks = 5;
+    const amountOfQuestions = await Question.count();
+    const amountOfPages = Math.ceil(amountOfQuestions / numberOfLinks)
+    let pageNumber = 1;
+    if (req.query.page) {
+        pageNumber = Number(req.query.page); //pageNumber will be a string if this statement is ran
+    }
+    const nextPage = pageNumber + 1;
+    const prevPage = pageNumber - 1;
+    const questions = await Question.findAll({
+        include: [Answer, Comment],
+        offset: (pageNumber - 1) * numberOfLinks,
+        limit: numberOfLinks,
+        orderBy: [["id", "DESC"]]
+    });
+    res.render('questions', {
+        questions,
+        session: req.session,
+        amountOfPages,
+        nextPage,
+        prevPage,
+        pageNumber
+    })
 }));
 
 
