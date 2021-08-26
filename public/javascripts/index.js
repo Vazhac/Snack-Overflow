@@ -24,6 +24,10 @@ window.addEventListener("load", (event) => {
     editForm.style.display = "block";
   });
 
+  answerButton.addEventListener("click", async (event) => {
+    answerForm.style.display = "block";
+  });
+
   let addEventListenerToDelete = async (deleteButton,type)=> {
     deleteButton.addEventListener("click", async (event) => {
       let id
@@ -34,7 +38,6 @@ window.addEventListener("load", (event) => {
       } else if (type === "comment"){
         id = Number(deleteButton.id.slice(14))
       }
-      let id = deleteButton.id.slice()
       await fetch(`http://localhost:8080/${type}s/${id}`, {
         method: "delete",
       });
@@ -97,7 +100,7 @@ window.addEventListener("load", (event) => {
           body: JSON.stringify({title,message}),
       });
       }
-      let res = await fetch(`http://localhost:8080/${type}s/${form.getAttribute(`${type}Id`)}`, {
+        res = await fetch(`http://localhost:8080/${type}s/${form.getAttribute(`${type}Id`)}`, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -125,17 +128,6 @@ window.addEventListener("load", (event) => {
   }
 }
 
-  if (answerEditButton.length) {
-    for (editButton of answerEditButton) {
-      addEventListenerToEditButton(editButton,"answer")
-    }
-  }
-
-  if (commentEditButton.length) {
-    for (editButton of commentEditButton) {
-      addEventListenerToEditButton(editButton,"comment")
-    }
-  }
 
   if (answerDeleteButton.length) {
     for (deleteButton of answerDeleteButton) {
@@ -175,9 +167,7 @@ window.addEventListener("load", (event) => {
     commentForm.style.display = "block";
   });
 
-  let addEventListenerToReplySubmit = (submitButton,type) => {
-
-  }
+  let addEventListenerToReplySubmit = async (submitButton,type) => {
   submitButton.addEventListener("click", async (event) => {
     event.preventDefault();
     let form
@@ -187,15 +177,15 @@ window.addEventListener("load", (event) => {
     if (errors.innerHTML) {
       errors.innerHTML = "";
     }
-    if(type==="comment") {
+    if(type==="comment"){
       form = commentForm
       questionId = Number(commentButton.id.slice(16));
     }
-    else {
+    else{
       form = answerForm
-      questionId = Number(answerButton.id.slice(15));
+      questionId = Number(answerButton.id.slice(15))
     }
-    messge = form.children[0].value
+    message = form.children[0].value
     let res = await fetch(
       `http://localhost:8080/questions/${questionId}/${type}s`,
       {
@@ -207,8 +197,7 @@ window.addEventListener("load", (event) => {
           questionId,
           message
         }),
-      }
-    );
+      });
     res = await res.json();
     if (res.message) {
       let li = document.createElement("li");
@@ -226,7 +215,9 @@ window.addEventListener("load", (event) => {
       li.append(editButton);
       document.querySelector(`ul.${type}s`).append(li);
       form.style.display = "none";
-      addEventListenerToEditSubmit(editCommentForm.children[1],type)
+      addEventListenerToEditButton(editButton,type)
+      addEventListenerToEditSubmit(form.children[1],type)
+      addEventListenerToDelete(deleteButton,type)
     } else {
       for (let error of res) {
         let li = document.createElement("li");
@@ -234,13 +225,21 @@ window.addEventListener("load", (event) => {
         errors.append(li);
       }
     }
-  });
+  })
+}
 
-  answerButton.addEventListener("click", async (event) => {
-    answerForm.style.display = "block";
-  });
+  if (answerEditButton.length) {
+    for (editButton of answerEditButton) {
+      addEventListenerToEditButton(editButton,"answer")
+    }
+  }
 
-
+  if (commentEditButton.length) {
+    for (editButton of commentEditButton) {
+      addEventListenerToEditButton(editButton,"comment")
+    }
+  }
+  addEventListenerToDelete(deleteButton,"question")
   addEventListenerToEditSubmit(editAnswerSubmit,"answer")
   addEventListenerToEditSubmit(editCommentSubmit,"comment")
   addEventListenerToEditSubmit(editSubmitButton,"question")
