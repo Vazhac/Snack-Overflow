@@ -1,3 +1,30 @@
 h1 {
     color: #555555;
 }
+
+.header_text {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.heading_primary {
+    display: block;
+    font-weight: bold;
+    font-size: 60px;
+    letter-spacing: 10px;
+}
+
+.heading_secondary {
+    display: block;
+    letter-spacing: 3px;
+    font-size: 25px;
+}
+
+.call_to_action {
+    display: block;
+}
