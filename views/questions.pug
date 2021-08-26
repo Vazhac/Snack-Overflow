@@ -10,3 +10,37 @@ block content
                     a(href=`/questions/${question.id}`) #{question.title}
         else
             p No questions yet.
+        - var i = 0;
+    div.page_links
+        if pageNumber < 5
+            if 0 < prevPage
+                a(href=`/questions?page=${prevPage}`) Prev
+            while i < 5 && i < amountOfPages
+                - ++i
+                a(href=`/questions?page=${i}`) Page #{i}
+            p ...
+            a(href=`/questions?page=${amountOfPages}`) Last Page
+            if i >= nextPage
+                a(href=`/questions?page=${nextPage}`) Next
+        else if pageNumber <= amountOfPages - 4
+            a(href=`/questions?page=${prevPage}`) Prev
+            a(href=`/questions?page=${1}`) First page
+            p ...
+            - var j = pageNumber - 2;
+            while j <= pageNumber + 2
+                a(href=`/questions?page=${j}`) Page #{j}
+                - ++j
+            p ...
+            a(href=`/questions?page=${amountOfPages}`) Last Page
+            a(href=`/questions?page=${nextPage}`) Next
+        else
+            a(href=`/questions?page=${prevPage}`) Prev
+            a(href=`/questions?page=${1}`) First page
+            p ...
+            - var k = amountOfPages - 4;
+            while k < amountOfPages
+                a(href=`/questions?page=${k}`) Page #{k}
+                - ++k
+            a(href=`/questions?page=${amountOfPages}`) Page #{k}
+            if pageNumber !== amountOfPages
+                a(href=`/questions?page=${nextPage}`) Next
