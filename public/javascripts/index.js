@@ -26,7 +26,7 @@ window.addEventListener("load", (event) => {
     voteButton.addEventListener("click",async (event)=> {
       if(type === "answer"){
         let answerId = Number(voteButton.id.split("-")[2])
-        let res = await fetch(`/answers/${answerId}/upvotes`,{
+        let res = await fetch(`/answers/${answerId}/downvotes`,{
           method:"POST"
         })
         let voteCount = document.getElementById("answer-vote-count")
