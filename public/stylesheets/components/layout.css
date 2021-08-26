@@ -5,7 +5,7 @@
     background-color: blanchedalmond;
 } */
 html {
-    width: 80%;
+    width: 100%;
     margin: auto;
     height: 100%;
     position: absolute;
@@ -13,7 +13,8 @@ html {
 }
 
 body {
-
+    width: 80%;
+    margin: auto;
     background-color: blanchedalmond
 }
 

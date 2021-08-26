@@ -1,12 +1,18 @@
-@import "animations.css";
-@import "./components/cards.css";
+@import "../animations.css";
+
 h1 {
     color: #555555;
 }
 
 body {
     background-color: white;
-    margin: 0px 2.5%;
+    width: 100%;
+    margin: auto;
+}
+
+.nav_links {
+    width: 80%;
+    margin: auto;
 }
 
 section {
@@ -76,5 +82,5 @@ section {
 }
 
 .layer {
-    background-image: url("../images/layered-waves-2.svg");
+    background-image: url("../../images/layered-waves-2.svg");
 }
