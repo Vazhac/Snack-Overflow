@@ -9,11 +9,9 @@ const { questionValidators, replyValidators } = require('../validators'); //Poss
 /* GET questions listing. */
 
 router.get("/:id(\\d+)", asyncHandler(async (req, res) => {
-    //  let question = await Question.findByPk(req.params.id)
-    let question = await Question.findByPk(req.params.id, { include: [Comment, Upvote], include: {model:Answer} })
+    let question = await Question.findByPk(req.params.id, {include:[Answer,Upvote,Comment]})
     let questionVoteCount = 0
-    console.log(question.Answer)
-    for(let upvote in question.Upvotes){
+    for(let upvote of question.Upvotes){
         if(upvote.isPositive)questionVoteCount++
         else questionVoteCount--
     }
@@ -75,8 +73,7 @@ router.post("/:id(\\d+)/upvotes", asyncHandler(async (req, res) => {
     let questionId = req.params.id
     let userId = req.session.auth.userId
     let isPositive = true
-    let upvote = await Upvote.create({questionId,userId,isPositive})
-    console.log(upvote)
+    await Upvote.create({questionId,userId,isPositive})
     res.send()
 }));
 

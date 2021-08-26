@@ -26,7 +26,7 @@ window.addEventListener("load", (event) => {
     voteButton.addEventListener("click",async (event)=> {
       if(type === "answer"){
         let answerId = Number(voteButton.id.split("-")[2])
-        let res = await fetch(`/answers/${answerId}/upvotes`,{
+        let res = await fetch(`/answers/${answerId}/downvotes`,{
           method:"POST"
         })
         let voteCount = document.getElementById("answer-vote-count")
@@ -126,8 +126,10 @@ window.addEventListener("load", (event) => {
         title = form.children[0].value
         questionId = Number(editButton.id.split("-")[2]);
       }
+      console.log("HELLLOOOO: ",questionId)
+      console.log(`/questions/${questionId}`)
       if(questionId){
-        res = await fetch(`/${questionId}`, {
+        res = await fetch(`/questions/${questionId}`, {
           headers: {
             "Content-Type": "application/json",
           },
@@ -135,6 +137,7 @@ window.addEventListener("load", (event) => {
           body: JSON.stringify({title,message}),
       });
       }
+      else{
         res = await fetch(`/${type}s/${form.getAttribute(`${type}Id`)}`, {
         headers: {
           "Content-Type": "application/json",
@@ -142,6 +145,7 @@ window.addEventListener("load", (event) => {
         method: "put",
         body:JSON.stringify({message})
       });
+    }
       res = await res.json()
       if(res.message){
         if(type === "question"){
@@ -179,13 +183,14 @@ window.addEventListener("load", (event) => {
     }
     if(type==="comment"){
       form = commentForm
+
     }
     else{
       form = answerForm
     }
     message = form.children[0].value
     let res = await fetch(
-      `/${questionId}/${type}s`,
+      `/questions/${questionId}/${type}s`,
       {
         method: "POST",
         headers: {
