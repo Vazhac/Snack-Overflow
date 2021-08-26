@@ -4,16 +4,19 @@ html
       block head
         title="Snack-Overflow"
         link(rel='stylesheet' href='/stylesheets/reset.css')
+        link(rel='stylesheet' href='/stylesheets/components/layout.css')
   body
-    div.nav_links
-      div.home_link
+    div.nav_links_container
+      div.home_links
         a(href='/') Home
         a(href='/questions') All Questions
       div.sign_links
         if user
-          div.logged-in= `Current User: ${user.username}`
+          span.logged-in= `Current User: ${user.username}`
+          a(href="/questions/new") Ask a public question
           a(href='/users/signout') Sign Out
         else
+          a(href="/questions/new") Ask a public question
           a(href='/users/signup') Sign Up
           a(href='/users/signin') Sign In
         end
