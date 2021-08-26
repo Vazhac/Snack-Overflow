@@ -26,4 +26,20 @@ router.put("/:id", replyValidators, asyncHandler(async (req,res)=>{
     }
 }))
 
+
+router.post("/:id(\\d+)/upvotes", asyncHandler(async (req, res) => {
+    let answerId = req.params.id
+    let userId = req.session.auth.userId
+    let isPositive = true
+    Upvote.create({answerId,userId,isPositive})
+
+}));
+
+router.post("/:id(\\d+)/downvotes", asyncHandler(async (req, res) => {
+    let answerId = req.params.id
+    let userId = req.session.auth.userId
+    let isPositive = false
+    Upvote.create({answerId,userId,isPositive})
+}));
+
 module.exports = router;

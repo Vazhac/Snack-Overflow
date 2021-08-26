@@ -1,9 +1,8 @@
 window.addEventListener("load", (event) => {
-  console.log("hello from javascript!");
-  let deleteButton = document.getElementsByClassName("delete-question")[0];
-  let editButton = document.getElementsByClassName("edit-question-button")[0];
-  let answerButton = document.getElementsByClassName("answer-question")[0];
-  let commentButton = document.getElementsByClassName("comment-question")[0];
+  let deleteButton = document.querySelector(".delete-question");
+  let editButton = document.querySelector(".edit-question-button");
+  let answerButton = document.querySelector(".answer-question");
+  let commentButton = document.querySelector(".comment-question");
   let editForm = document.getElementById("edit-form");
   let answerForm = document.getElementById("answer-form");
   let commentForm = document.getElementById("comment-form");
@@ -18,7 +17,35 @@ window.addEventListener("load", (event) => {
   let editAnswerForm = document.querySelector("#edit-answer-form")
   let editAnswerSubmit = document.querySelector("#edit-answer-submit")
   let editCommentSubmit = document.querySelector("#edit-comment-submit")
+  let questionUpvoteButton = document.querySelector(".upvote-question")
+  let questionDownvoteButton = document.querySelector(".downvote-question")
+  let answerUpvoteButtons = document.getElementsByClassName("upvote-answer")
+  let answerDownvoteButtons = document.getElementsByClassName("downvote-answer")
 
+  let addEventListenerToDownvotes = async (voteButton,"type") => {
+    voteButton.addEventListener("click",async (event)=> {
+      if(type === "answer"){
+        let answerId = Number(voteButton.id.split("-")[2])
+        let res = await fetch(`/answers/${answerId}/upvotes`)
+      } else if (type === "question"){
+        let questionId = Number(questionDownvoteButton.id.split("-")[2])
+        let res = await fetch(`/questions/${questionId}/downvotes`)
+      }
+
+    })
+  }
+
+  let addEventListenerToUpvotes = async (voteButton,"type") => {
+    voteButton.addEventListener("click",async (event)=> {
+      if(type === "answer"){
+        let answerId = Number(voteButton.id.split("-")[2])
+        let res = await fetch(`/answers/${answerId}/upvotes`)
+      } else if (type === "question"){
+        let questionId = Number(voteButton.id.split("-")[2])
+        let res = await fetch(`/questions/${questionId}/upvotes`)
+      }
+    })
+  }
 
   editButton.addEventListener("click", async (event) => {
     editForm.style.display = "block";
@@ -30,20 +57,13 @@ window.addEventListener("load", (event) => {
 
   let addEventListenerToDelete = async (deleteButton,type)=> {
     deleteButton.addEventListener("click", async (event) => {
-      let id
-      if(type === "question"){
-        id = Number(deleteButton.id.slice(15))
-      } else if (type === "answer"){
-        id = Number(deleteButton.id.slice(13))
-      } else if (type === "comment"){
-        id = Number(deleteButton.id.slice(14))
-      }
-      await fetch(`http://localhost:8080/${type}s/${id}`, {
+      let id = Number(deleteButton.id.split("-")[2])
+      await fetch(`/${type}s/${id}`, {
         method: "delete",
       });
-      if(type === "question") window.location = `http://localhost:8080`
+      if(type === "question") window.location = `/`
       else {
-        let reply = document.querySelector(`#${type}-id${id}`)
+        let reply = document.querySelector(`#${type}-${id}`)
         console.log("reply: ",reply)
         reply.remove();
       }
@@ -53,13 +73,11 @@ window.addEventListener("load", (event) => {
   let addEventListenerToEditButton = async (editButton,type) => {
     editButton.addEventListener("click", async (event) => {
       let form
-      let id
+      let id = Number(editButton.id.split("-")[2])
       if(type === "comment"){
         form = editCommentForm
-        id = Number(editButton.id.slice(12))
       } else if (type === "answer"){
         form = editAnswerForm
-        id = Number(editButton.id.slice(11))
       }
      form.style.display = "block"
      form.setAttribute(`${type}Id`,id)
@@ -89,10 +107,10 @@ window.addEventListener("load", (event) => {
         form = editForm
         message = form.children[1].value
         title = form.children[0].value
-        questionId = Number(editButton.id.slice(13));
+        questionId = Number(editButton.id.split("-")[2]);
       }
       if(questionId){
-        res = await fetch(`http://localhost:8080/questions/${questionId}`, {
+        res = await fetch(`/${questionId}`, {
           headers: {
             "Content-Type": "application/json",
           },
@@ -100,7 +118,7 @@ window.addEventListener("load", (event) => {
           body: JSON.stringify({title,message}),
       });
       }
-        res = await fetch(`http://localhost:8080/${type}s/${form.getAttribute(`${type}Id`)}`, {
+        res = await fetch(`/${type}s/${form.getAttribute(`${type}Id`)}`, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -114,7 +132,7 @@ window.addEventListener("load", (event) => {
           document.getElementById("message").innerText = res.message;
           form.style.display = "none";
         } else {
-          document.getElementById(`${type}-id${res.id}`).innerText = res.message;
+          document.getElementById(`${type}-${res.id}`).innerText = res.message;
           form.style.display = "none";
         }
       } else {
@@ -137,43 +155,40 @@ window.addEventListener("load", (event) => {
     event.preventDefault();
     let form
     let message
-    let questionId
+    let questionId = Number(answerButton.id.split("-")[2])
     let errors = document.getElementById("errors");
     if (errors.innerHTML) {
       errors.innerHTML = "";
     }
     if(type==="comment"){
       form = commentForm
-      questionId = Number(commentButton.id.slice(16));
     }
     else{
       form = answerForm
-      questionId = Number(answerButton.id.slice(15))
     }
     message = form.children[0].value
     let res = await fetch(
-      `http://localhost:8080/questions/${questionId}/${type}s`,
+      `/${questionId}/${type}s`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          questionId,
           message
         }),
       });
     res = await res.json();
     if (res.message) {
       let li = document.createElement("li");
-      li.id = `${type}-id${res.id}`;
+      li.id = `${type}-${res.id}`;
       li.innerText = form.children[0].value;
       let deleteButton = document.createElement("button");
       let editButton = document.createElement("button");
       deleteButton.classList.add(`delete-${type}`);
       editButton.classList.add(`edit-${type}`);
-      deleteButton.id = `delete-${type}${res.id}`;
-      editButton.id = `edit-${type}${res.id}`;
+      deleteButton.id = `delete-${type}-${res.id}`;
+      editButton.id = `edit-${type}-${res.id}`;
       deleteButton.innerText = "Delete";
       editButton.innerText = "Edit";
       li.append(deleteButton);
@@ -194,29 +209,42 @@ window.addEventListener("load", (event) => {
 }
 
 if (commentDeleteButton.length) {
-  for (deleteButton of commentDeleteButton) {
+  for (let deleteButton of commentDeleteButton) {
     addEventListenerToDelete(deleteButton,"comment")
   }
 }
 
 if (answerDeleteButton.length) {
-  for (deleteButton of answerDeleteButton) {
+  for (let deleteButton of answerDeleteButton) {
     addEventListenerToDelete(deleteButton,"answer")
   }
 }
 
   if (answerEditButton.length) {
-    for (editButton of answerEditButton) {
+    for (let editButton of answerEditButton) {
       addEventListenerToEditButton(editButton,"answer")
     }
   }
 
   if (commentEditButton.length) {
-    for (editButton of commentEditButton) {
+    for (let editButton of commentEditButton) {
       addEventListenerToEditButton(editButton,"comment")
     }
   }
-  
+
+  if(answerUpvoteButtons.length){
+    for(let answerUpvoteButton of answerUpvoteButtons){
+      addEventListenerToUpvotes(answerUpvoteButton,"answer")
+    }
+  }
+
+  if(answerDownvoteButtons.length){
+    for(let answerDownvoteButton of answerDownvoteButtons){
+      addEventListenerToDownvotes(answerDownvoteButton,"answer")
+    }
+  }
+  addEventListenerToUpvotes(questionUpvoteButton,"question")
+  addEventListenerToDownvotes(questionDownvoteButton,"question")
   addEventListenerToDelete(deleteButton,"question")
   addEventListenerToEditSubmit(editAnswerSubmit,"answer")
   addEventListenerToEditSubmit(editCommentSubmit,"comment")
