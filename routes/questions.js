@@ -9,13 +9,28 @@ const { questionValidators, replyValidators } = require('../validators'); //Poss
 /* GET questions listing. */
 
 router.get("/:id(\\d+)", asyncHandler(async (req, res) => {
-    let question = await Question.findByPk(req.params.id, {include:[Answer,Upvote,Comment]})
+
+    let question = await Question.findByPk(req.params.id,{
+        include:[Upvote,Comment,{
+            model:Answer,
+            include:[Upvote]
+            }]
+        })
     let questionVoteCount = 0
     for(let upvote of question.Upvotes){
         if(upvote.isPositive)questionVoteCount++
         else questionVoteCount--
     }
-    res.render('question-page', { question, session: req.session,questionVoteCount })
+
+    for(let answer of question.Answers){
+        if(answer.Upvotes.length){
+            answer.voteCount=answer.Upvotes.reduce((accum,vote)=>{
+                if(vote.isPositive)return accum+1
+                else return accum-1
+            },0)
+        } else answer.voteCount = 0
+    }
+    res.render('question-page', { question,session: req.session,questionVoteCount })
 }));
 
 router.put("/:id", questionValidators, asyncHandler(async (req, res) => {
@@ -24,7 +39,6 @@ router.put("/:id", questionValidators, asyncHandler(async (req, res) => {
     let { title, message } = req.body;
 
     const validatorErrors = validationResult(req);
-
     if (validatorErrors.isEmpty()) {
         question.title = title;
         question.message = message;
