@@ -1,0 +1,89 @@
+@import "../animations.css";
+
+h1 {
+    color: #555555;
+}
+.nav_links {
+    border-bottom: none;
+}
+
+body {
+    background-color: white;
+    width: 100%;
+    margin: auto;
+}
+
+.nav_links {
+    width: 80%;
+    margin: auto;
+}
+
+section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 60vh;
+    padding: 100px 20vw;
+}
+
+.odd {
+    background-color: #e9c46a;
+}
+
+.even {
+    background-color: #264653;
+}
+
+.header_text {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.heading_primary {
+    display: block;
+    font-weight: bold;
+    font-size: 60px;
+    letter-spacing: 10px;
+    animation: moveToRight;
+    animation-duration: 2s;
+}
+
+.heading_secondary {
+    display: block;
+    letter-spacing: 3px;
+    font-size: 25px;
+    animation: moveToLeft;
+    animation-duration: 2s;
+}
+
+.call_to_action {
+    text-decoration: none;
+    display: block;
+    border-radius: 3px;
+    padding: 5px;
+    border: 1px solid black;
+    animation: moveToTop;
+    animation-duration: 2s;
+    background-color: #fff;
+}
+
+.call_to_action:hover {
+    background-color: #eee;
+}
+
+.spacer {
+    aspect-ratio: 960/300;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.layer {
+    background-image: url("../../images/layered-waves-2.svg");
+}

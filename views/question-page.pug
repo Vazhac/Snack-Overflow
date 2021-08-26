@@ -1,17 +1,19 @@
-div#title=question.title
-div#message=question.message
-div#question-vote-count=questionVoteCount
-ul#errors
-form#edit-form(action="/" method="post" style="display:none")
-    input#title(type="text" name="title" placeholder="title")
-    input#message(type="text" name="message" placeholder="message")
-    input#edit-submit(type="submit" value="submit")
-form#comment-form(action="/" method="post" style="display:none")
-    input(type="text" name="message" placeholder="message")
-    input#comment-submit(type="submit" value="submit")
-form#answer-form(action="/" method="post" style="display:none")
-    input(type="text" name="message" placeholder="message")
-    input#answer-submit(type="submit" value="submit")
+extends layout
+block content
+    div#title=question.title
+    div#message=question.message
+    div#question-vote-count=questionVoteCount
+    ul#errors
+    form#edit-form(action="/" method="post" style="display:none")
+        input#title(type="text" name="title" placeholder="title")
+        input#message(type="text" name="message" placeholder="message")
+        input#edit-submit(type="submit" value="submit")
+    form#comment-form(action="/" method="post" style="display:none")
+        input(type="text" name="message" placeholder="message")
+        input#comment-submit(type="submit" value="submit")
+    form#answer-form(action="/" method="post" style="display:none")
+        input(type="text" name="message" placeholder="message")
+        input#answer-submit(type="submit" value="submit")
 
 form#edit-answer-form(action="/" method="post" style="display:none")
     input(type="text" name="message" placeholder="message")
@@ -48,5 +50,4 @@ if session.auth
         if session.auth.userId === question.userId
             button(id=`delete-question-${question.id}` class="delete-question") Delete
             button(id=`edit-question-${question.id}` class="edit-question-button") Edit
-
-script(src='../javascripts/index.js' type='module')
+        script(src='../javascripts/index.js' type='module')
