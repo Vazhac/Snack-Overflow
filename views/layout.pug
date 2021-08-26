@@ -12,8 +12,8 @@ html
         a(href='/questions') All Questions
       div.sign_links
         if user
+          span.logged-in= `Current User: ${user.username}`
           a(href="/questions/new") Ask a public question
-          div.logged-in= `Current User: ${user.username}`
           a(href='/users/signout') Sign Out
         else
           a(href="/questions/new") Ask a public question
