@@ -114,13 +114,7 @@ router.get('/demo', asyncHandler(async (req, res) => {
       username: "demo"
     }
   });
-  // const demoUser = await User.login({
-  //   username: "demo",
-  //   email: "demo@demo.com",
-  //   password: "demo",
-  // });
-
-  console.log("demoUser", demoUser);
+  
   loginUser(req,res,demoUser)
   res.redirect('/')
 }))
