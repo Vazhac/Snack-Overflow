@@ -106,4 +106,23 @@ router.get('/signout', asyncHandler(async (req, res) => {
   }
 }));
 
+router.get('/demo', asyncHandler(async (req, res) => {
+  // let demoUser = await User.findByPk(2)
+  let { username, password } = req.body;
+  const demoUser = await User.findOne({
+    where: {
+      username: "demo"
+    }
+  });
+  // const demoUser = await User.login({
+  //   username: "demo",
+  //   email: "demo@demo.com",
+  //   password: "demo",
+  // });
+
+  console.log("demoUser", demoUser);
+  loginUser(req,res,demoUser)
+  res.redirect('/')
+}))
+
 module.exports = router;
