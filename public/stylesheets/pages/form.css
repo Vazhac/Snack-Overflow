@@ -18,7 +18,8 @@
 }
 
 textarea{
-    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
     height: 300px;
 }
 
@@ -41,7 +42,7 @@ label {
 
 .ask_title {
     text-align: center;
-    color: darkgoldenrod;
+    color: black;
     font-weight: 700;
     font-size: 54px;
 }
