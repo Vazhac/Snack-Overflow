@@ -170,11 +170,17 @@ router.get('/', asyncHandler(async (req, res, next) => {
     const nextPage = pageNumber + 1;
     const prevPage = pageNumber - 1;
     const questions = await Question.findAll({
-        include: [Answer, Comment],
+        include: [Answer, Comment, Upvote],
         offset: (pageNumber - 1) * numberOfLinks,
         limit: numberOfLinks,
         orderBy: [["id", "DESC"]]
     });
+    for(let question of questions){
+        question.voteCount = question.Upvotes.reduce((accum,upvote)=>{
+            if(upvote.isPositive)return 1
+            else return -1
+        },0)
+    }
     res.render('questions', {
         questions,
         session: req.session,
