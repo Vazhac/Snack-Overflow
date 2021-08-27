@@ -23,6 +23,7 @@ window.addEventListener("load", (event) => {
   let questionDownvoteButton = document.querySelector(".downvote-question")
   let answerUpvoteButtons = document.getElementsByClassName("upvote-answer")
   let answerDownvoteButtons = document.getElementsByClassName("downvote-answer")
+  let answerCommentButtons = document.getElementsByClassName("comment-answer")
 
 
   let addEventListenerToVoteButton = async (voteButton,type,voteType) => {
@@ -46,27 +47,29 @@ window.addEventListener("load", (event) => {
       })
     }
   }
-
-  editButton.addEventListener("click", async (event) => {
-    editForm.style.display = "block";
-  });
-
+  if(editButton){
+    editButton.addEventListener("click", async (event) => {
+      editForm.style.display = "block";
+    });
+  }
   answerButton.addEventListener("click", async (event) => {
     answerForm.style.display = "block";
   });
 
   let addEventListenerToDelete = async (deleteButton,type)=> {
-    deleteButton.addEventListener("click", async (event) => {
-      let id = Number(deleteButton.id.split("-")[2])
-      await fetch(`/${type}s/${id}`, {
-        method: "delete",
-      });
-      if(type === "question") window.location = `/`
-      else {
-        let reply = document.querySelector(`#${type}-${id}`)
-        reply.remove();
-      }
-    })
+    if(deleteButton){
+      deleteButton.addEventListener("click", async (event) => {
+        let id = Number(deleteButton.id.split("-")[2])
+        await fetch(`/${type}s/${id}`, {
+          method: "delete",
+        });
+        if(type === "question") window.location = `/`
+        else {
+          let reply = document.querySelector(`#${type}-${id}`)
+          reply.remove();
+        }
+      })
+    }
   }
 
   let addEventListenerToEditButton = async (editButton,type) => {
@@ -152,13 +155,16 @@ window.addEventListener("load", (event) => {
           commentForm.style.display = "block";
         } else if (type === "answer"){
           answerCommentForm.style.display = "block"
+          let id = Number(commentButton.id.split("-")[2])
+          answerCommentForm.setAttribute("answerId",id)
         }
     });
   }
 
-  let addEventListenerToReplySubmit = async (submitButton,type,answerId) => {
+  let addEventListenerToReplySubmit = async (submitButton,type) => {
   submitButton.addEventListener("click", async (event) => {
     event.preventDefault();
+    let answerId = answerCommentForm.getAttribute("answerId")
     let form
     let message
     let res
@@ -176,6 +182,7 @@ window.addEventListener("load", (event) => {
       form = commentForm
     }
     message = form.children[0].value
+    console.log("answerId: ",answerId)
     if(!answerId){
       let questionId = Number(answerButton.id.split("-")[2])
       res = await fetch(
@@ -240,7 +247,7 @@ window.addEventListener("load", (event) => {
         addEventListenerToVoteButton(upvoteButton,"answer","upvote")
         addEventListenerToVoteButton(downvoteButton,"answer","downvote")
         addEventListenerToCommentButton(commentButton,"answer")
-        addEventListenerToReplySubmit(answerCommentSubmitButton,"comment",res.id)
+        addEventListenerToReplySubmit(answerCommentSubmitButton,"comment")
       }
       let deleteButton = document.createElement("button");
       deleteButton.classList.add(`delete-${type}`);
@@ -267,6 +274,7 @@ window.addEventListener("load", (event) => {
       console.log("form second: ", form, ul)
       ul.append(li)
       form.style.display = "none";
+      if(form.id === "answer-comment-form")form.setAttribute("answerId",null)
       addEventListenerToEditButton(editButton,type)
       addEventListenerToEditSubmit(form.children[1],type)
       addEventListenerToDelete(deleteButton,type)
@@ -315,7 +323,13 @@ if (answerDeleteButton.length) {
       addEventListenerToVoteButton(answerDownvoteButton,"answer","downvote")
     }
   }
+  if(answerCommentButtons.length){
+    for(let answerCommentButton of answerCommentButtons){
+      addEventListenerToCommentButton(answerCommentButton,"answer")
+    }
+  }
   addEventListenerToCommentButton(commentButton,"question")
+  addEventListenerToReplySubmit(answerCommentSubmitButton,"comment")
   addEventListenerToVoteButton(questionUpvoteButton,"question","upvote")
   addEventListenerToVoteButton(questionDownvoteButton,"question","downvote")
   addEventListenerToDelete(deleteButton,"question")
