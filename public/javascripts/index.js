@@ -74,27 +74,30 @@ window.addEventListener("load", (event) => {
     })
   }
   }
-
-  editButton.addEventListener("click", async (event) => {
-    editForm.style.display = "block";
-  });
+  if (editButton) {
+    editButton.addEventListener("click", async (event) => {
+      editForm.style.display = "block";
+    });
+  }
 
   answerButton.addEventListener("click", async (event) => {
     answerForm.style.display = "block";
   });
 
   let addEventListenerToDelete = async (deleteButton,type)=> {
-    deleteButton.addEventListener("click", async (event) => {
-      let id = Number(deleteButton.id.split("-")[2])
-      await fetch(`/${type}s/${id}`, {
-        method: "delete",
-      });
-      if(type === "question") window.location = `/`
-      else {
-        let reply = document.querySelector(`#${type}-${id}`)
-        reply.remove();
-      }
-    })
+    if (deleteButton) {
+      deleteButton.addEventListener("click", async (event) => {
+        let id = Number(deleteButton.id.split("-")[2])
+        await fetch(`/${type}s/${id}`, {
+          method: "delete",
+        });
+        if(type === "question") window.location = `/`
+        else {
+          let reply = document.querySelector(`#${type}-${id}`)
+          reply.remove();
+        }
+      })
+    }
   }
 
   let addEventListenerToEditButton = async (editButton,type) => {
