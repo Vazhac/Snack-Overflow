@@ -18,10 +18,10 @@ html
         ul#search-results(style="display:none")
         if user
           span.logged-in= `Current User: ${user.username}`
-          a(href="/questions/new") Ask a question
+          a(href="/questions/new") Ask A Question
           a(href='/users/signout') Sign Out
         else
-          a(href="/questions/new") Ask a question
+          a(href="/questions/new") Ask A Question
           a(href='/users/signup') Sign Up
           a(href='/users/signin') Sign In
         end
