@@ -15,6 +15,8 @@ router.get("/:id(\\d+)", asyncHandler(async (req, res) => {
             include:[Upvote]
             }]
         })
+    let user = await User.findByPk(question.userId)
+    question.author = user.username
     let questionVoteCount = 0
     for(let upvote of question.Upvotes){
         if(upvote.isPositive)questionVoteCount++
@@ -28,6 +30,12 @@ router.get("/:id(\\d+)", asyncHandler(async (req, res) => {
                 else return accum-1
             },0)
         } else answer.voteCount = 0
+        let user = await User.findByPk(answer.userId)
+        answer.author = user.username
+    }
+    for(let comment of question.Comments){
+        let user = await User.findByPk(comment.userId)
+        comment.author = user.username
     }
     let votes = await Upvote.findAll({where:{userId:req.session.auth.userId}})
     let votedOnQuestion = false
@@ -70,6 +78,8 @@ router.post("/:id(\\d+)/answers", replyValidators, asyncHandler(async (req, res)
     const validatorErrors = validationResult(req);
     if (validatorErrors.isEmpty()) {
         let answer = await Answer.create({ message, questionId, userId: req.session.auth.userId })
+        let user = await User.findByPk(req.session.auth.userId)
+        answer.dataValues.author = user.username
         res.send(answer)
     } else {
         const errors = validatorErrors.array().map((err) => err.msg);
@@ -83,6 +93,8 @@ router.post("/:id(\\d+)/comments", replyValidators, asyncHandler(async (req, res
     const validatorErrors = validationResult(req);
     if (validatorErrors.isEmpty()) {
         let comment = await Comment.create({ message, questionId, userId: req.session.auth.userId })
+        let user = await User.findByPk(req.session.auth.userId)
+        comment.dataValues.author = user.username
         res.send(comment)
     } else {
         const errors = validatorErrors.array().map((err) => err.msg);
