@@ -4,8 +4,8 @@ block content
 
     h2.ask_title Ask a question
 
-    div.form_container
-        form.form(action="/questions/new" method="post")
+    div.new_question_form_container
+        form.new_question_form(action="/questions/new" method="post")
             input(type="hidden", name="_csrf" value=csrfToken)
             label(for='title') Title
             if errors.length

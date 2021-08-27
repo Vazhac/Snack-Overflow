@@ -23,3 +23,10 @@ body {
     padding: 20px 0px;
     border-bottom: 1px solid black;
 }
+/* center logo in nav bar */
+.logo {
+    justify-content: center;
+    width: 100px;
+    height: 100px;
+    background-image: url(../images/logo.png);
+}

@@ -1,4 +1,4 @@
-.form_container {
+.new_question_form_container {
     border: 1px solid black;
     background-color: #eeeeee;
     width: 50%;
@@ -9,7 +9,7 @@
     margin: auto;
 }
 
-.form {
+.new_question_form {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -34,6 +34,7 @@ textarea{
 button {
     box-shadow: 0 0 2px black;
     background-color: #eeeeee;
+    margin: 5px 0 5px 0;
 }
 
 label {
@@ -48,23 +49,46 @@ label {
     font-size: 54px;
 }
 
-.sign-in-form {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;;
-    position: relative;
-    height: 100%;
-    width: 50%;
-    background-color: blanchedalmond;
+h2 {
+    text-align: center;
+    color: black;
+    font-weight: 700;
+    font-size: 30px;
 }
 
-/* .sign-in-form > * {
+.sign-up-form-container,
+.sign-in-form-container {
+    border: 1px solid black;
+    background-color: blanchedalmond;
+    width: 20%;
+    border-radius: 4px;
+    box-shadow: 0 0 2px black;
+    margin: auto;
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+}
+
+.sign-up-form > *,
+.sign-in-form > * {
     display: flex;
+    justify-content: space-between;
+    align-items: center;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;;
     height: 100%;
-    width: 100%;
-    margin: 5px 0;
-} */
+    margin: 5px 0 5px 0;
+}
+
+.sign-in-form-container > *,
+.sign-up-form-container > * {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.links > a {
+    justify-content: center;
+    text-decoration: none;
+    color: black;
+    margin: 5px 0 5px 0;
+}
