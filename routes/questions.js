@@ -37,14 +37,18 @@ router.get("/:id(\\d+)", asyncHandler(async (req, res) => {
         let user = await User.findByPk(comment.userId)
         comment.author = user.username
     }
-    let votes = await Upvote.findAll({where:{userId:req.session.auth.userId}})
-    let votedOnQuestion = false
-    let votedAnswerIds = votes.map(vote=>vote.answerId).filter(vote=>vote!==null)
+    let votes;
+    let votedAnswerIds;
     let votedAnswerIdsObject ={}
-    for(let answerId of votedAnswerIds){
-        votedAnswerIdsObject[answerId]=true
+    if (req.session.auth) {
+        votes = await Upvote.findAll({where:{userId:req.session.auth.userId}})
+        votedAnswerIds = votes.map(vote=>vote.answerId).filter(vote=>vote!==null)
+        for(let answerId of votedAnswerIds){
+            votedAnswerIdsObject[answerId]=true
+        }
+        if(votes.filter(vote=>vote.questionId===question.id).length>0) votedOnQuestion = true
     }
-    if(votes.filter(vote=>vote.questionId===question.id).length>0) votedOnQuestion = true
+    let votedOnQuestion = false
     res.render('question-page', {votedAnswerIdsObject,votedOnQuestion,votes, question,session: req.session,questionVoteCount })
 }));
 
