@@ -1,0 +1,27 @@
+.content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.post_layout {
+  display: flex;
+  flex-direction: column;
+}
+.upper_container {
+  display: flex;
+  margin: 5% 0;
+}
+
+ .question_message_content {
+   margin-left: 5%;
+ }
+
+ .comment {
+   display: flex;
+   padding: 5px 0;
+   justify-content: space-between;
+   border-top: 1px solid rgba(0, 0, 0, 0.2);
+   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+ }
