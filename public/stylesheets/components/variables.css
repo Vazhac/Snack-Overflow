@@ -6,4 +6,6 @@
     --color-tertiary: #e9c46a;
     --color-quaternary: #f4a261;
     --color-quinary: #e76f51;
+    --button-text-color: black;
+    --button-background-color: white;
 }

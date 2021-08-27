@@ -74,6 +74,7 @@ section {
 
 .call_to_action:hover {
     background-color: #eee;
+    color: var(--button-text-color)
 }
 
 .spacer {
