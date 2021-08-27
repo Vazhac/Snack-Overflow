@@ -2,7 +2,7 @@ extend layout
 block content
     link(rel="stylesheet" href="/stylesheets/pages/form.css")
 
-    h2.ask_title Ask a question
+    h2.ask_title Ask A Qguestion
 
     div.new_question_form_container
         form.new_question_form(action="/questions/new" method="post")
@@ -14,6 +14,6 @@ block content
             input(type='text' name='title' placeholder="Title")
             label(for='message') Body
             textarea(type='text' name='message' placeholder="e.g. What is the perfect chocolate chip to cookie ratio?")
-            button(type="submit" value="submit") Post your question
+            button(type="submit" value="submit") Post Your Question
             div.cancel_button
                 a(href="/") Cancel
