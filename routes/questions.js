@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 let { User, Question, Answer, Comment, Upvote } = require("../db/models")
-
+const {Op} = require("sequelize")
 const { validationResult } = require("express-validator")
 const { csrfProtection, asyncHandler } = require('./utils')
 const { questionValidators, replyValidators } = require('../validators'); //Possibly add more comple validations for checking password complexity and confirm password complexictyu
@@ -196,5 +196,31 @@ router.get('/', asyncHandler(async (req, res, next) => {
     })
 }));
 
+router.post("/search", asyncHandler(async (req, res) => {
+    let {input} = req.body
+
+    // let questions = await Question.findAll({where:{
+    //     [Op.or]:[
+    //         {
+    //             title:{
+    //                 [Op.substring]: input
+    //             }
+    //         },
+    //         {
+    //             message:{
+    //                 [Op.substring]: input
+    //             }
+    //         }
+    //     ]
+    // }})
+    let questions = await Question.findAll({where:{
+        title:{
+            [Op.like]: `%${input}%`
+        }
+    }})
+    console.log(questions.map(question=>question.title))
+    console.log("input: ",input)
+    res.send(questions)
+}));
 
 module.exports = router;
