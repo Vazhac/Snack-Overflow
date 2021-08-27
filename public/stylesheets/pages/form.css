@@ -56,8 +56,8 @@ h2 {
     font-size: 30px;
 }
 
-.sign-up-form-container,
-.sign-in-form-container {
+.sign_up_form_container,
+.sign_in_form_container {
     border: 1px solid black;
     background-color: blanchedalmond;
     width: 20%;
@@ -70,8 +70,8 @@ h2 {
     transform: translate(-50%, -50%);
 }
 
-.sign-up-form > *,
-.sign-in-form > * {
+.sign_up_form > *,
+.sign_in_form > * {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -80,8 +80,8 @@ h2 {
     margin: 5px 0 5px 0;
 }
 
-.sign-in-form-container > *,
-.sign-up-form-container > * {
+.sign_in_form_container > *,
+.sign_up_form_container > * {
     padding-top: 10px;
     padding-bottom: 10px;
 }
