@@ -40,6 +40,7 @@ router.get("/:id(\\d+)", asyncHandler(async (req, res) => {
     let votes;
     let votedAnswerIds;
     let votedAnswerIdsObject ={}
+    let votedOnQuestion = false
     if (req.session.auth) {
         votes = await Upvote.findAll({where:{userId:req.session.auth.userId}})
         votedAnswerIds = votes.map(vote=>vote.answerId).filter(vote=>vote!==null)
@@ -48,7 +49,6 @@ router.get("/:id(\\d+)", asyncHandler(async (req, res) => {
         }
         if(votes.filter(vote=>vote.questionId===question.id).length>0) votedOnQuestion = true
     }
-    let votedOnQuestion = false
     res.render('question-page', {votedAnswerIdsObject,votedOnQuestion,votes, question,session: req.session,questionVoteCount })
 }));
 
