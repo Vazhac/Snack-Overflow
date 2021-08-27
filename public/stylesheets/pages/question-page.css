@@ -12,16 +12,22 @@
 .upper_container {
   display: flex;
   margin: 5% 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
  .question_message_content {
    margin-left: 5%;
  }
 
+
  .comment {
    display: flex;
    padding: 5px 0;
    justify-content: space-between;
-   border-top: 1px solid rgba(0, 0, 0, 0.2);
-   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
  }
+
+ .comment span {
+  font-size: 10px;
+  color: orange;
+}

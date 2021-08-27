@@ -10,9 +10,9 @@ const { questionValidators, replyValidators } = require('../validators'); //Poss
 
 router.get("/:id(\\d+)", asyncHandler(async (req, res) => {
     let question = await Question.findByPk(req.params.id,{
-        include: [Upvote, Comment, {
-            model: Answer,
-            include: [Upvote, Comment]
+        include:[Upvote,Comment,{
+            model:Answer,
+            include:[Upvote,Comment]
             }]
         })
     let user = await User.findByPk(question.userId)
@@ -53,9 +53,9 @@ router.get("/:id(\\d+)", asyncHandler(async (req, res) => {
         }
         if(votes.filter(vote=>vote.questionId===question.id).length>0) votedOnQuestion = true
     }
-    console.log(question.Answers[0].Comments)
     res.render('question-page', {votedAnswerIdsObject,votedOnQuestion,votes, question,session: req.session,questionVoteCount })
 }));
+
 
 router.put("/:id", questionValidators, asyncHandler(async (req, res) => {
 
