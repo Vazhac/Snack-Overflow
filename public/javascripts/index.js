@@ -211,9 +211,13 @@ window.addEventListener("load", (event) => {
     if (res.message) {
       let li = document.createElement("li");
       li.id = `${type}-${res.id}`;
+      let author = document.createElement("div")
+      author.id=`${type}-author-${res.id}`
+      author.innerText=res.author
       let message = document.createElement("div")
       message.id = `${type}-message-${res.id}`
       message.innerText = res.message
+      li.append(author)
       li.append(message)
       if(type === "answer"){
         let answerVoteCount = document.createElement("div")

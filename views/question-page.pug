@@ -1,3 +1,4 @@
+div(id=`question-author-${question.id}`)=question.author
 div#title=question.title
 div#message=question.message
 div#question-vote-count=questionVoteCount
@@ -19,6 +20,7 @@ form#edit-answer-form(action="/" method="post" style="display:none")
 ul.answers
     each answer in question.Answers
         li(id=`answer-${answer.id}`)
+            div(id=`answer-author-${answer.id}`)=answer.author
             div(id=`answer-message-${answer.id}`)=answer.message
             div(id=`answer-vote-count-${answer.id}` class='answer-vote-count')=answer.voteCount
             if session.auth && !votedAnswerIdsObject[answer.id]
@@ -33,6 +35,7 @@ form#edit-comment-form(action="/" method="post" style="display:none")
 ul.comments
     each Comment in question.Comments
         li(id=`comment-${Comment.id}`)
+            div(id=`comment-author-${Comment.id}`)=Comment.author
             div(id=`comment-message-${Comment.id}`)=Comment.message
             if session.auth && session.auth.userId === Comment.userId
                 button(id=`delete-comment-${Comment.id}` class="delete-comment") Delete

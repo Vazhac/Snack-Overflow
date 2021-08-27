@@ -10,6 +10,8 @@ block content
                     each question in questions
                         div.question
                             a(href=`/questions/${question.id}`) #{question.title}
+                            //here we put the voteCount
+                            //here we put the number of answers or the total number of replies (comments+answers)
                 else
                     p No questions yet.
                 - var i = 0;
