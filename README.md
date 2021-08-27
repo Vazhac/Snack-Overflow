@@ -6,9 +6,9 @@ Snack Overflow is a website allowing you to ask food related questions and get a
 * You can read more about the project using the wiki located at: https://github.com/boromeot/snack-overflow/wiki
 * To start a development environment:
     1. Clone the repository at: https://github.com/boromeot/snack-overflow.git
-    2. Run the command "npm install" from the project root in your terminal to install dependencies
-    3. Run the command "npm start" to launch the server
-    4. Navigate to the http://localhost:8080
+    2. Run the command "npm install" from the project root folder in your terminal to install dependencies
+    3. Run the command "npm start" from the project root folder to launch the server
+    4. Navigate to http://localhost:8080
 
 ## Technologies Used
 * Javascript
@@ -25,7 +25,7 @@ Snack Overflow is a website allowing you to ask food related questions and get a
 
 ## Database Structure
 
-![](https://i.imgur.com/WD3RBkC.png)
+![](https://github.com/boromeot/snack-overflow/blob/main/public/snackoverflow_dbschema.png)
 
 ## Team Members
 * [Steven Barnett](https://github.com/StevenBarnett1)
