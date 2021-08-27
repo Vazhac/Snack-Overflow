@@ -70,7 +70,7 @@ ul.answers
             div(id=`answer-message-${answer.id}`)=answer.message
             div(id=`answer-vote-count-${answer.id}` class='answer-vote-count')=answer.voteCount
             if session.auth
-                button(id=`comment-answer-${answerId}` class="comment-answer") Comment
+                button(id=`comment-answer-${answer.id}` class="comment-answer") Comment
                 if !votedAnswerIdsObject[answer.id]
                     button(id=`upvote-answer-${answer.id}` class = "upvote-answer") Upvote
                     button(id=`downvote-answer-${answer.id}` class = "downvote-answer") Downvote
