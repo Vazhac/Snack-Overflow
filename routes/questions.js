@@ -32,6 +32,10 @@ router.get("/:id(\\d+)", asyncHandler(async (req, res) => {
         } else answer.voteCount = 0
         let user = await User.findByPk(answer.userId)
         answer.author = user.username
+        for(let comment of answer.Comments){
+            let user = await User.findByPk(comment.userId)
+            comment.author = user.username
+        }
     }
     for(let comment of question.Comments){
         let user = await User.findByPk(comment.userId)
