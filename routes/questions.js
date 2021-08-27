@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 let { User, Question, Answer, Comment, Upvote } = require("../db/models")
-
+const {Op} = require("sequelize")
 const { validationResult } = require("express-validator")
 const { csrfProtection, asyncHandler } = require('./utils')
 const { questionValidators, replyValidators } = require('../validators'); //Possibly add more comple validations for checking password complexity and confirm password complexictyu
@@ -12,7 +12,7 @@ router.get("/:id(\\d+)", asyncHandler(async (req, res) => {
     let question = await Question.findByPk(req.params.id,{
         include:[Upvote,Comment,{
             model:Answer,
-            include:[Upvote]
+            include:[Upvote,Comment]
             }]
         })
     let user = await User.findByPk(question.userId)
@@ -32,6 +32,10 @@ router.get("/:id(\\d+)", asyncHandler(async (req, res) => {
         } else answer.voteCount = 0
         let user = await User.findByPk(answer.userId)
         answer.author = user.username
+        for(let comment of answer.Comments){
+            let user = await User.findByPk(comment.userId)
+            comment.author = user.username
+        }
     }
     for(let comment of question.Comments){
         let user = await User.findByPk(comment.userId)
@@ -40,6 +44,7 @@ router.get("/:id(\\d+)", asyncHandler(async (req, res) => {
     let votes;
     let votedAnswerIds;
     let votedAnswerIdsObject ={}
+    let votedOnQuestion = false
     if (req.session.auth) {
         votes = await Upvote.findAll({where:{userId:req.session.auth.userId}})
         votedAnswerIds = votes.map(vote=>vote.answerId).filter(vote=>vote!==null)
@@ -48,7 +53,6 @@ router.get("/:id(\\d+)", asyncHandler(async (req, res) => {
         }
         if(votes.filter(vote=>vote.questionId===question.id).length>0) votedOnQuestion = true
     }
-    let votedOnQuestion = false
     res.render('question-page', {votedAnswerIdsObject,votedOnQuestion,votes, question,session: req.session,questionVoteCount })
 }));
 
@@ -191,5 +195,31 @@ router.get('/', asyncHandler(async (req, res, next) => {
     })
 }));
 
+router.post("/search", asyncHandler(async (req, res) => {
+    let {input} = req.body
+
+    // let questions = await Question.findAll({where:{
+    //     [Op.or]:[
+    //         {
+    //             title:{
+    //                 [Op.substring]: input
+    //             }
+    //         },
+    //         {
+    //             message:{
+    //                 [Op.substring]: input
+    //             }
+    //         }
+    //     ]
+    // }})
+    let questions = await Question.findAll({where:{
+        title:{
+            [Op.like]: `%${input}%`
+        }
+    }})
+    console.log(questions.map(question=>question.title))
+    console.log("input: ",input)
+    res.send(questions)
+}));
 
 module.exports = router;

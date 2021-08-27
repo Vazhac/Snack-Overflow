@@ -5,6 +5,7 @@ html
         title="Snack-Overflow"
         link(rel='stylesheet' href='/stylesheets/reset.css')
         link(rel='stylesheet' href='/stylesheets/components/layout.css')
+        script(src="../javascripts/search.js" type = "module")
   body
     //- add logo to center of navbar
     div.nav_links_container
@@ -12,6 +13,10 @@ html
         a(href='/') Home
         a(href='/questions') All Questions
       div.sign_links
+        form
+          input#search-bar(type="text")
+          input#search-submit(type="submit" value = "Submit")
+        ul#search-results(style="display:none")
         if user
           span.logged-in= `Current User: ${user.username}`
           a(href="/questions/new") Ask a question

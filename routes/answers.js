@@ -45,4 +45,15 @@ router.post("/:id(\\d+)/downvotes", asyncHandler(async (req, res) => {
     res.send()
 }));
 
+router.post("/:id(\\d+)/comments", replyValidators, asyncHandler(async (req, res) => {
+    let {message} = req.body
+    let answerId = req.params.id
+    let userId = req.session.auth.userId
+    let comment = await Comment.create({answerId,userId,message})
+    let user = await User.findByPk(userId)
+    comment.dataValues.author = user.username
+    res.send(comment)
+}));
+
+
 module.exports = router;
