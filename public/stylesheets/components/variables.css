@@ -1,5 +1,6 @@
 :root{
     --default-border-radius: 4px;
+    --default-border-color: white;
     --default-font-family: Arial, Helvetica, sans-serif;
     --color-primary: #264653;
     --color-secondary: #2a9d8f;
@@ -8,4 +9,5 @@
     --color-quinary: #e76f51;
     --button-text-color: black;
     --button-background-color: white;
+
 }
