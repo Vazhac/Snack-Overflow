@@ -1,12 +1,8 @@
 let deleteButtons = document.getElementsByClassName("delete-button")
-let questionForm = document.querySelector("#question-form")
-let replyForm = document.querySelector("#reply-form")
-let {removeAttributes, clearSubmitEventListeners} = require("./utils")
 let addEventListenerToDeleteButton = async (deleteButton,type) => {
     if(deleteButton){
         deleteButton.addEventListener("click",async (event)=> {
             let id = Number(deleteButton.id.split("-")[1])
-
             let url = `/${type}s/${id}`
             console.log("delete url: ", url)
             await fetch(url, {

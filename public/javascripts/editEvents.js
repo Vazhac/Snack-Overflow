@@ -1,29 +1,23 @@
 let editButtons = document.getElementsByClassName("edit-button")
-let questionForm = document.querySelector("#question-form")
-let replyForm = document.querySelector("#reply-form")
-let {removeAttributes, clearSubmitEventListeners} = require("./utils")
-
+let {clearForms, clearSubmitEventListeners,setFormAttributes} = require("./utils")
 
 let addEventListenerToEditButton = async (editButton,type) => {
     if(editButton){
         editButton.addEventListener("click",async (event)=> {
-            let form
-            let submit
-            if(type === "question"){
-                form = questionForm
-                clearSubmitEventListeners(document.querySelector("#question-submit"))
-                submit = document.querySelector("#question-submit")
-            } else {
-                form = replyForm
-                clearSubmitEventListeners(document.querySelector("#reply-submit"))
-                submit = document.querySelector("#reply-submit")
+            let selfId = Number(editButton.id.split("-")[1])
+            let attributes = {
+                "type":type,
+                "method":"PUT",
+                "passedId":selfId,
+                "parentType":null
             }
-            removeAttributes(form)
+            clearSubmitEventListeners()
+            clearForms()
+            let form = type === "question" ? document.querySelector("#question-form") : document.querySelector("#reply-form")
+            let submit = type === "question" ? document.querySelector("#question-submit") : document.querySelector("#reply-submit")
+            setFormAttributes(form,attributes)
             form.style.display = "block"
-            form.setAttribute("message-id",Number(editButton.id.split("-")[1]))
-            form.setAttribute("method","PUT")
-            form.setAttribute("type",type)
-            addEventListenerToSubmitButton(submit,type)
+            addEventListenerToSubmitButton(submit,form)
         })
     }
 }

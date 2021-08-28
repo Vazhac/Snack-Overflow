@@ -1,8 +1,5 @@
 let upvoteButtons = document.getElementsByClassName("upvote-button")
 let downvoteButtons = document.getElementsByClassName("downvote-button")
-let questionForm = document.querySelector("#question-form")
-let replyForm = document.querySelector("#reply-form")
-let {removeAttributes, clearSubmitEventListeners} = require("./utils")
 let addEventListenerToVoteButton = async (voteButton,type,voteType) => {
     if(voteButton){
       voteButton.addEventListener("click",async (event)=> {
