@@ -82,6 +82,7 @@ router.delete("/:id", asyncHandler(async (req, res) => {
 
 router.post("/:id(\\d+)/answers", replyValidators, asyncHandler(async (req, res) => {
     let {message} = req.body
+    console.log("message: ",message)
     let questionId = req.params.id
     const validatorErrors = validationResult(req);
     if (validatorErrors.isEmpty()) {
