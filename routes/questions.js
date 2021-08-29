@@ -182,7 +182,7 @@ router.get('/', asyncHandler(async (req, res, next) => {
     });
     for (let question of questions) {
         question.voteCount = question.Upvotes.reduce((accum, upvote) => {
-            if (upvote.isPositive) return 1
+            if (upvote.isPositive) return question.voteCount
             else return -1
         }, 0)
     }

@@ -22,28 +22,30 @@ body {
     align-items: center;
     height: 60px;
     padding: 20px 0px;
-    border-bottom: 1px solid black;
+    border-bottom: 2px solid black;
 }
 .search_bar_container {
     width: 50%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
 }
 
 #search-bar {
-    display: block;
-    width: 100%;
-    height: 40px;
+    width: 50%;
+    height: 28px;
     padding: 0px 10px;
     font-size: 1.2em;
-    background-color: white;
+    background-color: black;
+    color: white;
     border: none;
     border-radius: var(--default-border-radius);
 }
 
 #search-results {
-    position: absolute;
+    position: relative;
     width: inherit;
     height: auto;
-    display: flex;
-    flex-direction: column;
-    background-color: white;
+    background-color: black;
+    color: white;
 }

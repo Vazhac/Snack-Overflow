@@ -5,10 +5,14 @@ block content
     H1.questions_title All Questions
         div.questions_container_big
             div.questions_container.small
+                span.vote_count Vote Count
+                span.answer_count Answer Count
+                span.title_of_Question Title of Question
                 if questions.length
                     each question in questions
                         div.question
-                            span.voteCount_value Vote Count: #{question.voteCount}
+                            span.voteCount_value 👍 #{question.voteCount}
+                            span.AnswerCount_value 💬 #{question.Answers.length}
                             a(href=`/questions/${question.id}`) #{question.title}
                 else
                     p No questions yet.
