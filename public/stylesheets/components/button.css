@@ -11,7 +11,8 @@
     border: 1px solid black;
     border-radius: 4px;
     padding: 5px 10px;
-    background-color: white;
+    background-color: black;
+    color: white;
     box-shadow: 0 0 2px black;
 }
 
@@ -25,13 +26,13 @@
 }
 
 .home_links > a {
-    color: var(--button-text-color);
+    color: white;
     margin: 20px 5px 0px 5px;
     font-weight: 700;
     text-decoration: none;
-    border: 1px solid black;
+    border: 2px solid black;
     border-radius: var(--default-border-radius);
-    background-color: var(--button-background-color);
+    background-color: black;
     box-shadow: 0px 0px 1px black;
     padding: 5px;
 }
@@ -42,13 +43,13 @@
 }
 
 .logged_in {
-    color: var(--button-text-color);
+    color: white;
     margin: 20px 5px 0px 5px;
     font-weight: 700;
     text-decoration: none;
-    border: 1px solid black;
+    border: 2px solid black;
     border-radius: var(--default-border-radius);
-    background-color: var(--button-background-color);
+    background-color: black;
     box-shadow: 0px 0px 1px black;
     padding: 5px;
 }
@@ -58,13 +59,13 @@
 }
 
 .sign_links > a {
-    color: var(--button-text-color);
+    color: white;
     margin: 20px 5px 0px 5px;
     font-weight: 700;
     text-decoration: none;
     border: 1px solid black;
     border-radius: var(--default-border-radius);
-    background-color: var(--button-background-color);
+    background-color: black;
     box-shadow: 0px 0px 1px black;
     padding: 5px;
 }

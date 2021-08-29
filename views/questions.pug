@@ -5,6 +5,9 @@ block content
     H1.questions_title All Questions
         div.questions_container_big
             div.questions_container.small
+                span.vote_count Vote Count
+                span.answer_count Answer Count
+                span.title_of_Question Title of Question
                 if questions.length
                     each question in questions
                         div.question

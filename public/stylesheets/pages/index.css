@@ -66,14 +66,17 @@ section {
   display: block;
   border-radius: 3px;
   padding: 5px;
-  border: 1px solid black;
+  margin-top: 30px;
+  border: 2px solid black;
   animation: moveToTop;
   animation-duration: 2s;
-  background-color: #fff;
+  background-color: black;
+  color: white;
+  font-weight: 700;
 }
 
 .call_to_action:hover {
-  background-color: #eee;
+  background-color: #e3b150;
   color: var(--button-text-color);
 }
 
@@ -115,7 +118,7 @@ section {
 
 .footer-members {
   display: flex;
-  
+
 }
 
 .footer-item a {
