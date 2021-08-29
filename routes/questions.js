@@ -211,4 +211,19 @@ router.get('/', asyncHandler(async (req, res, next) => {
     })
     }));
 
+router.post("/search", asyncHandler(async (req, res) => {
+    let { input } = req.body
+    if(!input)res.send([])
+    let questions = await Question.findAll({
+        where: {
+            title: {
+                [Op.like]: `%${input}%`
+            }
+        }
+    })
+    res.send(questions)
+}));
+
+
+
 module.exports = router;
