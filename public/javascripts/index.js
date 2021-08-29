@@ -9,24 +9,48 @@ window.addEventListener("load", async event => {
     let downvoteButtons = document.getElementsByClassName("downvote-button")
 
 
+let createForm = () => {
+  let form = document.createElement("form")
+  let message = document.createElement("input")
+  let submit = document.createElement("input")
+  form.id = "reply-form"
+  form.style.display = "none"
+  message.setAttribute("type","text")
+  message.setAttribute("name","message")
+  message.setAttribute("placeholder","message")
+  submit.id = "reply-submit"
+  submit.classList.add("submit")
+  submit.setAttribute("type","submit")
+  submit.setAttribute("value","submit")
+  form.append(message)
+  form.append(submit)
+  return form
+}
+
 let clearSubmitEventListeners = () => {
     let oldQuestionSubmit = document.querySelector("#question-submit")
-    let oldReplySubmit = document.querySelector("#reply-submit")
     let newQuestionSubmit = oldQuestionSubmit.cloneNode(true);
-    let newReplySubmit = oldReplySubmit.cloneNode(true)
-    oldReplySubmit.parentNode.replaceChild(newReplySubmit, oldReplySubmit);
     oldQuestionSubmit.parentNode.replaceChild(newQuestionSubmit, oldQuestionSubmit)
+    let replySubmit = document.querySelector("#reply-submit")
+    if(replySubmit){
+      let oldReplySubmit = document.querySelector("#reply-submit")
+      let newReplySubmit = oldReplySubmit.cloneNode(true)
+      oldReplySubmit.parentNode.replaceChild(newReplySubmit, oldReplySubmit);
+    }
   }
 
   let removeFormAttributes = (form) => {
-    form.removeAttribute("parent-type")
-    form.removeAttribute("passed-id")
-    form.removeAttribute("type")
-    form.removeAttribute("method")
+    if(form){
+      form.removeAttribute("parent-type")
+      form.removeAttribute("passed-id")
+      form.removeAttribute("type")
+      form.removeAttribute("method")
+    }
   }
 
   let clearForms = () => {
-    document.getElementById("reply-form").style.display = "none"
+    let replyForm = document.getElementById("reply-form")
+    if(replyForm)replyForm.remove()
     document.getElementById("question-form").style.display = "none"
     removeFormAttributes(document.querySelector("#reply-form"))
     removeFormAttributes(document.querySelector("#question-form"))
@@ -141,7 +165,6 @@ let clearSubmitEventListeners = () => {
                 let body = {}
                 let {type,method,passedId,parentType} = getFormAttributes(form)
                 console.log(type,method,passedId,parentType)
-                //might need to get this form again, dont know if it will be the old version without the input values
                 for(let input of form.children){
                     if (input.name === "message"){
                         body.message = input.value
@@ -170,12 +193,14 @@ let clearSubmitEventListeners = () => {
                     if(type === "question"){
                         document.getElementById("title").innerText = res.title;
                         document.getElementById("message").innerText = res.message;
+                        form.style.display = "none"
+                        return
                     } else if (method === "PUT"){
                         document.getElementById(`${type}-${res.id}-message`).innerText = res.message;
                     } else if (method === "POST"){
                         createNewElement(type,res,parentType,passedId)
                     }
-                    form.style.display = "none"
+                    form.remove()
                 } else {
                     for (let error of res) {
                     let li = document.createElement("li");
@@ -233,8 +258,10 @@ let clearSubmitEventListeners = () => {
             }
               clearSubmitEventListeners()
               clearForms()
-              let form = document.querySelector("#reply-form")
-              let submit = document.querySelector("#reply-submit")
+              let form = createForm()
+              let parent = document.getElementById(`${parentType}-${parentId}`)
+              let submit = form.children[1]
+              parent.append(form)
               setFormAttributes(form,attributes)
               form.style.display = "block"
               addEventListenerToSubmitButton(submit,form)
@@ -268,8 +295,17 @@ let clearSubmitEventListeners = () => {
                 }
                 clearSubmitEventListeners()
                 clearForms()
-                let form = type === "question" ? document.querySelector("#question-form") : document.querySelector("#reply-form")
-                let submit = type === "question" ? document.querySelector("#question-submit") : document.querySelector("#reply-submit")
+                let form
+                let submit
+                if(type === "question"){
+                  form = document.querySelector("#question-form")
+                  submit = document.querySelector("#question-submit")
+                } else {
+                  form = createForm()
+                  submit = form.children[1]
+                  let parent = document.getElementById(`${type}-${selfId}`)
+                  parent.append(form)
+                }
                 setFormAttributes(form,attributes)
                 form.style.display = "block"
                 addEventListenerToSubmitButton(submit,form)
