@@ -297,6 +297,7 @@ let clearSubmitEventListeners = () => {
             if (voteType === "upvote")scoreChange = 1
             else if (voteType === "downvote")scoreChange = -1
               let id = Number(voteButton.id.split("-")[1])
+              console.log(type,id,voteType)
               await fetch(`/${type}s/${id}/${voteType}s`,{
                 method:"POST"
               })

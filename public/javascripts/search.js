@@ -1,6 +1,5 @@
 
 let search = document.getElementById("search-bar")
-let searchSubmit = document.getElementById("search-submit")
 
 search.addEventListener("keyup",async (event)=> {
     let searchResults = document.getElementById("search-results")
@@ -12,6 +11,9 @@ search.addEventListener("keyup",async (event)=> {
         oldResult.remove()
     }
     let input = event.target.value
+    console.log(input)
+    if(!input)searchResults.style.display="none"
+    if(input.length){
     let res = await fetch("/questions/search",{
         method:"POST",
         headers:{
@@ -28,6 +30,7 @@ search.addEventListener("keyup",async (event)=> {
         title.classList.add("search-title")
         title.innerText = question.title
         link.href=`/questions/${question.id}`
+        link.style.textDecoration = "none"
         link.append(title)
         result.append(link)
         searchResults.append(result)
@@ -35,9 +38,6 @@ search.addEventListener("keyup",async (event)=> {
     searchResults.style.display="block"
     searchResults.style.overflow = "scroll"
     searchResults.style.height = "100px"
-})
-
-searchSubmit.addEventListener("click",async(event)=>{
-    event.preventDefault()
+}
 
 })

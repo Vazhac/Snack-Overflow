@@ -180,6 +180,7 @@ router.get('/', asyncHandler(async (req, res, next) => {
         limit: numberOfLinks,
         orderBy: [["id", "DESC"]]
     });
+    
     for (let question of questions) {
         question.voteCount = question.Upvotes.reduce((accum, upvote) => {
             if (upvote.isPositive) return 1
@@ -197,22 +198,9 @@ router.get('/', asyncHandler(async (req, res, next) => {
 }));
 
 router.post("/search", asyncHandler(async (req, res) => {
-    let { input } = req.body
 
-    // let questions = await Question.findAll({where:{
-    //     [Op.or]:[
-    //         {
-    //             title:{
-    //                 [Op.substring]: input
-    //             }
-    //         },
-    //         {
-    //             message:{
-    //                 [Op.substring]: input
-    //             }
-    //         }
-    //     ]
-    // }})
+    let {input} = req.body
+    if(!input)res.send([])
     let questions = await Question.findAll({
         where: {
             title: {
@@ -220,8 +208,7 @@ router.post("/search", asyncHandler(async (req, res) => {
             }
         }
     })
-    console.log(questions.map(question => question.title))
-    console.log("input: ", input)
+
     res.send(questions)
 }));
 
