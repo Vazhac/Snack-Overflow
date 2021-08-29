@@ -56,6 +56,7 @@ router.get("/:id(\\d+)", asyncHandler(async (req, res) => {
     res.render('question-page', { votedAnswerIdsObject, votedOnQuestion, votes, question, session: req.session, questionVoteCount })
 }));
 
+
 router.put("/:id", questionValidators, asyncHandler(async (req, res) => {
 
     let question = await Question.findByPk(req.params.id);
