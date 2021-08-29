@@ -7,65 +7,65 @@ body {
 }
 
 .questions_title {
-    background-color: blanchedalmond;
+    background-color: white;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     font-size: 32px;
+    width: 20%;
     margin: auto;
+    margin-top: 25px;
     font-family: var(--default-font-family);
     font-weight: 900;
-    color: darkgoldenrod;
+    color: var(--default-font-color);
     padding: 20px 0;
+    border: 1px solid var(white);
+    border-radius: var(--default-border-radius);
 }
 
-.questions_container {
-    display: flex;
-    background-color: white;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 80%;
-    height: 100%;
-    margin: auto;
+.questions_container_big {
+    width: 50%;
     box-shadow: 0 0 3px black;
-}
-
-.questions {
-    font-family: var(--default-font-family);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: left;
-    width: 100%;
-    text-decoration: none;
-    font-weight: 700;
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    border: 1px solid var(--default-border-color);
+    border-radius: var(--default-border-radius);
     background-color: white;
+    padding: 20px;
 }
 
-/* fit link to question container */
-.questions a {
-    font-family: var(--default-font-family);
-    display: flex;
-    padding-left: 25%;
-    flex-direction: column;
-    justify-content: center;
-    align-items: left;
-    width: 100%;
-    height: 80px;
-    text-decoration: none;
-    font-weight: 700;
-}
 
 .question {
-    font-family: var(--default-font-family);
-    /* border-top: 1px solid black; */
+    display: flex;
+    background-color: white;
+    flex-direction: row;
+    width: 100%;
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 
-/* keep html color as white */
-.questions a:hover {
-    background-color: #eee;
-    color: black;
+.question > span,
+.question > a {
+    display: flex;
+    height: 80px;
+    align-items: center;
+}
+
+.question > span {
+    width: 20%;
+}
+
+.question > a {
+    font-family: serif;
+    text-decoration: none;
+    width: 80%;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.question a:hover {
+   background-color: #eee;
+   color: black;
 }

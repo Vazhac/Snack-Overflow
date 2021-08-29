@@ -1,3 +1,5 @@
+extends layout
+block content
 div(id=`question-author-${question.id}`)=question.author
 div#title=question.title
 div#message=question.message
@@ -53,5 +55,5 @@ if session.auth
         if session.auth && session.auth.userId === question.userId
             button(id=`question-${question.id}-delete-button` class="question-delete-button delete-button") Delete
             button(id=`question-${question.id}-edit-button` class="question-edit-button edit-button") Edit
-
+        
 script(src='../javascripts/index.js' type='module')

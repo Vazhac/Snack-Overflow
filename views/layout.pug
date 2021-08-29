@@ -7,21 +7,21 @@ html
         link(rel='stylesheet' href='/stylesheets/components/layout.css')
         script(src="../javascripts/search.js" type = "module")
   body
+    //- add logo to center of navbar
     div.nav_links_container
       div.home_links
         a(href='/') Home
         a(href='/questions') All Questions
-      div.sign_links
-        form
-          input#search-bar(type="text")
-          input#search-submit(type="submit" value = "Submit")
+      div.search_bar_container
+        input#search-bar(type="text" placeholder="Search for a question")
         ul#search-results(style="display:none")
+      div.sign_links
         if user
-          span.logged-in= `Current User: ${user.username}`
-          a(href="/questions/new") Ask a question
+          span.logged_in= `Current User: ${user.username}`
+          a(href="/questions/new") Ask A Question
           a(href='/users/signout') Sign Out
         else
-          a(href="/questions/new") Ask a question
+          a(href="/questions/new") Ask A Question
           a(href='/users/signup') Sign Up
           a(href='/users/signin') Sign In
         end

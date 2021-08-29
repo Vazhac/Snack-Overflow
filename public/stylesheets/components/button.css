@@ -20,6 +20,10 @@
     color: black;
 }
 
+.home_links {
+    width: 25%;
+}
+
 .home_links > a {
     color: var(--button-text-color);
     margin: 20px 5px 0px 5px;
@@ -32,9 +36,12 @@
     padding: 5px;
 }
 
+.home_links > a:hover {
+    background-color: #e3b150;
+    color: var(--button-text-color);
+}
 
-
-.logged-in {
+.logged_in {
     color: var(--button-text-color);
     margin: 20px 5px 0px 5px;
     font-weight: 700;
@@ -44,6 +51,10 @@
     background-color: var(--button-background-color);
     box-shadow: 0px 0px 1px black;
     padding: 5px;
+}
+
+.sign_links {
+    width: 25%;
 }
 
 .sign_links > a {
