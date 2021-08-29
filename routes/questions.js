@@ -198,28 +198,13 @@ router.get('/', asyncHandler(async (req, res, next) => {
 
 router.post("/search", asyncHandler(async (req, res) => {
     let {input} = req.body
-
-    // let questions = await Question.findAll({where:{
-    //     [Op.or]:[
-    //         {
-    //             title:{
-    //                 [Op.substring]: input
-    //             }
-    //         },
-    //         {
-    //             message:{
-    //                 [Op.substring]: input
-    //             }
-    //         }
-    //     ]
-    // }})
+    if(!input)res.send([])
     let questions = await Question.findAll({where:{
         title:{
-            [Op.like]: `%${input}%`
-        }
+            [Op.iLike]: `%${input}%`
+        },
     }})
-    console.log(questions.map(question=>question.title))
-    console.log("input: ",input)
+
     res.send(questions)
 }));
 
