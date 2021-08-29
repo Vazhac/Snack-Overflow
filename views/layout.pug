@@ -18,10 +18,10 @@ html
       div.sign_links
         if user
           span.logged_in= `Current User: ${user.username}`
-          a(href="/questions/new") Ask A Question
+          a(href="/questions/new") Ask a Question
           a(href='/users/signout') Sign Out
         else
-          a(href="/questions/new") Ask A Question
+          a(href="/questions/new") Ask a Question
           a(href='/users/signup') Sign Up
           a(href='/users/signin') Sign In
         end
