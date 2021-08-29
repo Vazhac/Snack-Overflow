@@ -14,36 +14,40 @@
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
+
 .post_layout {
   display: flex;
   flex-direction: column;
   padding: 3% 0;
+  padding-left: 3%;
   border-bottom: 1px solid black;
 }
 .upper_container {
   display: flex;
   padding: 5% 0;
+  flex: 1 50px
 }
 
- .question_message_content {
-   margin-left: 5%;
- }
+.votes_container {
+  justify-self: left;
+}
 
- .form_actions {
-   display: flex;
-   justify-content: space-between;
- }
+.message_container {
+  margin-left: 3%;
+}
 
- .comments_container {
-   margin-left: 3%;
- }
 
- .comment {
-   display: flex;
-   padding: 5px 0;
-   justify-content: space-between;
-   border-top: 1px solid rgba(0, 0, 0, 0.1);
- }
+ /*Comments*/
+.comments_container {
+  margin-left: 3%;
+}
+
+.comment {
+  display: flex;
+  padding: 5px 0;
+  justify-content: space-between;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
 
 .comment_message {
   font-size: 10px;

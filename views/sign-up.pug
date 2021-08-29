@@ -1,14 +1,25 @@
 extend layout
 block content
-    h2 Sign Up
-    if errors.length
-        each error in errors
-            li #{error}
-    form(action="/users/signup" method="post")
-        input(type="hidden", name="_csrf" value=csrfToken)
-        input(type='text' name='username' placeholder="Username")
-        input(type="password" name="password" placeholder="Password")
-        input(type="password" name="confirmPassword" placeholder="Confirm Password")
-        input(type="email" name="email" placeholder="Email")
-        button(type="submit" value="submit") Sign Up
-    a(href='/users/signin') Already have an account? Log in here.
+    link(rel="stylesheet" href="/stylesheets/pages/form.css")
+    div.sign_up_form_container
+        h2 Sign Up
+        if errors.length
+            each error in errors
+                li #{error}
+        form.sign_up_form(action="/users/signup" method="post")
+            input(type="hidden", name="_csrf" value=csrfToken)
+            div.username
+                input(type='text' name='username' placeholder="Username")
+            div.password
+                input(type="password" name="password" placeholder="Password")
+            div.password
+                input(type="password" name="confirmPassword" placeholder="Confirm Password")
+            div.email
+                input(type="email" name="email" placeholder="Email")
+            div.sub_cancel_buttons
+                div.submit_button
+                    button(type="submit" value="submit") Sign Up
+                div.cancel_button
+                    a(href="/") Cancel
+            div.links
+                a(href='/users/signin') Already have an account? Log in here.

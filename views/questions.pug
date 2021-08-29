@@ -3,15 +3,13 @@ block content
     link(rel="stylesheet" href="/stylesheets/components/layout.css")
     link(rel="stylesheet" href="/stylesheets/pages/questions.css")
     H1.questions_title All Questions
-    div.background_color
-        div.questions_container
-            div.questions
+        div.questions_container_big
+            div.questions_container.small
                 if questions.length
                     each question in questions
                         div.question
+                            span.voteCount_value Vote Count: #{question.voteCount}
                             a(href=`/questions/${question.id}`) #{question.title}
-                            //here we put the voteCount
-                            //here we put the number of answers or the total number of replies (comments+answers)
                 else
                     p No questions yet.
                 - var i = 0;
@@ -48,3 +46,4 @@ block content
                     a(href=`/questions?page=${amountOfPages}`) Page #{k}
                     if pageNumber !== amountOfPages
                         a(href=`/questions?page=${nextPage}`) Next
+    script(src='../javascripts/index.js' type='module')
