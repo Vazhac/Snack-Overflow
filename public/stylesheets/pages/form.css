@@ -1,52 +1,118 @@
-.new_question_form_container {
-    border: 1px solid black;
-    background-color: #eeeeee;
-    width: 50%;
-    height: 500px;
-    padding: 20px;
-    border-radius: 4px;
-    box-shadow: 0 0 2px black;
+body {
+    width: 100%;
     margin: auto;
+    background-color: black;
+}
+
+.ask_title {
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    width: 20%;
+    margin: auto;
+    margin-top: 25px;
+    font-family: var(--default-font-family);
+    font-weight: 900;
+    color: var(--default-font-color);
+    border: 1px solid var(white);
+    border-radius: var(--default-border-radius);
+}
+
+.new_question_form_container {
+    width: 50%;
+    box-shadow: 0 0 3px black;
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    border: 1px solid var(--default-border-color);
+    border-radius: var(--default-border-radius);
+    background-color: white;
+    padding-bottom: 10px;
+    padding: 20px;
 }
 
 .new_question_form {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    align-items: center;
     height: 100%;
+}
+
+.new_question_form > li{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 10px;
+    color: red;
+    font-size: 14px;
+}
+
+label {
+    display: flex;
+    width: 100%;
+    font-size: 20px;
+    justify-content: left;
+    font-weight: 700;
+    font-size: 20px;
     margin: 5px 0 5px 0;
 }
 
+input {
+    font-family: var(--default-font-family);
+    width: 100%;
+    border-radius: var(--default-border-radius);
+}
+
+input:focus {
+    box-shadow: 0 0 3pt 2pt cornflowerblue;
+}
+
 textarea{
+    font-family: var(--default-font-family);
     min-width: 100%;
     max-width: 100%;
     min-height: 300px;
     max-height: 300px;
+    border-radius: var(--default-border-radius);
+}
+
+textarea:focus {
+    box-shadow: 0 0 3pt 2pt cornflowerblue;
+}
+
+.cancel_button {
+    font-family: var(--default-font-family);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .cancel_button > a {
-    justify-content: right;
+    font-family: var(--default-font-family);
     color: black;
     margin: 5px 0 5px 0;
     font-weight: 700;
+}
+
+.cancel_button > a:hover {
+    box-shadow: 0 0 3pt 2pt red;
 }
 
 button {
+    font-family: var(--default-font-family);
     box-shadow: 0 0 2px black;
     background-color: #eeeeee;
-    margin: 5px 0 5px 0;
+    margin: 10px 0 10px 0;
+    padding: 5px;
+    width: 50%;
+    align-items: center;
 }
 
-label {
-    font-weight: 700;
-    font-size: 20px;
-}
-
-.ask_title {
-    text-align: center;
-    color: black;
-    font-weight: 700;
-    font-size: 54px;
+button:hover {
+    box-shadow: 0 0 3pt 2pt cornflowerblue;
 }
 
 h2 {
@@ -58,6 +124,9 @@ h2 {
 
 .sign_up_form_container,
 .sign_in_form_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     border: 1px solid black;
     background-color: blanchedalmond;
     width: 20%;
@@ -68,27 +137,62 @@ h2 {
     left: 50%;
     position: absolute;
     transform: translate(-50%, -50%);
+    padding-top: 20px;
+    padding-bottom: 20px;
 }
 
-.sign_up_form > *,
-.sign_in_form > * {
+.sign_in_form_container li,
+.sign_up_form_container li {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-direction: column;
-    height: 100%;
-    margin: 5px 0 5px 0;
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 10px;
+    color: red;
 }
 
-.sign_in_form_container > *,
-.sign_up_form_container > * {
-    padding-top: 10px;
-    padding-bottom: 10px;
+.sign_in_form input,
+.sign_up_form input {
+    width: 100%;
+    height: 30px;
+    border-radius: 4px;
+    border: 1px solid black;
+    margin: 10px 0 10px 0;
+}
+
+.sign_up_form > input:focus,
+.sign_in_form > input:focus {
+    box-shadow: 0 0 3pt 2pt cornflowerblue;
+}
+
+
+.submit_button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.submit_button > button:hover {
+    box-shadow: 0 0 3pt 2pt cornflowerblue;
+}
+
+.submit_button > button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40%;
+    font-family: var(--default-font-family);
+    box-shadow: 0 0 2px black;
+    background-color: #eeeeee;
 }
 
 .links > a {
+    display: flex;
     justify-content: center;
     text-decoration: none;
     color: black;
-    margin: 5px 0 5px 0;
+}
+
+.links > a:hover {
+    box-shadow: 0 0 3pt 2pt cornflowerblue;
 }
