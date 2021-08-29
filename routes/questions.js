@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 let { User, Question, Answer, Comment, Upvote } = require("../db/models")
-const {Op} = require("sequelize")
+const { Op } = require("sequelize")
 const { validationResult } = require("express-validator")
 const { csrfProtection, asyncHandler } = require('./utils')
 const { questionValidators, replyValidators } = require('../validators'); //Possibly add more comple validations for checking password complexity and confirm password complexictyu
@@ -9,51 +9,51 @@ const { questionValidators, replyValidators } = require('../validators'); //Poss
 /* GET questions listing. */
 
 router.get("/:id(\\d+)", asyncHandler(async (req, res) => {
-    let question = await Question.findByPk(req.params.id,{
-        include:[Upvote,Comment,{
-            model:Answer,
-            include:[Upvote,Comment]
-            }]
-        })
+    let question = await Question.findByPk(req.params.id, {
+        include: [Upvote, Comment, {
+            model: Answer,
+            include: [Upvote, Comment]
+        }]
+    })
     let user = await User.findByPk(question.userId)
     question.author = user.username
     let questionVoteCount = 0
-    for(let upvote of question.Upvotes){
-        if(upvote.isPositive)questionVoteCount++
+    for (let upvote of question.Upvotes) {
+        if (upvote.isPositive) questionVoteCount++
         else questionVoteCount--
     }
 
-    for(let answer of question.Answers){
-        if(answer.Upvotes.length){
-            answer.voteCount=answer.Upvotes.reduce((accum,vote)=>{
-                if(vote.isPositive)return accum+1
-                else return accum-1
-            },0)
+    for (let answer of question.Answers) {
+        if (answer.Upvotes.length) {
+            answer.voteCount = answer.Upvotes.reduce((accum, vote) => {
+                if (vote.isPositive) return accum + 1
+                else return accum - 1
+            }, 0)
         } else answer.voteCount = 0
         let user = await User.findByPk(answer.userId)
         answer.author = user.username
-        for(let comment of answer.Comments){
+        for (let comment of answer.Comments) {
             let user = await User.findByPk(comment.userId)
             comment.author = user.username
         }
     }
-    for(let comment of question.Comments){
+    for (let comment of question.Comments) {
         let user = await User.findByPk(comment.userId)
         comment.author = user.username
     }
     let votes;
     let votedAnswerIds;
-    let votedAnswerIdsObject ={}
+    let votedAnswerIdsObject = {}
     let votedOnQuestion = false
     if (req.session.auth) {
-        votes = await Upvote.findAll({where:{userId:req.session.auth.userId}})
-        votedAnswerIds = votes.map(vote=>vote.answerId).filter(vote=>vote!==null)
-        for(let answerId of votedAnswerIds){
-            votedAnswerIdsObject[answerId]=true
+        votes = await Upvote.findAll({ where: { userId: req.session.auth.userId } })
+        votedAnswerIds = votes.map(vote => vote.answerId).filter(vote => vote !== null)
+        for (let answerId of votedAnswerIds) {
+            votedAnswerIdsObject[answerId] = true
         }
-        if(votes.filter(vote=>vote.questionId===question.id).length>0) votedOnQuestion = true
+        if (votes.filter(vote => vote.questionId === question.id).length > 0) votedOnQuestion = true
     }
-    res.render('question-page', {votedAnswerIdsObject,votedOnQuestion,votes, question,session: req.session,questionVoteCount })
+    res.render('question-page', { votedAnswerIdsObject, votedOnQuestion, votes, question, session: req.session, questionVoteCount })
 }));
 
 
@@ -82,7 +82,8 @@ router.delete("/:id", asyncHandler(async (req, res) => {
 }));
 
 router.post("/:id(\\d+)/answers", replyValidators, asyncHandler(async (req, res) => {
-    let {message} = req.body
+    let { message } = req.body
+    console.log("message: ", message)
     let questionId = req.params.id
     const validatorErrors = validationResult(req);
     if (validatorErrors.isEmpty()) {
@@ -97,7 +98,7 @@ router.post("/:id(\\d+)/answers", replyValidators, asyncHandler(async (req, res)
 }));
 
 router.post("/:id(\\d+)/comments", replyValidators, asyncHandler(async (req, res) => {
-    let {message} = req.body
+    let { message } = req.body
     let questionId = req.params.id
     const validatorErrors = validationResult(req);
     if (validatorErrors.isEmpty()) {
@@ -115,7 +116,7 @@ router.post("/:id(\\d+)/upvotes", asyncHandler(async (req, res) => {
     let questionId = req.params.id
     let userId = req.session.auth.userId
     let isPositive = true
-    await Upvote.create({questionId,userId,isPositive})
+    await Upvote.create({ questionId, userId, isPositive })
     res.send()
 }));
 
@@ -123,7 +124,7 @@ router.post("/:id(\\d+)/downvotes", asyncHandler(async (req, res) => {
     let questionId = req.params.id
     let userId = req.session.auth.userId
     let isPositive = false
-    await Upvote.create({questionId,userId,isPositive})
+    await Upvote.create({ questionId, userId, isPositive })
     res.send()
 }));
 
@@ -180,11 +181,12 @@ router.get('/', asyncHandler(async (req, res, next) => {
         limit: numberOfLinks,
         orderBy: [["id", "DESC"]]
     });
-    for(let question of questions){
-        question.voteCount = question.Upvotes.reduce((accum,upvote)=>{
-            if(upvote.isPositive)return 1
+    
+    for (let question of questions) {
+        question.voteCount = question.Upvotes.reduce((accum, upvote) => {
+            if (upvote.isPositive) return 1
             else return -1
-        },0)
+        }, 0)
     }
     res.render('questions', {
         questions,
@@ -197,29 +199,17 @@ router.get('/', asyncHandler(async (req, res, next) => {
 }));
 
 router.post("/search", asyncHandler(async (req, res) => {
-    let {input} = req.body
 
-    // let questions = await Question.findAll({where:{
-    //     [Op.or]:[
-    //         {
-    //             title:{
-    //                 [Op.substring]: input
-    //             }
-    //         },
-    //         {
-    //             message:{
-    //                 [Op.substring]: input
-    //             }
-    //         }
-    //     ]
-    // }})
-    let questions = await Question.findAll({where:{
-        title:{
-            [Op.like]: `%${input}%`
+    let {input} = req.body
+    if(!input)res.send([])
+    let questions = await Question.findAll({
+        where: {
+            title: {
+                [Op.like]: `%${input}%`
+            }
         }
-    }})
-    console.log(questions.map(question=>question.title))
-    console.log("input: ",input)
+    })
+
     res.send(questions)
 }));
 
