@@ -166,51 +166,50 @@ router.post('/new', csrfProtection, questionValidators, asyncHandler(async (req,
 }));
 
 router.get('/', asyncHandler(async (req, res, next) => {
-    const numberOfLinks = 5;
-    const amountOfQuestions = await Question.count();
-    const amountOfPages = Math.ceil(amountOfQuestions / numberOfLinks)
-    let pageNumber = 1;
+    const totalQuestions = await Question.count();
+    const amountOfPages = Math.ceil(totalQuestions / 5)
+    let currentPage = 1;
     if (req.query.page) {
-        pageNumber = Number(req.query.page); //pageNumber will be a string if this statement is ran
+        currentPage = Number(req.query.page);
+        if(currentPage>amountOfPages){
+            res.redirect("/questions")
+        }
     }
-    const nextPage = pageNumber + 1;
-    const prevPage = pageNumber - 1;
+    let pageNumbers = [currentPage]
+    let length = amountOfPages >= 5 ? 5 : amountOfPages
+    let lowerPage = currentPage-1
+    let upperPage = currentPage+1
+    while(pageNumbers.length < length){
+        if(upperPage <= amountOfPages){
+            pageNumbers.push(upperPage)
+            upperPage++
+        }
+        if(lowerPage){
+            pageNumbers.push(lowerPage)
+            lowerPage--
+        }
+    }
+    pageNumbers.sort()
     const questions = await Question.findAll({
         include: [Answer, Comment, Upvote],
-        offset: (pageNumber - 1) * numberOfLinks,
-        limit: numberOfLinks,
+        offset: (currentPage - 1) * 5,
+        limit: 5,
         orderBy: [["id", "DESC"]]
     });
-    
+
     for (let question of questions) {
         question.voteCount = question.Upvotes.reduce((accum, upvote) => {
-            if (upvote.isPositive) return 1
-            else return -1
+            if (upvote.isPositive) return accum + 1
+            else return accum -1
         }, 0)
     }
     res.render('questions', {
         questions,
         session: req.session,
         amountOfPages,
-        nextPage,
-        prevPage,
-        pageNumber
+        pageNumbers,
+        currentPage
     })
-}));
-
-router.post("/search", asyncHandler(async (req, res) => {
-
-    let {input} = req.body
-    if(!input)res.send([])
-    let questions = await Question.findAll({
-        where: {
-            title: {
-                [Op.like]: `%${input}%`
-            }
-        }
-    })
-
-    res.send(questions)
-}));
+    }));
 
 module.exports = router;
