@@ -180,6 +180,7 @@ router.get('/', asyncHandler(async (req, res, next) => {
         limit: numberOfLinks,
         orderBy: [["id", "DESC"]]
     });
+    
     for (let question of questions) {
         question.voteCount = question.Upvotes.reduce((accum, upvote) => {
             if (upvote.isPositive) return 1
