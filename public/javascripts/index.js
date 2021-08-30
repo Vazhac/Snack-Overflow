@@ -344,21 +344,30 @@ window.addEventListener("load", async event => {
     }
   }
 
-  let addEventListenerToDeleteButton = async (deleteButton, type) => {
-    if (deleteButton) {
-      deleteButton.addEventListener("click", async (event) => {
-        let id = Number(deleteButton.id.split("-")[1])
-        let url = `/${type}s/${id}`
-        await fetch(url, {
-          method: "delete",
-        });
-        if (type === "question") {
-          window.location = "/"
-        } else {
-          let reply = document.querySelector(`#${type}-${id}`)
-          reply.remove();
-        }
-      })
+
+  let addEventListenerToDeleteButton = async (deleteButton,type) => {
+      if(deleteButton){
+          deleteButton.addEventListener("click",async (event)=> {
+              let id = Number(deleteButton.id.split("-")[1])
+              let url = `/${type}s/${id}`
+              await fetch(url, {
+                  method: "delete",
+                });
+              if(type === "question"){
+                  window.location = "/"
+              }else{
+                  let reply = document.querySelector(`#${type}-${id}`)
+                  reply.remove();
+                  if(type === "answer"){
+                    let answerContainer = document.querySelector(".answers")
+                    console.log(answerContainer)
+                    if(answerContainer.children.length===1){
+                      document.querySelector(".answer_header").style.display="none"
+                    }
+                  }
+              }
+          })
+      }
     }
   }
 
