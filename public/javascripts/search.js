@@ -11,7 +11,6 @@ search.addEventListener("keyup", async (event) => {
         oldResult.remove()
     }
     let input = event.target.value
-    console.log(input)
     if (!input) searchResults.style.display = "none"
     if (input.length) {
         let res = await fetch("/questions/search", {
@@ -35,7 +34,7 @@ search.addEventListener("keyup", async (event) => {
             result.append(link)
             searchResults.append(result)
         }
-        searchResults.style.display = "block"
-        searchResults.style.height = "100px"
+        searchResults.style.display="block"
+        searchResults.style.height="100px"
     }
 })
