@@ -171,20 +171,20 @@ router.get('/', asyncHandler(async (req, res, next) => {
     let currentPage = 1;
     if (req.query.page) {
         currentPage = Number(req.query.page);
-        if(currentPage>amountOfPages){
+        if (currentPage > amountOfPages) {
             res.redirect("/questions")
         }
     }
     let pageNumbers = [currentPage]
     let length = amountOfPages >= 5 ? 5 : amountOfPages
-    let lowerPage = currentPage-1
-    let upperPage = currentPage+1
-    while(pageNumbers.length < length){
-        if(upperPage <= amountOfPages){
+    let lowerPage = currentPage - 1
+    let upperPage = currentPage + 1
+    while (pageNumbers.length < length) {
+        if (upperPage <= amountOfPages) {
             pageNumbers.push(upperPage)
             upperPage++
         }
-        if(lowerPage){
+        if (lowerPage) {
             pageNumbers.push(lowerPage)
             lowerPage--
         }
@@ -200,7 +200,7 @@ router.get('/', asyncHandler(async (req, res, next) => {
     for (let question of questions) {
         question.voteCount = question.Upvotes.reduce((accum, upvote) => {
             if (upvote.isPositive) return accum + 1
-            else return accum -1
+            else return accum - 1
         }, 0)
     }
     res.render('questions', {
@@ -210,15 +210,15 @@ router.get('/', asyncHandler(async (req, res, next) => {
         pageNumbers,
         currentPage
     })
-    }));
+}));
 
 router.post("/search", asyncHandler(async (req, res) => {
     let { input } = req.body
-    if(!input)res.send([])
+    if (!input) res.send([])
     let questions = await Question.findAll({
         where: {
             title: {
-                [Op.like]: `%${input}%`
+                [Op.iLike]: `%${input}%`
             }
         }
     })
