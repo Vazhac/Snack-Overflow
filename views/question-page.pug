@@ -36,7 +36,7 @@ block content
                     input#question-submit.submit(type="submit" value="submit")
 
         .answers
-            .answer_header
+            .answer_header(style="display:none")
                 span Answers
             each answer in question.Answers
                 div(id=`answer-${answer.id}` class='post_layout')
