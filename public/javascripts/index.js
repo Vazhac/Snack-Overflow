@@ -11,11 +11,10 @@ window.addEventListener("load", async event => {
 
 let createForm = () => {
   let form = document.createElement("form")
-  let message = document.createElement("input")
+  let message = document.createElement("textarea")
   let submit = document.createElement("input")
   form.id = "reply-form"
   form.style.display = "none"
-  message.setAttribute("type","text")
   message.setAttribute("name","message")
   message.setAttribute("placeholder","message")
   submit.id = "reply-submit"
@@ -167,7 +166,7 @@ let clearSubmitEventListeners = () => {
                 console.log(type,method,passedId,parentType)
                 for(let input of form.children){
                     if (input.name === "message"){
-                        body.message = input.value
+                        body.message = input.innerText
                     } else if (input.name === "title"){
                         body.title = input.value
                     }
@@ -257,8 +256,6 @@ let clearSubmitEventListeners = () => {
               let form = createForm()
               let parent = document.getElementById(`${parentType}-${parentId}`)
               let submit = form.children[1]
-              console.log("parent: ", parent, parentType, parentId)
-              //parent.append(form)
               setFormAttributes(form,attributes)
               form.style.display = "block"
               addEventListenerToSubmitButton(submit,form)
