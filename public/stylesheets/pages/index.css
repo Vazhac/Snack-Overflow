@@ -1,5 +1,9 @@
 @import "../animations.css";
 
+html{
+overflow: hidden; 
+}
+
 h1 {
   color: #555555;
 }
@@ -8,7 +12,7 @@ h1 {
 }
 
 body {
-  background-color: white;
+  background-color: #264653;
   width: 100%;
   margin: auto;
 }
@@ -22,12 +26,13 @@ section {
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: 60vh;
+  min-height: 45vh;
   padding: 100px 20vw;
 }
 
-.odd {
+section.odd {
   background-color: #e9c46a;
+  height: 200px;
 }
 
 .even {
@@ -80,22 +85,25 @@ section {
   color: var(--button-text-color);
 }
 
-.spacer {
-  aspect-ratio: 960/300;
-  width: 100%;
+.spacer.layer {
+    display: flex;
+  /* width: 1600px;  */
+  background-image: url("../../images/layered-waves-2.svg");
+  height: 500px;
+  background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  background-size: cover;
-}
-
-.layer {
-  background-image: url("../../images/layered-waves-2.svg");
+  
 }
 
 .footer {
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: absolute;
+  bottom: 5%;
+  left: 30%;
+  max-height: 60px;
   justify-content: center;
   background-color: #264653;
   color: white;
@@ -107,6 +115,7 @@ section {
   margin: 0 5px;
   align-items: center;
   justify-content: space-around;
+  
   width: 150px;
   font-size: 20px;
   height: 25px;
@@ -118,7 +127,6 @@ section {
 
 .footer-members {
   display: flex;
-
 }
 
 .footer-item a {

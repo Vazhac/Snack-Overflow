@@ -1,8 +1,17 @@
+body {
+  width: 100%;
+  margin: auto;
+  background-image: url("../../images/layered-waves-3.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 .content {
-  margin: 3% 0;
+  margin: 3% 3%;
   display: flex;
   align-items: center;
   flex-direction: column;
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 .question,
