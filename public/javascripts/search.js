@@ -34,8 +34,7 @@ search.addEventListener("keyup", async (event) => {
             result.append(link)
             searchResults.append(result)
         }
-        searchResults.style.display = "block"
-        searchResults.style.height = "100px"
+        searchResults.style.display="block"
+        searchResults.style.height="100px"
     }
-
 })
