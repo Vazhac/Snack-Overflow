@@ -83,7 +83,6 @@ router.delete("/:id", asyncHandler(async (req, res) => {
 
 router.post("/:id(\\d+)/answers", replyValidators, asyncHandler(async (req, res) => {
     let { message } = req.body
-    console.log("message: ", message)
     let questionId = req.params.id
     const validatorErrors = validationResult(req);
     if (validatorErrors.isEmpty()) {
@@ -208,7 +207,6 @@ router.get('/', asyncHandler(async (req, res, next) => {
     questions.sort((q1,q2)=>{
         return q2.voteCount-q1.voteCount
     })
-    console.log(questions.map(q=>q.voteCount))
     let start = (currentPage-1)*5
     questions = questions.slice(start,start+5)
     res.render('questions', {

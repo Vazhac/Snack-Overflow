@@ -55,9 +55,6 @@ const signInValidators = [
   check('password')
     .exists({ checkFalsy: true })
     .withMessage('Please provide a value for Password')
-  // .custom(() => {
-  //   console.log('sign in checker')
-  // })
 ]
 
 const questionValidators = [
