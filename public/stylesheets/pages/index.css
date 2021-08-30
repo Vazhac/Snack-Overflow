@@ -95,7 +95,7 @@ section.odd {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  
+
 }
 
 .footer {
@@ -107,6 +107,7 @@ section.odd {
   bottom: 0;
   background-color: #264653;
   color: white;
+  transform: translateX(-50%);
 }
 
 .follow {
@@ -115,7 +116,6 @@ section.odd {
   margin: 15px 15px;
   align-items: center;
   justify-content: space-around;
-  
   width: 150px;
   font-size: 30px;
   height: 25px;
