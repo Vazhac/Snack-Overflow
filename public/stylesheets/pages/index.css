@@ -107,7 +107,6 @@ section.odd {
   bottom: 0;
   background-color: #264653;
   color: white;
-  transform: translateX(-50%);
 }
 
 .follow {
