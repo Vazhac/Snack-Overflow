@@ -330,7 +330,7 @@ window.addEventListener("load", async event => {
             form.style.display = "none"
             return
           } else if (method === "PUT") {
-            document.getElementById(`${type}-${res.id}-message`).innerText = `: ${res.message}`;
+            document.getElementById(`${type}-${res.id}-message`).innerText = `${res.message}`;
           } else if (method === "POST") {
             createNewElement(type, res, parentType, passedId)
           }
