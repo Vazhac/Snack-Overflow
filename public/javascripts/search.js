@@ -11,7 +11,6 @@ search.addEventListener("keyup", async (event) => {
         oldResult.remove()
     }
     let input = event.target.value
-    console.log(input)
     if (!input) searchResults.style.display = "none"
     if (input.length) {
         let res = await fetch("/questions/search", {
