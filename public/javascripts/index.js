@@ -11,11 +11,10 @@ window.addEventListener("load", async event => {
 
 let createForm = () => {
   let form = document.createElement("form")
-  let message = document.createElement("input")
+  let message = document.createElement("textarea")
   let submit = document.createElement("input")
   form.id = "reply-form"
   form.style.display = "none"
-  message.setAttribute("type","text")
   message.setAttribute("name","message")
   message.setAttribute("placeholder","message")
   submit.id = "reply-submit"
@@ -57,7 +56,6 @@ let clearSubmitEventListeners = () => {
   }
 
   let setFormAttributes = (form,attributes) => {
-      console.log("set form attributes: ", attributes)
     for(let attribute in attributes){
       form.setAttribute(attribute,attributes[attribute])
     }
@@ -70,7 +68,6 @@ let clearSubmitEventListeners = () => {
     attributes.passedId=form.getAttribute("passed-id")
     attributes.parentType=form.getAttribute("parent-type")
     attributes.passedId = Number(attributes.passedId)
-    console.log("get form attributes: ", attributes)
     return attributes
   }
 
@@ -157,12 +154,8 @@ let clearSubmitEventListeners = () => {
           postButtons.appendChild(deleteButton);
           postButtons.appendChild(editButton);
 
-          const postForms = document.createElement('div');
-            postForms.classList.add('post_forms');
-
         commentsContainer.appendChild(comment);
         commentsContainer.appendChild(postButtons);
-        commentsContainer.appendChild(postForms);
 
       postLayout.appendChild(commentsContainer);
       return postLayout;
@@ -304,7 +297,6 @@ let clearSubmitEventListeners = () => {
               event.preventDefault()
                 let body = {}
                 let {type,method,passedId,parentType} = getFormAttributes(form)
-                console.log(type,method,passedId,parentType)
                 for(let input of form.children){
                     if (input.name === "message"){
                         body.message = input.value
@@ -320,7 +312,6 @@ let clearSubmitEventListeners = () => {
                 } else if (method==="POST") {
                     url = `/${parentType}s/${passedId}/${type}s`
                 }
-                console.log("URL: ",url,"METHOD: ",method)
                 let res = await fetch(url,{
                     method:method,
                     headers: {
@@ -357,7 +348,6 @@ let clearSubmitEventListeners = () => {
             deleteButton.addEventListener("click",async (event)=> {
                 let id = Number(deleteButton.id.split("-")[1])
                 let url = `/${type}s/${id}`
-                console.log("delete url: ", url)
                 await fetch(url, {
                     method: "delete",
                   });
@@ -469,7 +459,6 @@ let clearSubmitEventListeners = () => {
             if (voteType === "upvote")scoreChange = 1
             else if (voteType === "downvote")scoreChange = -1
               let id = Number(voteButton.id.split("-")[1])
-              console.log(type,id,voteType)
               await fetch(`/${type}s/${id}/${voteType}s`,{
                 method:"POST"
               })

@@ -22,8 +22,9 @@ block content
                          div(id=`comment-${comment.id}` class='comment')
                             span(id=`comment-${comment.id}-author`) #{comment.author}
                             span(id=`comment-${comment.id}-message`) #{comment.message}
-                            button(id=`comment-${comment.id}-delete-button` class='comment-delete-button delete-button') Delete
-                            button(id=`comment-${comment.id}-edit-button` class='comment-edit-button edit-button') Edit
+                            if session.auth && session.auth.userId === question.userId
+                                button(id=`comment-${comment.id}-delete-button` class='comment-delete-button delete-button') Delete
+                                button(id=`comment-${comment.id}-edit-button` class='comment-edit-button edit-button') Edit
                     .post_buttons
                         if session.auth
                             button(id=`question-${question.id}-answer-button` class="question-answer-button answer-button") Answer
@@ -33,7 +34,7 @@ block content
                                 button(id=`question-${question.id}-edit-button` class="question-edit-button edit-button") Edit
                 form#question-form(style="display:none")
                     input(type="text" name="title" placeholder="title")
-                    input(type="text" name="message" placeholder="message")
+                    textarea(name="message" placeholder="message")
                     input#question-submit.submit(type="submit" value="submit")
 
         .answers
@@ -56,8 +57,9 @@ block content
                             div(id=`comment-${comment.id}` class='comment')
                                 span(id=`comment-${comment.id}-author`)=comment.author
                                 span(id=`comment-${comment.id}-message`)=comment.message
-                                button(id=`comment-${comment.id}-delete-button` class="comment-delete-button delete-button") Delete
-                                button(id=`comment-${comment.id}-edit-button` class="comment-edit-button edit-button") Edit
+                                if session.auth && session.auth.userId === question.userId
+                                    button(id=`comment-${comment.id}-delete-button` class="comment-delete-button delete-button") Delete
+                                    button(id=`comment-${comment.id}-edit-button` class="comment-edit-button edit-button") Edit
                         .post_buttons
                             if session.auth
                                 button(id=`answer-${answer.id}-comment-button` class="answer-comment-button comment-button") Comment
