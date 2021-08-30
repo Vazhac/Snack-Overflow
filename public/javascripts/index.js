@@ -107,7 +107,7 @@ window.addEventListener("load", async event => {
 
     const author = document.createElement('p');
     author.id = `${type}-${res.id}-author`
-    author.innerText = res.author
+    author.innerText = `${res.author}: `
 
     const message = document.createElement('p');
     message.id = `${type}-${res.id}-message`
@@ -199,7 +199,7 @@ window.addEventListener("load", async event => {
     li.id = `${type}-${res.id}`;
     let author = document.createElement("div")
     author.id = `${type}-${res.id}-author`
-    author.innerText = res.author
+    author.innerText = `${res.author}: `;
     let message = document.createElement("div")
     message.id = `${type}-${res.id}-message`
     message.innerText = res.message
