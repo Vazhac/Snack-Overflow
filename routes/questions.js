@@ -190,10 +190,11 @@ router.get('/', asyncHandler(async (req, res, next) => {
         }
     }
     pageNumbers.sort()
-    const questions = await Question.findAll({
+
+    let questions = await Question.findAll({
         include: [Answer, Comment, Upvote],
-        offset: (currentPage - 1) * 5,
-        limit: 5,
+        //offset: (currentPage - 1) * 5,
+        //limit: 5,
         orderBy: [["id", "DESC"]]
     });
 
@@ -203,6 +204,13 @@ router.get('/', asyncHandler(async (req, res, next) => {
             else return accum - 1
         }, 0)
     }
+
+    questions.sort((q1,q2)=>{
+        return q2.voteCount-q1.voteCount
+    })
+    console.log(questions.map(q=>q.voteCount))
+    let start = (currentPage-1)*5
+    questions = questions.slice(start,start+5)
     res.render('questions', {
         questions,
         session: req.session,
