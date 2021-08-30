@@ -20,11 +20,10 @@ block content
                 .comments_container
                     each comment in question.Comments
                          div(id=`comment-${comment.id}` class='comment')
-                            span(id=`comment-${comment.id}-author`) #{comment.author}
-                            span(id=`comment-${comment.id}-message`) #{comment.message}
-                            if session.auth && session.auth.userId === question.userId
-                                button(id=`comment-${comment.id}-delete-button` class='comment-delete-button delete-button') Delete
-                                button(id=`comment-${comment.id}-edit-button` class='comment-edit-button edit-button') Edit
+                            span(id=`comment-${comment.id}-author`) #{comment.author}:  #{comment.message}
+                            button(id=`comment-${comment.id}-delete-button` class='comment-delete-button delete-button') Delete
+                            button(id=`comment-${comment.id}-edit-button` class='comment-edit-button edit-button') Edit
+
                     .post_buttons
                         if session.auth
                             button(id=`question-${question.id}-answer-button` class="question-answer-button answer-button") Answer
@@ -50,16 +49,22 @@ block content
                             if !votedAnswerIdsObject[answer.id] && session.auth
                                 button(id=`answer-${answer.id}-downvote-button` class = "answer-downvote-button downvote-button") Downvote
                         .message_container
-                            p(id=`answer-${answer.id}-author`)=answer.author
-                            p(id=`answer-${answer.id}-message`)=answer.message
+                            p(id=`answer-${answer.id}-author`)=answer.author + ": " + answer.message
+                            //- p(id=`answer-${answer.id}-message`)=answer.message
                     div(id=`answer-${answer.id}-comments` class='comments_container')
                         each comment in answer.Comments
                             div(id=`comment-${comment.id}` class='comment')
+                                span(id=`comment-${comment.id}-author`)=comment.author + ": " + comment.message
+                                //- span(id=`comment-${comment.id}-message`)=comment.message
+                                button(id=`comment-${comment.id}-delete-button` class="comment-delete-button delete-button") Delete
+                                button(id=`comment-${comment.id}-edit-button` class="comment-edit-button edit-button") Edit
+
                                 span(id=`comment-${comment.id}-author`)=comment.author
                                 span(id=`comment-${comment.id}-message`)=comment.message
                                 if session.auth && session.auth.userId === question.userId
                                     button(id=`comment-${comment.id}-delete-button` class="comment-delete-button delete-button") Delete
                                     button(id=`comment-${comment.id}-edit-button` class="comment-edit-button edit-button") Edit
+
                         .post_buttons
                             if session.auth
                                 button(id=`answer-${answer.id}-comment-button` class="answer-comment-button comment-button") Comment
