@@ -15,7 +15,7 @@ block content
                         div(id=`question-${question.id}-vote-count`)=questionVoteCount
                         if !votedOnQuestion && session.auth
                             button(id=`question-${question.id}-downvote-button` class = "question-downvote-button downvote-button") Downvote
-                        p#message=question.message
+                    p#message=question.message
                 .comments_container
                     each comment in question.Comments
                          div(id=`comment-${comment.id}` class='comment')
@@ -48,22 +48,17 @@ block content
                             if !votedAnswerIdsObject[answer.id] && session.auth
                                 button(id=`answer-${answer.id}-downvote-button` class = "answer-downvote-button downvote-button") Downvote
                         .message_container
-                            p(id=`answer-${answer.id}-author`)=answer.author + ": " + answer.message
-                            //- p(id=`answer-${answer.id}-message`)=answer.message
+                            p(id=`answer-${answer.id}-author`)=answer.author + ": "
+                            p(id=`answer-${answer.id}-message`)=answer.message
                     div(id=`answer-${answer.id}-comments` class='comments_container')
                         each comment in answer.Comments
                             div(id=`comment-${comment.id}` class='comment')
-                                span(id=`comment-${comment.id}-author`)=comment.author + ": " + comment.message
-                                //- span(id=`comment-${comment.id}-message`)=comment.message
-                                button(id=`comment-${comment.id}-delete-button` class="comment-delete-button delete-button") Delete
-                                button(id=`comment-${comment.id}-edit-button` class="comment-edit-button edit-button") Edit
-
-                                span(id=`comment-${comment.id}-author`)=comment.author
+                                span(id=`comment-${comment.id}-author`)=comment.author + ": "
                                 span(id=`comment-${comment.id}-message`)=comment.message
-                                if session.auth && session.auth.userId === question.userId
+                            if session.auth && session.auth.userId === question.userId
+                                div.delete-edit-buttons
                                     button(id=`comment-${comment.id}-delete-button` class="comment-delete-button delete-button") Delete
                                     button(id=`comment-${comment.id}-edit-button` class="comment-edit-button edit-button") Edit
-
                         .post_buttons
                             if session.auth
                                 button(id=`answer-${answer.id}-comment-button` class="answer-comment-button comment-button") Comment

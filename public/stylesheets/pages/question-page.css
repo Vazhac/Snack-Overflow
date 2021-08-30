@@ -52,23 +52,50 @@ body {
   width: 100%;
   height: 100%;
   display: flex;
-  flex-direction: column;
+  border-radius: 4px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 
+/* fit words to container */
 .message_container > p {
-  margin-top: 5%;
+  flex-direction: row;
+  padding: 5px;
+  color: black;
+  font-size: 1.2em;
 }
 
  /*Comments*/
 .comments_container {
-  margin-left: 10%;
+  margin-left: 20%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
 
+.delete-edit-buttons {
+  display: flex;
+  justify-content: left;
+  flex-direction: row;
+}
+
+.delete-edit-buttons > button {
+  padding: 10 20px;
+  margin-right: 5px;
+}
+
+
 .comment {
-  padding: 5px 0;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
   color: black;
   background-color: var(--color-quaternary);
+  border-radius: 4px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 
 .comment_message {
@@ -117,8 +144,25 @@ body {
   display: flex;
 }
 
+.upper_container > p {
+  background-color: var(--color-quaternary);
+  justify-content: left;
+  display: flex;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: black;
+  width: 90%;
+  height: 100%;
+  border-radius: 4px;
+  margin: auto;
+  border-radius: 4px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
 .votes_container > *{
-  justify-content: center;
   margin: 0 5px;
 }
 
@@ -128,4 +172,30 @@ body {
 
 .upper_container > .votes_container {
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border-radius: 25px;
+  height : 125px;
+  width: 125px;
+  padding: 5px;
+}
+
+#question-form {
+  display: flex;
+}
+
+#question-form > input,
+#question-form > button{
+  width: 100%;
+}
+
+#question-form > textarea,
+#reply-form > textarea{
+  font-family: var(--default-font-family);
+  min-width: 100%;
+  max-width: 100%;
+  min-height: 300px;
+  max-height: 300px;
+  border-radius: var(--default-border-radius);
 }
