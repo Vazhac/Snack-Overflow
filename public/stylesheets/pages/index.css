@@ -2,6 +2,8 @@
 
 html{
 overflow: hidden;
+position:relative;
+min-height: 100vh;
 }
 
 h1 {
@@ -100,14 +102,11 @@ section.odd {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
   position: absolute;
-  bottom: 5%;
-  left: 50%;
-  max-height: 100px;
-  justify-content: center;
+  bottom: 0;
   background-color: #264653;
   color: white;
-  transform: translateX(-50%);
 }
 
 .follow {
@@ -117,21 +116,22 @@ section.odd {
   align-items: center;
   justify-content: space-around;
   width: 150px;
-  font-size: 20px;
+  font-size: 30px;
   height: 25px;
 }
 
 .follow > p {
     height: 15px;
+    font-size: 20px;
 }
 
 .footer-members {
   display: flex;
-
 }
 
 .footer-item a {
     margin: 15px 15px 0;
+    font-size: 15px;
 }
 
 .footer-year {
@@ -139,7 +139,7 @@ section.odd {
   font-size: 10px;
 }
 
-@media screen and (max-height: 800px) {
+@media screen and (max-height: 750px) {
     .footer {
     display: none;
     };
