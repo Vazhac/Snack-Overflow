@@ -35,9 +35,11 @@ search.addEventListener("keyup",async (event)=> {
         result.append(link)
         searchResults.append(result)
     }
+
     searchResults.style.display="block"
     searchResults.style.overflow = "scroll"
     searchResults.style.height = "100px"
+    
 }
 
 })

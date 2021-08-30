@@ -257,7 +257,8 @@ let clearSubmitEventListeners = () => {
               let form = createForm()
               let parent = document.getElementById(`${parentType}-${parentId}`)
               let submit = form.children[1]
-              parent.append(form)
+              console.log("parent: ", parent, parentType, parentId)
+              //parent.append(form)
               setFormAttributes(form,attributes)
               form.style.display = "block"
               addEventListenerToSubmitButton(submit,form)
