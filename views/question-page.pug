@@ -27,8 +27,8 @@ block content
                                 button(id=`question-${question.id}-edit-button` class="question-edit-button edit-button") Edit
                     each comment in question.Comments
                          div(id=`comment-${comment.id}` class='comment')
-                            span(id=`comment-${comment.id}-author`) #{comment.author}
-                            span(id=`comment-${comment.id}-message`) : #{comment.message}
+                            span(id=`comment-${comment.id}-author`)=comment.author + ": "
+                            span(id=`comment-${comment.id}-message`) #{comment.message}
                             if session.auth && session.auth.userId === comment.userId
                                 button(id=`comment-${comment.id}-delete-button` class='comment-delete-button delete-button') Delete
                                 button(id=`comment-${comment.id}-edit-button` class='comment-edit-button edit-button') Edit
