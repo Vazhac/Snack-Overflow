@@ -2,7 +2,7 @@ extends layout
 block content
     link(rel="stylesheet" href="/stylesheets/pages/question-page.css")
     div.content
-        .question
+        div(id=`question-${question.id}` class='question')
             .question_header
                 h1#title=question.title
                 .question_info
@@ -19,9 +19,11 @@ block content
                         p#message=question.message
                 .comments_container
                     each comment in question.Comments
-                        .comment
-                            span.comment_message #{comment.message}
-                            span.comment_author -#{comment.author}
+                         div(id=`comment-${comment.id}` class='comment')
+                            span(id=`comment-${comment.id}-author`) #{comment.author}
+                            span(id=`comment-${comment.id}-message`) #{comment.message}
+                            button(id=`comment-${comment.id}-delete-button` class='comment-delete-button delete-button') Delete
+                            button(id=`comment-${comment.id}-edit-button` class='comment-edit-button edit-button') Edit
                     .post_buttons
                         if session.auth
                             button(id=`question-${question.id}-answer-button` class="question-answer-button answer-button") Answer
@@ -29,14 +31,11 @@ block content
                             if session.auth.userId === question.userId
                                 button(id=`question-${question.id}-delete-button` class="question-delete-button delete-button") Delete
                                 button(id=`question-${question.id}-edit-button` class="question-edit-button edit-button") Edit
-                    .post_forms
-                        form#reply-form(style="display:none")
-                            input(type="text" name="message" placeholder="message")
-                            input#reply-submit.submit(type="submit" value="submit")
-                        form#question-form(style="display:none")
-                            input(type="text" name="title" placeholder="title")
-                            input(type="text" name="message" placeholder="message")
-                            input#question-submit.submit(type="submit" value="submit")
+                form#question-form(style="display:none")
+                    input(type="text" name="title" placeholder="title")
+                    input(type="text" name="message" placeholder="message")
+                    input#question-submit.submit(type="submit" value="submit")
+
         .answers
             .answer_header
                 span Answers
@@ -54,7 +53,7 @@ block content
                             p(id=`answer-${answer.id}-message`)=answer.message
                     div(id=`answer-${answer.id}-comments` class='comments_container')
                         each comment in answer.Comments
-                            div(id=`comment-${comment.id}` class='comment').comment
+                            div(id=`comment-${comment.id}` class='comment')
                                 span(id=`comment-${comment.id}-author`)=comment.author
                                 span(id=`comment-${comment.id}-message`)=comment.message
                                 button(id=`comment-${comment.id}-delete-button` class="comment-delete-button delete-button") Delete
@@ -65,61 +64,4 @@ block content
                                 if session.auth.userId === question.userId
                                     button(id=`answer-${answer.id}-delete-button` class="answer-delete-button delete-button") Delete
                                     button(id=`answer-${answer.id}-edit-button` class="answer-edit-button edit-button") Edit
-                        .post_forms
-                            form#answer-comment-form(action="/" method="post" style="display:none")
-                                input(type="text" name="message" placeholder="message")
-                                input#answer-comment-submit(type="submit" value="submit")
-
-    div(id=`question-author-${question.id}`)=question.author
-    div#title=question.title
-    div#message=question.message
-    div(id=`question-${question.id}-vote-count`)=questionVoteCount
-    ul#errors
-    form#question-form(style="display:none")
-        input(type="text" name="title" placeholder="title")
-        input(type="text" name="message" placeholder="message")
-        input#question-submit.submit(type="submit" value="submit")
-
-    ul.answers
-        each answer in question.Answers
-            li(id=`answer-${answer.id}`)
-                div(id=`answer-${answer.id}-author`)=answer.author
-                div(id=`answer-${answer.id}-message`)=answer.message
-                div(id=`answer-${answer.id}-vote-count` class='answer-vote-count')=answer.voteCount
-                if session.auth
-                    button(id=`answer-${answer.id}-comment-button` class="answer-comment-button comment-button") Comment
-                    if !votedAnswerIdsObject[answer.id]
-                        button(id=`answer-${answer.id}-upvote-button` class = "answer-upvote-button upvote-button") Upvote
-                        button(id=`answer-${answer.id}-downvote-button` class = "answer-downvote-button downvote-button") Downvote
-                    if session.auth.userId === answer.userId
-                        button(id=`answer-${answer.id}-delete-button` class="answer-delete-button delete-button") Delete
-                        button(id=`answer-${answer.id}-edit-button` class="answer-edit-button edit-button") Edit
-                ul(id = `answer-${answer.id}-comments` class = "answer-comments")
-                    each comment in answer.Comments
-                        li(id=`comment-${comment.id}`)
-                            div(id=`comment-${comment.id}-author`)=comment.author
-                            div(id=`comment-${comment.id}-message`)=comment.message
-                            if session.auth && session.auth.userId === comment.userId
-                                button(id=`comment-${comment.id}-delete-button` class="comment-delete-button delete-button") Delete
-                                button(id=`comment-${comment.id}-edit-button` class="comment-edit-button edit-button") Edit
-    ul.comments
-        each comment in question.Comments
-            li(id=`comment-${comment.id}`)
-                div(id=`comment-${comment.id}-author`)=comment.author
-                div(id=`comment-${comment.id}-message`)=comment.message
-                if session.auth && session.auth.userId === comment.userId
-                    button(id=`comment-${comment.id}-delete-button` class="comment-delete-button delete-button") Delete
-                    button(id=`comment-${comment.id}-edit-button` class="comment-edit-button edit-button") Edit
-
-    if session.auth
-        div
-            button(id=`question-${question.id}-answer-button` class="question-answer-button answer-button") Answer
-            button(id=`question-${question.id}-comment-button` class="question-comment-button comment-button") Comment
-            if session.auth && !votedOnQuestion
-                button(id=`question-${question.id}-upvote-button` class = "question-upvote-button upvote-button") Upvote
-                button(id=`question-${question.id}-downvote-button` class = "question-downvote-button downvote-button") Downvote
-            if session.auth && session.auth.userId === question.userId
-                button(id=`question-${question.id}-delete-button` class="question-delete-button delete-button") Delete
-                button(id=`question-${question.id}-edit-button` class="question-edit-button edit-button") Edit
-
     script(src='../javascripts/index.js' type='module')

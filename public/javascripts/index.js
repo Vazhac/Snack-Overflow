@@ -127,6 +127,7 @@ let clearSubmitEventListeners = () => {
 
         const commentsContainer = document.createElement('div');
           commentsContainer.classList.add('comments_container');
+          commentsContainer.id = `${type}-${res.id}-comments`;
 
           const comment = document.createElement('div');
             comment.classList.add('comment');
@@ -284,9 +285,15 @@ let clearSubmitEventListeners = () => {
         } else if (parentType === "question"){
             // let ul = document.querySelector(`ul.${type}s`);
             // ul.append(li)
-            const answer = createAnswerItem(type, res);
-            const answers = document.querySelector('.answers');
-            answers.append(answer);
+            if (type === 'answer') {
+              const answer = createAnswerItem(type, res);
+              const answers = document.querySelector('.answers');
+              answers.append(answer);
+            } else if (type === 'comment') {
+              const comment = createComment(type, res);
+              const comments = document.querySelector('.comments_container');
+              comments.append(comment);
+            }
         }
     }
 
