@@ -242,10 +242,6 @@ let clearSubmitEventListeners = () => {
       }
 
 
-
-
-
-
     let addEventListenerToReplyButton = async (replyButton,type,parentType) => {
         if(replyButton){
             replyButton.addEventListener("click",async (event)=> {
