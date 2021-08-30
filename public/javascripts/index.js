@@ -107,7 +107,7 @@ window.addEventListener("load", async event => {
 
     const author = document.createElement('p');
     author.id = `${type}-${res.id}-author`
-    author.innerText = res.author
+    author.innerText = `${res.author}: `
 
     const message = document.createElement('p');
     message.id = `${type}-${res.id}-message`
@@ -199,7 +199,7 @@ window.addEventListener("load", async event => {
     li.id = `${type}-${res.id}`;
     let author = document.createElement("div")
     author.id = `${type}-${res.id}-author`
-    author.innerText = res.author
+    author.innerText = `${res.author}: `;
     let message = document.createElement("div")
     message.id = `${type}-${res.id}-message`
     message.innerText = res.message
@@ -259,10 +259,7 @@ window.addEventListener("load", async event => {
         postButtons = comment
       }
     }
-    console.log(postButtons)
-    postButtons.remove()
     comments.append(comment)
-    comments.append(postButtons)
   }
   //important
   let createNewElement = async (type, res, parentType, parentId) => {
@@ -277,8 +274,6 @@ window.addEventListener("load", async event => {
     if (type === "comment" && parentType === "answer") {
       addAnswerCommentFunctionality(comment, parentId)
     } else if (parentType === "question") {
-      // let ul = document.querySelector(`ul.${type}s`);
-      // ul.append(li)
       if (type === 'answer') {
         const answer = createAnswerItem(type, res);
         const answers = document.querySelector('.answers');
@@ -286,6 +281,13 @@ window.addEventListener("load", async event => {
       } else if (type === 'comment') {
         const comment = createComment(type, res);
         const comments = document.querySelector('.comments_container');
+        comments.append(comment);
+        let postButtons
+        for (let comment of comments.children) {
+          if (comment.classList.contains("post_buttons")) {
+            postButtons = comment
+          }
+        }
         comments.append(comment);
       }
     }
@@ -328,7 +330,7 @@ window.addEventListener("load", async event => {
             form.style.display = "none"
             return
           } else if (method === "PUT") {
-            document.getElementById(`${type}-${res.id}-message`).innerText = res.message;
+            document.getElementById(`${type}-${res.id}-message`).innerText = `${res.message}`;
           } else if (method === "POST") {
             createNewElement(type, res, parentType, passedId)
           }
