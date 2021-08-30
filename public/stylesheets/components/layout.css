@@ -42,6 +42,7 @@ body {
     height: 30px;
     font-family: var(--default-font-family);
     background-color: black;
+    padding: 0px 10px;
     color: white;
     border: none;
     border-radius: var(--default-border-radius);

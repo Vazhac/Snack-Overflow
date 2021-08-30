@@ -103,6 +103,7 @@ body {
 
 .question > a {
     font-family: serif;
+    justify-content: center;
     text-decoration: none;
     width: 60%;
     font-size: 24px;
