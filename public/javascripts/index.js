@@ -357,6 +357,13 @@ let getFormAttributes = (form) => {
               }else{
                   let reply = document.querySelector(`#${type}-${id}`)
                   reply.remove();
+                  if(type === "answer"){
+                    let answerContainer = document.querySelector(".answers")
+                    console.log(answerContainer)
+                    if(answerContainer.children.length===1){
+                      document.querySelector(".answer_header").style.display="none"
+                    }
+                  }
               }
           })
       }
