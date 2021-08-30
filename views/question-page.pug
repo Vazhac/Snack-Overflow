@@ -15,7 +15,7 @@ block content
                         div(id=`question-${question.id}-vote-count`)=questionVoteCount
                         if !votedOnQuestion && session.auth
                             button(id=`question-${question.id}-downvote-button` class = "question-downvote-button downvote-button") Downvote
-                        p#message=question.message
+                    p#message=question.message
                 .comments_container
                     each comment in question.Comments
                          div(id=`comment-${comment.id}` class='comment')
