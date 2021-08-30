@@ -32,7 +32,6 @@ router.post("/:id(\\d+)/upvotes", asyncHandler(async (req, res) => {
     let userId = req.session.auth.userId
     let isPositive = true
     let upvote = await Upvote.create({answerId,userId,isPositive})
-    console.log(upvote)
     res.send()
 
 }));
