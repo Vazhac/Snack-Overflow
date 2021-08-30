@@ -69,6 +69,9 @@ input {
     font-family: var(--default-font-family);
     width: 100%;
     border-radius: var(--default-border-radius);
+    border-top: none;
+    border-left: none;
+    border-right: none;
 }
 
 input:focus {
