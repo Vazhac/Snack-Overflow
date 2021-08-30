@@ -53,6 +53,8 @@ body {
   height: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
+  border-radius: 4px;
 }
 
 .message_container > p {
@@ -118,7 +120,6 @@ body {
 }
 
 .votes_container > *{
-  justify-content: center;
   margin: 0 5px;
 }
 
@@ -128,4 +129,8 @@ body {
 
 .upper_container > .votes_container {
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border-radius: 25px;
 }

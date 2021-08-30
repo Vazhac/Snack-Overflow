@@ -55,15 +55,9 @@ block content
                             div(id=`comment-${comment.id}` class='comment')
                                 span(id=`comment-${comment.id}-author`)=comment.author + ": "
                                 span(id=`comment-${comment.id}-message`)=comment.message
+                            if session.auth && session.auth.userId === question.userId
                                 button(id=`comment-${comment.id}-delete-button` class="comment-delete-button delete-button") Delete
                                 button(id=`comment-${comment.id}-edit-button` class="comment-edit-button edit-button") Edit
-
-                                span(id=`comment-${comment.id}-author`)=comment.author
-                                span(id=`comment-${comment.id}-message`)=comment.message
-                                if session.auth && session.auth.userId === question.userId
-                                    button(id=`comment-${comment.id}-delete-button` class="comment-delete-button delete-button") Delete
-                                    button(id=`comment-${comment.id}-edit-button` class="comment-edit-button edit-button") Edit
-
                         .post_buttons
                             if session.auth
                                 button(id=`answer-${answer.id}-comment-button` class="answer-comment-button comment-button") Comment
