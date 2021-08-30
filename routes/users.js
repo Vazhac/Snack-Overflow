@@ -23,22 +23,15 @@ router.post("/signup", csrfProtection, signUpValidators, asyncHandler(async (req
   let { username, password, email } = req.body
   const validatorErrors = validationResult(req);
 
-  const user = await User.build({
-    username,
-    email
-  });
-
   if (validatorErrors.isEmpty()) {
     let hashedPassword = await bcrypt.hash(password, 10)
-    user.hashedPassword = hashedPassword;
-    await user.save();
+    let user = await User.create({username,hashedPassword,email});
     loginUser(req, res, user);
     res.redirect("/")
   } else {
     const errors = validatorErrors.array().map((err) => err.msg);
     res.render('sign-up', {
       title: 'Sign-up',
-      user,
       errors,
       csrfToken: req.csrfToken(),
     });
@@ -114,7 +107,7 @@ router.get('/demo', asyncHandler(async (req, res) => {
       username: "demo"
     }
   });
-  
+
   loginUser(req,res,demoUser)
   res.redirect('/')
 }))
