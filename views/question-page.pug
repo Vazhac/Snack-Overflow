@@ -33,7 +33,7 @@ block content
                                 button(id=`question-${question.id}-edit-button` class="question-edit-button edit-button") Edit
                 form#question-form(style="display:none")
                     input(type="text" name="title" placeholder="title")
-                    input(type="text" name="message" placeholder="message")
+                    textarea(name="message" placeholder="message")
                     input#question-submit.submit(type="submit" value="submit")
 
         .answers
