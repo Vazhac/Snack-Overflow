@@ -81,10 +81,6 @@ block content
         input(type="text" name="message" placeholder="message")
         input#question-submit.submit(type="submit" value="submit")
 
-    form#reply-form(style="display:none")
-        input(type="text" name="message" placeholder="message")
-        input#reply-submit.submit(type="submit" value="submit")
-
     ul.answers
         each answer in question.Answers
             li(id=`answer-${answer.id}`)
