@@ -259,7 +259,6 @@ window.addEventListener("load", async event => {
         postButtons = comment
       }
     }
-    console.log(postButtons)
     postButtons.remove()
     comments.append(comment)
     comments.append(postButtons)
@@ -287,6 +286,15 @@ window.addEventListener("load", async event => {
         const comment = createComment(type, res);
         const comments = document.querySelector('.comments_container');
         comments.append(comment);
+        let postButtons
+        for (let comment of comments.children) {
+          if (comment.classList.contains("post_buttons")) {
+            postButtons = comment
+          }
+        }
+        postButtons.remove();
+        comments.append(comment);
+        comments.append(postButtons);
       }
     }
   }

@@ -68,9 +68,9 @@ router.get("/:id(\\d+)", asyncHandler(async (req, res) => {
         10:"November",
         11:"December"
     }
-    question.updated = `${months[Number(date.getMonth())]} ${date.getDay()} ${date.getFullYear()}`
+    question.updated = `${months[Number(date.getMonth())]} ${date.getFullYear()}`
     console.log(question.created)
-    console.log(`${months[Number(date.getMonth())]} ${date.getDay()} ${date.getFullYear()}`)
+    console.log(`${months[Number(date.getMonth())]} ${date.getFullYear()}`)
 
     res.render('question-page', { votedAnswerIdsObject, votedOnQuestion, votes, question, session: req.session, questionVoteCount })
 }));
