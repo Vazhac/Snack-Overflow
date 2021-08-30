@@ -70,7 +70,22 @@ body {
  /*Comments*/
 .comments_container {
   margin-left: 20%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
+
+.delete-edit-buttons {
+  display: flex;
+  justify-content: left;
+  flex-direction: row;
+}
+
+.delete-edit-buttons > button {
+  padding: 10 20px;
+  margin-right: 5px;
+}
+
 
 .comment {
   border-top: 1px solid rgba(0, 0, 0, 0.1);

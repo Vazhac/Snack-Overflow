@@ -125,8 +125,8 @@ window.addEventListener("load", async event => {
     commentsContainer.classList.add('comments_container');
     commentsContainer.id = `${type}-${res.id}-comments`;
 
-    const comment = document.createElement('div');
-    comment.classList.add('comment');
+    // const comment = document.createElement('div');
+    //   comment.classList.add('comment');
 
     const postButtons = document.createElement('div');
     postButtons.classList.add('post_buttons');
@@ -153,7 +153,7 @@ window.addEventListener("load", async event => {
     postButtons.appendChild(deleteButton);
     postButtons.appendChild(editButton);
 
-    commentsContainer.appendChild(comment);
+    // commentsContainer.appendChild(comment);
     commentsContainer.appendChild(postButtons);
 
     postLayout.appendChild(commentsContainer);
@@ -253,14 +253,16 @@ window.addEventListener("load", async event => {
 
   let addAnswerCommentFunctionality = (comment, parentId) => {
     let comments = document.getElementById(`answer-${parentId}-comments`)
-    //comments div will always already exist
-    // if(!comments){
-    //     comments = document.createElement("comments")
-    //     comments.id = `answer-${parentId}-comments`
-    //     comments.classList.add("answer-comments")
-    //     document.getElementById(`answer-${parentId}`).append(comments)
-    // }
+    let postButtons
+    for (let comment of comments.children) {
+      if (comment.classList.contains("post_buttons")) {
+        postButtons = comment
+      }
+    }
+    console.log(postButtons)
+    postButtons.remove()
     comments.append(comment)
+    comments.append(postButtons)
   }
   //important
   let createNewElement = async (type, res, parentType, parentId) => {
@@ -373,6 +375,7 @@ window.addEventListener("load", async event => {
 
   let addEventListenerToReplyButton = async (replyButton, type, parentType) => {
     if (replyButton) {
+      if (parentType === "answer") document.querySelector(".answer_header").style.display = "block"
       replyButton.addEventListener("click", async (event) => {
         let parentId = Number(replyButton.id.split("-")[1])
         let attributes = {

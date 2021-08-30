@@ -36,7 +36,7 @@ block content
                     input#question-submit.submit(type="submit" value="submit")
 
         .answers
-            .answer_header
+            .answer_header(style="display:none")
                 span Answers
             each answer in question.Answers
                 div(id=`answer-${answer.id}` class='post_layout')
@@ -56,8 +56,9 @@ block content
                                 span(id=`comment-${comment.id}-author`)=comment.author + ": "
                                 span(id=`comment-${comment.id}-message`)=comment.message
                             if session.auth && session.auth.userId === question.userId
-                                button(id=`comment-${comment.id}-delete-button` class="comment-delete-button delete-button") Delete
-                                button(id=`comment-${comment.id}-edit-button` class="comment-edit-button edit-button") Edit
+                                div.delete-edit-buttons
+                                    button(id=`comment-${comment.id}-delete-button` class="comment-delete-button delete-button") Delete
+                                    button(id=`comment-${comment.id}-edit-button` class="comment-edit-button edit-button") Edit
                         .post_buttons
                             if session.auth
                                 button(id=`answer-${answer.id}-comment-button` class="answer-comment-button comment-button") Comment
