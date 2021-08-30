@@ -167,7 +167,7 @@ window.addEventListener("load", async event => {
 
     const author = document.createElement('span');
     author.id = `comment-${res.id}-author`;
-    author.innerText = res.author;
+    author.innerText = `${res.author}: `;
 
     const message = document.createElement('span');
     message.id = `comment-${res.id}-message`;
