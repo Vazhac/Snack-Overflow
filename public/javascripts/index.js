@@ -50,6 +50,133 @@ let clearSubmitEventListeners = () => {
     return attributes
   }
 
+    const createAnswerItem = (type, res) => {
+      const postLayout = document.createElement('div');
+      postLayout.classList.add('post_layout');
+      postLayout.id = `${type}-${res.id}`;
+
+        const upperContainer = document.createElement('div');
+          upperContainer.classList.add('upper_container');
+
+          const votesContainer = document.createElement('div');
+            votesContainer.classList.add('votes_container');
+
+            const upVoteButton = document.createElement('button');
+            upVoteButton.classList.add(`${type}-upvote-button`,"upvote-button");
+              upVoteButton.id = `${type}-${res.id}-upvote-button`;
+              upVoteButton.innerText = 'Upvote';
+              addEventListenerToVoteButton(upVoteButton,"answer","upvote")
+
+            const answerVoteCount = document.createElement('div');
+            answerVoteCount.classList.add(`${type}-vote-count`);
+              answerVoteCount.id = `${type}-${res.id}-vote-count`;
+              answerVoteCount.innerText = 0;
+
+            const downVoteButton = document.createElement('button');
+              downVoteButton.classList.add(`${type}-downvote-button`,"downvote-button")
+              downVoteButton.id = `${type}-${res.id}-downvote-button`;
+              downVoteButton.innerText = 'Downvote';
+              addEventListenerToVoteButton(downVoteButton,"answer","downvote")
+
+          votesContainer.appendChild(upVoteButton);
+          votesContainer.appendChild(answerVoteCount);
+          votesContainer.appendChild(downVoteButton);
+
+          const messageContainer = document.createElement('div');
+            messageContainer.classList.add('message_container');
+
+            const author = document.createElement('p');
+              author.id=`${type}-${res.id}-author`
+              author.innerText=res.author
+
+            const message = document.createElement('p');
+              message.id = `${type}-${res.id}-message`
+              message.innerText = res.message
+
+          messageContainer.appendChild(author);
+          messageContainer.appendChild(message);
+
+        upperContainer.appendChild(votesContainer);
+        upperContainer.appendChild(messageContainer);
+
+      postLayout.appendChild(upperContainer);
+
+        const commentsContainer = document.createElement('div');
+          commentsContainer.classList.add('comments_container');
+
+          const comment = document.createElement('div');
+            comment.classList.add('comment');
+
+          const postButtons = document.createElement('div');
+            postButtons.classList.add('post_buttons');
+
+            const commentButton = document.createElement("button")
+              commentButton.classList.add(`${type}-comment-button`,"comment-button")
+              commentButton.id=`${type}-${res.id}-comment-button`
+              commentButton.innerText = "Comment";
+              addEventListenerToReplyButton(commentButton, "comment", "answer");
+
+            const deleteButton = document.createElement("button");
+              deleteButton.classList.add(`${type}-delete-button`,"delete-button");
+              deleteButton.id = `${type}-${res.id}-delete-button`;
+              deleteButton.innerText = "Delete";
+              addEventListenerToDeleteButton(deleteButton,type)
+
+            const editButton = document.createElement("button");
+              editButton.classList.add(`${type}-edit-button`,"edit-button");
+              editButton.id = `${type}-${res.id}-edit-button`;
+              editButton.innerText = "Edit";
+              addEventListenerToEditButton(editButton, type);
+
+          postButtons.appendChild(commentButton);
+          postButtons.appendChild(deleteButton);
+          postButtons.appendChild(editButton);
+
+          const postForms = document.createElement('div');
+            postForms.classList.add('post_forms');
+
+        commentsContainer.appendChild(comment);
+        commentsContainer.appendChild(postButtons);
+        commentsContainer.appendChild(postForms);
+
+      postLayout.appendChild(commentsContainer);
+      return postLayout;
+    };
+
+    const createComment = (type, res) => {
+      const comment = document.createElement('div');
+      comment.classList.add('comment');
+      comment.id = `${type}-${res.id}`;
+
+        const author = document.createElement('span');
+          author.id = `comment-${res.id}-author`;
+          author.innerText = res.author;
+
+        const message = document.createElement('span');
+          message.id = `comment-${res.id}-message`;
+          message.innerText = res.message;
+
+        const deleteButton = document.createElement("button");
+          deleteButton.classList.add(`${type}-delete-button`,"delete-button");
+          deleteButton.id = `${type}-${res.id}-delete-button`;
+          deleteButton.innerText = "Delete";
+          addEventListenerToDeleteButton(deleteButton,type);
+
+        const editButton = document.createElement("button");
+          editButton.classList.add(`${type}-edit-button`,"edit-button");
+          editButton.id = `${type}-${res.id}-edit-button`;
+          editButton.innerText = "Edit";
+          addEventListenerToEditButton(editButton, type);
+
+
+      comment.appendChild(author);
+      comment.appendChild(message);
+      comment.appendChild(deleteButton);
+      comment.appendChild(editButton);
+
+      return comment;
+    };
+
     let createListItem = (type,res) => {
         let li = document.createElement("li");
         li.id = `${type}-${res.id}`;
@@ -107,29 +234,35 @@ let clearSubmitEventListeners = () => {
         addEventListenerToEditButton(editButton,type)
     }
 
-    let addAnswerCommentFunctionality = (li,parentId) => {
-        let ul = document.getElementById(`answer-${parentId}-comments`)
-        if(!ul){
-            ul = document.createElement("ul")
-            ul.id = `answer-${parentId}-comments`
-            ul.classList.add("answer-comments")
-            document.getElementById(`answer-${parentId}`).append(ul)
-        }
-        ul.append(li)
+    let addAnswerCommentFunctionality = (comment, parentId) => {
+        let comments = document.getElementById(`answer-${parentId}-comments`)
+        //comments div will always already exist
+        // if(!comments){
+        //     comments = document.createElement("comments")
+        //     comments.id = `answer-${parentId}-comments`
+        //     comments.classList.add("answer-comments")
+        //     document.getElementById(`answer-${parentId}`).append(comments)
+        // }
+        comments.append(comment)
     }
+    //important
     let createNewElement = async (type,res,parentType,parentId) => {
 
         let li = createListItem(type,res)
+        const comment = createComment(type, res);
         if(type === "answer"){
             addAnswerFunctionality(li,type,res)
         }
         addDeleteFunctionality(li,type,res)
         addEditFunctionality(li,type,res)
         if(type==="comment" && parentType === "answer"){
-        addAnswerCommentFunctionality(li,parentId)
+        addAnswerCommentFunctionality(comment, parentId)
         } else if (parentType === "question"){
-            let ul = document.querySelector(`ul.${type}s`);
-            ul.append(li)
+            // let ul = document.querySelector(`ul.${type}s`);
+            // ul.append(li)
+            const answer = createAnswerItem(type, res);
+            const answers = document.querySelector('.answers');
+            answers.append(answer);
         }
     }
 
