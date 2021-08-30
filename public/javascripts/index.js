@@ -259,9 +259,7 @@ window.addEventListener("load", async event => {
         postButtons = comment
       }
     }
-    postButtons.remove()
     comments.append(comment)
-    comments.append(postButtons)
   }
   //important
   let createNewElement = async (type, res, parentType, parentId) => {
@@ -276,8 +274,6 @@ window.addEventListener("load", async event => {
     if (type === "comment" && parentType === "answer") {
       addAnswerCommentFunctionality(comment, parentId)
     } else if (parentType === "question") {
-      // let ul = document.querySelector(`ul.${type}s`);
-      // ul.append(li)
       if (type === 'answer') {
         const answer = createAnswerItem(type, res);
         const answers = document.querySelector('.answers');
@@ -292,9 +288,7 @@ window.addEventListener("load", async event => {
             postButtons = comment
           }
         }
-        postButtons.remove();
         comments.append(comment);
-        comments.append(postButtons);
       }
     }
   }
@@ -336,7 +330,7 @@ window.addEventListener("load", async event => {
             form.style.display = "none"
             return
           } else if (method === "PUT") {
-            document.getElementById(`${type}-${res.id}-message`).innerText = res.message;
+            document.getElementById(`${type}-${res.id}-message`).innerText = `: ${res.message}`;
           } else if (method === "POST") {
             createNewElement(type, res, parentType, passedId)
           }
