@@ -171,38 +171,46 @@ router.get('/', asyncHandler(async (req, res, next) => {
     let currentPage = 1;
     if (req.query.page) {
         currentPage = Number(req.query.page);
-        if(currentPage>amountOfPages){
+        if (currentPage > amountOfPages) {
             res.redirect("/questions")
         }
     }
     let pageNumbers = [currentPage]
     let length = amountOfPages >= 5 ? 5 : amountOfPages
-    let lowerPage = currentPage-1
-    let upperPage = currentPage+1
-    while(pageNumbers.length < length){
-        if(upperPage <= amountOfPages){
+    let lowerPage = currentPage - 1
+    let upperPage = currentPage + 1
+    while (pageNumbers.length < length) {
+        if (upperPage <= amountOfPages) {
             pageNumbers.push(upperPage)
             upperPage++
         }
-        if(lowerPage){
+        if (lowerPage) {
             pageNumbers.push(lowerPage)
             lowerPage--
         }
     }
     pageNumbers.sort()
-    const questions = await Question.findAll({
+
+    let questions = await Question.findAll({
         include: [Answer, Comment, Upvote],
-        offset: (currentPage - 1) * 5,
-        limit: 5,
+        //offset: (currentPage - 1) * 5,
+        //limit: 5,
         orderBy: [["id", "DESC"]]
     });
 
     for (let question of questions) {
         question.voteCount = question.Upvotes.reduce((accum, upvote) => {
             if (upvote.isPositive) return accum + 1
-            else return accum -1
+            else return accum - 1
         }, 0)
     }
+
+    questions.sort((q1,q2)=>{
+        return q2.voteCount-q1.voteCount
+    })
+    console.log(questions.map(q=>q.voteCount))
+    let start = (currentPage-1)*5
+    questions = questions.slice(start,start+5)
     res.render('questions', {
         questions,
         session: req.session,
@@ -210,15 +218,15 @@ router.get('/', asyncHandler(async (req, res, next) => {
         pageNumbers,
         currentPage
     })
-    }));
+}));
 
 router.post("/search", asyncHandler(async (req, res) => {
     let { input } = req.body
-    if(!input)res.send([])
+    if (!input) res.send([])
     let questions = await Question.findAll({
         where: {
             title: {
-                [Op.like]: `%${input}%`
+                [Op.iLike]: `%${input}%`
             }
         }
     })
