@@ -53,6 +53,25 @@ router.get("/:id(\\d+)", asyncHandler(async (req, res) => {
         }
         if (votes.filter(vote => vote.questionId === question.id).length > 0) votedOnQuestion = true
     }
+    let date = new Date(question.createdAt)
+    let months = {
+        0:"January",
+        1:"Feburary",
+        2:"March",
+        3:"April",
+        4:"May",
+        5:"June",
+        6:"July",
+        7:"August",
+        8:"September",
+        9:"October",
+        10:"November",
+        11:"December"
+    }
+    question.updated = `${months[Number(date.getMonth())]} ${date.getDay()} ${date.getFullYear()}`
+    console.log(question.created)
+    console.log(`${months[Number(date.getMonth())]} ${date.getDay()} ${date.getFullYear()}`)
+
     res.render('question-page', { votedAnswerIdsObject, votedOnQuestion, votes, question, session: req.session, questionVoteCount })
 }));
 
